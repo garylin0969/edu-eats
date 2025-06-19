@@ -17,6 +17,7 @@
         "@tauri-apps/plugin-opener": "^2",
         "react": "^19.1.0",
         "react-dom": "^19.1.0",
+        "react-hook-form": "^7.58.1",
         "react-router-dom": "^7.6.2",
         "swagger-ui-react": "^5.25.2",
         "tailwindcss": "^4.1.10"

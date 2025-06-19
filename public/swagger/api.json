@@ -20,21 +20,15 @@
             "description": "學校資料相關操作"
         }
     ],
-    "schemes": [
-        "https"
-    ],
+    "schemes": ["https"],
     "paths": {
         "/county": {
             "get": {
-                "tags": [
-                    "county"
-                ],
+                "tags": ["county"],
                 "summary": "取得縣市列表",
                 "description": "取得所有縣市的資料列表",
                 "operationId": "getCounties",
-                "produces": [
-                    "application/json"
-                ],
+                "produces": ["application/json"],
                 "parameters": [],
                 "responses": {
                     "200": {
@@ -54,23 +48,43 @@
         },
         "/school": {
             "get": {
-                "tags": [
-                    "school"
-                ],
+                "tags": ["school"],
                 "summary": "搜尋學校資料",
-                "description": "根據學校名稱模糊搜尋學校資料",
+                "description": "https://fatraceschool.k12ea.gov.tw/school?CountyId=19&AreaId=131398&SchoolType=5",
                 "operationId": "searchSchools",
-                "produces": [
-                    "application/json"
-                ],
+                "produces": ["application/json"],
                 "parameters": [
+                    {
+                        "name": "CountyId",
+                        "in": "query",
+                        "description": "縣市ID",
+                        "required": false,
+                        "type": "string",
+                        "example": "19"
+                    },
+                    {
+                        "name": "AreaId",
+                        "in": "query",
+                        "description": "區域ID",
+                        "required": false,
+                        "type": "string",
+                        "example": "131398"
+                    },
+                    {
+                        "name": "SchoolType",
+                        "in": "query",
+                        "description": "學校院所類型(1:幼兒園,2:國小,3:國中,4:高中職/五專,5:大專院校)",
+                        "required": false,
+                        "type": "string",
+                        "example": "5"
+                    },
                     {
                         "name": "SchoolName",
                         "in": "query",
                         "description": "學校名稱 (支援模糊搜尋)",
                         "required": false,
                         "type": "string",
-                        "example": "新莊高"
+                        "example": "輔仁"
                     }
                 ],
                 "responses": {
@@ -110,11 +124,7 @@
                     }
                 }
             },
-            "required": [
-                "result",
-                "message",
-                "data"
-            ]
+            "required": ["result", "message", "data"]
         },
         "County": {
             "type": "object",
@@ -136,11 +146,7 @@
                     "example": "C"
                 }
             },
-            "required": [
-                "CountyId",
-                "County",
-                "Code"
-            ]
+            "required": ["CountyId", "County", "Code"]
         },
         "SchoolResponse": {
             "type": "object",
@@ -163,11 +169,7 @@
                     }
                 }
             },
-            "required": [
-                "result",
-                "message",
-                "data"
-            ]
+            "required": ["result", "message", "data"]
         },
         "School": {
             "type": "object",
@@ -203,14 +205,7 @@
                     "example": 4
                 }
             },
-            "required": [
-                "SchoolId",
-                "SchoolCode",
-                "SchoolName",
-                "CountyId",
-                "AreaId",
-                "SchoolType"
-            ]
+            "required": ["SchoolId", "SchoolCode", "SchoolName", "CountyId", "AreaId", "SchoolType"]
         }
     }
 }

@@ -5,7 +5,7 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
 
-const frameworks = [
+const exampleOptions = [
     {
         value: 'next.js',
         label: 'Next.js',
@@ -29,11 +29,12 @@ const frameworks = [
 ];
 
 interface ComboboxProps {
+    label?: string;
     placeholder?: string;
     options?: { value: string; label: string }[];
 }
 
-const Combobox = ({ placeholder = 'Select framework...', options = frameworks }: ComboboxProps) => {
+const Combobox = ({ label = 'label', placeholder = 'Select ...', options = exampleOptions }: ComboboxProps) => {
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState('');
     return (
@@ -46,9 +47,9 @@ const Combobox = ({ placeholder = 'Select framework...', options = frameworks }:
             </PopoverTrigger>
             <PopoverContent className="w-[200px] p-0">
                 <Command>
-                    <CommandInput placeholder="Search framework..." className="h-9" />
+                    <CommandInput placeholder={`Search ${label}...`} className="h-9" />
                     <CommandList>
-                        <CommandEmpty>No framework found.</CommandEmpty>
+                        <CommandEmpty>No {label} found.</CommandEmpty>
                         <CommandGroup>
                             {options.map((option) => (
                                 <CommandItem

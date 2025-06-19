@@ -4,6 +4,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { lazy } from 'react';
 
 const Home = lazy(() => import('@/components/pages/Home'));
+const Docs = lazy(() => import('@/components/pages/Docs'));
 
 const TEN_MINUTES_IN_MS = 10 * 60 * 1000;
 const THIRTY_SECONDS_IN_MS = 30 * 60 * 1000;
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
             {
                 index: true,
                 element: <Home />, //標的總攬
+            },
+            {
+                path: 'docs',
+                element: <Docs />,
             },
         ],
     },

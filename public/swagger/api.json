@@ -1,0 +1,105 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Edu Eats API - 愛揪 API",
+        "version": "1.0.0",
+        "title": "Edu Eats API",
+        "contact": {
+            "email": ""
+        }
+    },
+    "host": "fatraceschool.k12ea.gov.tw",
+    "basePath": "/",
+    "tags": [
+        {
+            "name": "county",
+            "description": "縣市資料相關操作"
+        }
+    ],
+    "schemes": [
+        "https"
+    ],
+    "paths": {
+        "/county": {
+            "get": {
+                "tags": [
+                    "county"
+                ],
+                "summary": "取得縣市列表",
+                "description": "取得所有縣市的資料列表",
+                "operationId": "getCounties",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "成功取得縣市資料",
+                        "schema": {
+                            "$ref": "#/definitions/CountyResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "請求參數錯誤"
+                    },
+                    "500": {
+                        "description": "伺服器內部錯誤"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "CountyResponse": {
+            "type": "object",
+            "properties": {
+                "result": {
+                    "type": "string",
+                    "description": "回應結果狀態"
+                },
+                "message": {
+                    "type": "string",
+                    "description": "回應訊息"
+                },
+                "data": {
+                    "type": "array",
+                    "description": "縣市資料陣列",
+                    "items": {
+                        "$ref": "#/definitions/County"
+                    }
+                }
+            },
+            "required": [
+                "result",
+                "message",
+                "data"
+            ]
+        },
+        "County": {
+            "type": "object",
+            "properties": {
+                "CountyId": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "縣市ID",
+                    "example": 18
+                },
+                "County": {
+                    "type": "string",
+                    "description": "縣市名稱",
+                    "example": "基隆市"
+                },
+                "Code": {
+                    "type": "string",
+                    "description": "縣市代碼",
+                    "example": "C"
+                }
+            },
+            "required": [
+                "CountyId",
+                "County",
+                "Code"
+            ]
+        }
+    }
+}

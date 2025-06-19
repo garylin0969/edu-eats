@@ -4,7 +4,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { lazy } from 'react';
 
 const Home = lazy(() => import('@/components/pages/Home'));
-const Docs = lazy(() => import('@/components/pages/Docs'));
+const Swagger = lazy(() => import('@/components/pages/Swagger')); // API Docs
 
 const TEN_MINUTES_IN_MS = 10 * 60 * 1000;
 const THIRTY_SECONDS_IN_MS = 30 * 60 * 1000;
@@ -32,8 +32,8 @@ const router = createBrowserRouter([
                 element: <Home />,
             },
             {
-                path: 'docs',
-                element: <Docs />,
+                path: 'swagger',
+                element: <Swagger />,
             },
         ],
     },

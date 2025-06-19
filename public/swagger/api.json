@@ -14,6 +14,10 @@
         {
             "name": "county",
             "description": "縣市資料相關操作"
+        },
+        {
+            "name": "school",
+            "description": "學校資料相關操作"
         }
     ],
     "schemes": [
@@ -47,6 +51,43 @@
                     }
                 }
             }
+        },
+        "/school": {
+            "get": {
+                "tags": [
+                    "school"
+                ],
+                "summary": "搜尋學校資料",
+                "description": "根據學校名稱模糊搜尋學校資料",
+                "operationId": "searchSchools",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "SchoolName",
+                        "in": "query",
+                        "description": "學校名稱 (支援模糊搜尋)",
+                        "required": false,
+                        "type": "string",
+                        "example": "新莊高"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功取得學校資料",
+                        "schema": {
+                            "$ref": "#/definitions/SchoolResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "請求參數錯誤"
+                    },
+                    "500": {
+                        "description": "伺服器內部錯誤"
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -54,7 +95,7 @@
             "type": "object",
             "properties": {
                 "result": {
-                    "type": "string",
+                    "type": "number",
                     "description": "回應結果狀態"
                 },
                 "message": {
@@ -99,6 +140,76 @@
                 "CountyId",
                 "County",
                 "Code"
+            ]
+        },
+        "SchoolResponse": {
+            "type": "object",
+            "properties": {
+                "result": {
+                    "type": "integer",
+                    "description": "回應結果狀態",
+                    "example": 1
+                },
+                "message": {
+                    "type": "string",
+                    "description": "回應訊息",
+                    "example": "Search School successful"
+                },
+                "data": {
+                    "type": "array",
+                    "description": "學校資料陣列",
+                    "items": {
+                        "$ref": "#/definitions/School"
+                    }
+                }
+            },
+            "required": [
+                "result",
+                "message",
+                "data"
+            ]
+        },
+        "School": {
+            "type": "object",
+            "properties": {
+                "SchoolId": {
+                    "type": "integer",
+                    "description": "學校ID",
+                    "example": 13337
+                },
+                "SchoolCode": {
+                    "type": "string",
+                    "description": "學校代碼",
+                    "example": "013337"
+                },
+                "SchoolName": {
+                    "type": "string",
+                    "description": "學校名稱",
+                    "example": "新北市新莊區新莊高中"
+                },
+                "CountyId": {
+                    "type": "integer",
+                    "description": "所屬縣市ID",
+                    "example": 19
+                },
+                "AreaId": {
+                    "type": "integer",
+                    "description": "區域ID",
+                    "example": 131398
+                },
+                "SchoolType": {
+                    "type": "integer",
+                    "description": "學校類型",
+                    "example": 4
+                }
+            },
+            "required": [
+                "SchoolId",
+                "SchoolCode",
+                "SchoolName",
+                "CountyId",
+                "AreaId",
+                "SchoolType"
             ]
         }
     }

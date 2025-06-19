@@ -29,7 +29,7 @@ const router = createBrowserRouter([
         children: [
             {
                 index: true,
-                element: <Home />, //標的總攬
+                element: <Home />,
             },
             {
                 path: 'docs',

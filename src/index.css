@@ -118,7 +118,15 @@
         @apply text-foreground bg-gradient-to-b from-pink-50 via-purple-50 to-blue-50;
     }
     .dark body {
-        @apply text-foreground bg-gradient-to-b from-gray-900 via-purple-900 to-blue-900;
+        @apply text-foreground bg-slate-800;
+        background-image:
+            radial-gradient(at 27% 37%, hsla(215, 98%, 39%, 0.12) 0px, transparent 0%),
+            radial-gradient(at 97% 21%, hsla(125, 98%, 72%, 0.06) 0px, transparent 50%),
+            radial-gradient(at 52% 99%, hsla(354, 98%, 61%, 0.06) 0px, transparent 50%),
+            radial-gradient(at 10% 29%, hsla(256, 96%, 67%, 0.08) 0px, transparent 50%),
+            radial-gradient(at 97% 96%, hsla(38, 60%, 74%, 0.06) 0px, transparent 50%),
+            radial-gradient(at 33% 50%, hsla(222, 67%, 73%, 0.06) 0px, transparent 50%),
+            radial-gradient(at 79% 53%, hsla(343, 68%, 79%, 0.06) 0px, transparent 50%);
     }
     button:not(:disabled),
     [data-slot='button']:not(:disabled) {

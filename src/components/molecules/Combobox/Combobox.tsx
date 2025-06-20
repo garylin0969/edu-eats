@@ -1,5 +1,5 @@
 import { Check, ChevronsUpDown } from 'lucide-react';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -41,13 +41,16 @@ const Combobox = ({
     placeholder = 'Select ...',
     options = exampleOptions,
 }: ComboboxProps) => {
+    const buttonRef = useRef<HTMLButtonElement | null>(null);
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState('');
+
     return (
         <div className={cn('w-full', className)}>
             <Popover open={open} onOpenChange={setOpen}>
                 <PopoverTrigger asChild>
                     <Button
+                        ref={buttonRef}
                         variant="outline"
                         role="combobox"
                         aria-expanded={open}
@@ -57,7 +60,7 @@ const Combobox = ({
                         <ChevronsUpDown className="opacity-50" />
                     </Button>
                 </PopoverTrigger>
-                <PopoverContent className="w-full p-0">
+                <PopoverContent className="p-0" style={{ width: buttonRef?.current?.clientWidth }}>
                     <Command className="dark:bg-slate-800">
                         <CommandInput className="h-9" placeholder={`Search ${label}...`} />
                         <CommandList>

@@ -13,6 +13,8 @@ interface DatePickerProps<T extends FieldValues> {
     placeholder?: string;
     form: UseFormReturn<T>;
     disabled?: boolean;
+    minDate?: Date;
+    maxDate?: Date;
     onChange?: (value: Date | undefined) => void;
 }
 
@@ -22,6 +24,8 @@ const DatePicker = <T extends FieldValues>({
     placeholder = 'Select date',
     form,
     disabled,
+    minDate,
+    maxDate,
     onChange,
 }: DatePickerProps<T>) => {
     const buttonRef = useRef<HTMLButtonElement | null>(null);
@@ -62,6 +66,11 @@ const DatePicker = <T extends FieldValues>({
                                 mode="single"
                                 selected={field.value ? new Date(field.value) : undefined}
                                 captionLayout="dropdown"
+                                disabled={(date) => {
+                                    if (minDate && date < minDate) return true;
+                                    if (maxDate && date > maxDate) return true;
+                                    return false;
+                                }}
                                 classNames={{
                                     today: 'bg-accent dark:bg-slate-700 text-accent-foreground rounded-md data-[selected=true]:rounded-none',
                                 }}

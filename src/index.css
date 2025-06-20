@@ -43,7 +43,7 @@
 
 :root {
     --radius: 0.625rem;
-    --background: linear-gradient(to bottom, #fdf2f8, #faf5ff, #eff6ff);
+    --background: oklch(1 0 0);
     --foreground: oklch(0.141 0.005 285.823);
     --card: oklch(1 0 0);
     --card-foreground: oklch(0.141 0.005 285.823);
@@ -77,7 +77,7 @@
 }
 
 .dark {
-    --background: linear-gradient(to bottom, #111827, #581c87, #1e3a8a);
+    --background: oklch(0.141 0.005 285.823);
     --foreground: oklch(0.985 0 0);
     --card: oklch(0.21 0.006 285.885);
     --card-foreground: oklch(0.985 0 0);
@@ -115,7 +115,10 @@
         @apply border-border outline-ring/50;
     }
     body {
-        @apply bg-background text-foreground;
+        @apply text-foreground bg-gradient-to-b from-pink-50 via-purple-50 to-blue-50;
+    }
+    .dark body {
+        @apply text-foreground bg-gradient-to-b from-gray-900 via-purple-900 to-blue-900;
     }
     button:not(:disabled),
     [data-slot='button']:not(:disabled) {

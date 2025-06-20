@@ -1,4 +1,4 @@
-import { Group, Row, Col } from './Form';
+import { Group, Row, Col } from './CustomForm';
 
 export default {
     Group,

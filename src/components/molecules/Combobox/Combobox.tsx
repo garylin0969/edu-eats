@@ -54,7 +54,7 @@ const Combobox = ({ label = 'label', placeholder = 'Select ...', options = examp
                             {options.map((option) => (
                                 <CommandItem
                                     key={option.value}
-                                    className="data-[selected=true]:bg-transparent dark:hover:bg-slate-700"
+                                    className="hover:!text-foreground data-[selected=true]:text-foreground hover:!bg-slate-100 data-[selected=true]:bg-transparent dark:hover:!bg-slate-700"
                                     value={option.value}
                                     onSelect={(currentValue) => {
                                         setValue(currentValue === value ? '' : currentValue);

@@ -37,6 +37,7 @@ const Col = ({ children, className, sm, md, lg }: ColProps) => {
             sm: {
                 '12': 'sm:w-full',
                 '6': 'sm:w-1/2',
+                '5': 'sm:w-5/12',
                 '4': 'sm:w-1/3',
                 '3': 'sm:w-1/4',
                 '2': 'sm:w-1/6',
@@ -45,6 +46,7 @@ const Col = ({ children, className, sm, md, lg }: ColProps) => {
             md: {
                 '12': 'md:w-full',
                 '6': 'md:w-1/2',
+                '5': 'md:w-5/12',
                 '4': 'md:w-1/3',
                 '3': 'md:w-1/4',
                 '2': 'md:w-1/6',
@@ -53,6 +55,7 @@ const Col = ({ children, className, sm, md, lg }: ColProps) => {
             lg: {
                 '12': 'lg:w-full',
                 '6': 'lg:w-1/2',
+                '5': 'lg:w-5/12',
                 '4': 'lg:w-1/3',
                 '3': 'lg:w-1/4',
                 '2': 'lg:w-1/6',

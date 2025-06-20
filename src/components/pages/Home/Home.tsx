@@ -3,8 +3,8 @@ import { useForm } from 'react-hook-form';
 import { useMemo } from 'react';
 import { GetCounty, CountyOption } from '@/api/form-api';
 import Combobox from '@/components/molecules/Combobox';
-import CustomForm from '@/components/molecules/CustomForm';
 import DatePicker from '@/components/molecules/DatePicker';
+import FormLayout from '@/components/molecules/FormLayout';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
 
@@ -33,14 +33,14 @@ const Home = () => {
 
             <Form {...form}>
                 <form className="md:w-2/3">
-                    <CustomForm.Group as={CustomForm.Row}>
-                        <CustomForm.Col lg="6">
+                    <FormLayout.Group as={FormLayout.Row}>
+                        <FormLayout.Col lg="6">
                             <Combobox form={form} name="CountyId" placeholder="縣市" options={countyOptions} />
-                        </CustomForm.Col>
-                        <CustomForm.Col lg="6">
+                        </FormLayout.Col>
+                        <FormLayout.Col lg="6">
                             <DatePicker form={form} name="date" />
-                        </CustomForm.Col>
-                    </CustomForm.Group>
+                        </FormLayout.Col>
+                    </FormLayout.Group>
                 </form>
             </Form>
 

@@ -1,6 +1,6 @@
 import { Check, ChevronsUpDown } from 'lucide-react';
-import { FieldValues, UseFormReturn, Path } from 'react-hook-form';
-import { useRef, useState } from 'react';
+import { FieldValues, UseFormReturn, Path, ControllerRenderProps } from 'react-hook-form';
+import { useRef, useState, useCallback, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
 import { FormField } from '@/components/ui/form';
@@ -34,68 +34,72 @@ const Combobox = <T extends FieldValues>({
     const buttonRef = useRef<HTMLButtonElement | null>(null);
     const [open, setOpen] = useState(false);
 
+    // 使用 useCallback 優化值變更處理函數
+    const handleValueChange = useCallback(
+        (newValue: string, field: ControllerRenderProps<T, Path<T>>) => {
+            const finalValue = newValue === field.value ? '' : newValue;
+            field.onChange(finalValue);
+            setOpen(false);
+            onChange?.(finalValue);
+        },
+        [onChange]
+    );
+
+    // 使用 useMemo 緩存按鈕寬度用於 PopoverContent
+    const buttonWidth = useMemo(() => {
+        return buttonRef.current?.clientWidth;
+    }, [buttonRef]);
+
     return (
         <FormField
             control={form.control}
             name={name}
-            render={({ field }) => {
-                const handleValueChange = (newValue: string) => {
-                    const finalValue = newValue === field.value ? '' : newValue;
-                    field.onChange(finalValue);
-                    setOpen(false);
-                    onChange?.(finalValue);
-                };
-
-                return (
-                    <div className={cn('w-full', className)}>
-                        <Popover open={open} onOpenChange={setOpen}>
-                            <PopoverTrigger asChild>
-                                <Button
-                                    ref={buttonRef}
-                                    variant="outline"
-                                    role="combobox"
-                                    aria-expanded={open}
-                                    disabled={disabled}
-                                    onBlur={field.onBlur}
-                                    className="hover:text-foreground w-full justify-between"
-                                >
-                                    {field.value
-                                        ? options?.find((option: ComboboxOption) => option?.value === field.value)
-                                              ?.label
-                                        : placeholder}
-                                    <ChevronsUpDown className="opacity-50" />
-                                </Button>
-                            </PopoverTrigger>
-                            <PopoverContent className="p-0" style={{ width: buttonRef?.current?.clientWidth }}>
-                                <Command className="dark:bg-slate-800">
-                                    <CommandInput className="h-9" placeholder="Search..." />
-                                    <CommandList>
-                                        <CommandEmpty>Not found.</CommandEmpty>
-                                        <CommandGroup>
-                                            {options?.map((option: ComboboxOption) => (
-                                                <CommandItem
-                                                    key={option.value}
-                                                    className="hover:!text-foreground data-[selected=true]:text-foreground hover:!bg-slate-100 data-[selected=true]:bg-transparent dark:hover:!bg-slate-700"
-                                                    value={option?.value}
-                                                    onSelect={() => handleValueChange(option?.value)}
-                                                >
-                                                    {option?.label}
-                                                    <Check
-                                                        className={cn(
-                                                            'ml-auto',
-                                                            field.value === option?.value ? 'opacity-100' : 'opacity-0'
-                                                        )}
-                                                    />
-                                                </CommandItem>
-                                            ))}
-                                        </CommandGroup>
-                                    </CommandList>
-                                </Command>
-                            </PopoverContent>
-                        </Popover>
-                    </div>
-                );
-            }}
+            render={({ field }) => (
+                <div className={cn('w-full', className)}>
+                    <Popover open={open} onOpenChange={setOpen}>
+                        <PopoverTrigger asChild>
+                            <Button
+                                ref={buttonRef}
+                                variant="outline"
+                                role="combobox"
+                                aria-expanded={open}
+                                disabled={disabled}
+                                onBlur={field.onBlur}
+                                className="hover:text-foreground w-full justify-between"
+                            >
+                                {options?.find((option) => option?.value === field?.value)?.label || placeholder}
+                                <ChevronsUpDown className="opacity-50" />
+                            </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="p-0" style={{ width: buttonWidth }}>
+                            <Command className="dark:bg-slate-800">
+                                <CommandInput className="h-9" placeholder="Search..." />
+                                <CommandList>
+                                    <CommandEmpty>Not found.</CommandEmpty>
+                                    <CommandGroup>
+                                        {options.map((option) => (
+                                            <CommandItem
+                                                key={option.value}
+                                                className="hover:!text-foreground data-[selected=true]:text-foreground hover:!bg-slate-100 data-[selected=true]:bg-transparent dark:hover:!bg-slate-700"
+                                                value={option.value}
+                                                onSelect={() => handleValueChange(option.value, field)}
+                                            >
+                                                {option.label}
+                                                <Check
+                                                    className={cn(
+                                                        'ml-auto',
+                                                        field.value === option.value ? 'opacity-100' : 'opacity-0'
+                                                    )}
+                                                />
+                                            </CommandItem>
+                                        ))}
+                                    </CommandGroup>
+                                </CommandList>
+                            </Command>
+                        </PopoverContent>
+                    </Popover>
+                </div>
+            )}
         />
     );
 };

@@ -10,7 +10,9 @@ const DefaultLayout = () => {
                 <div className="container mx-auto flex items-center justify-between px-5 md:px-0">
                     <div className="flex items-center gap-2">
                         <Logo />
-                        <h1 className="dark:text-foreground text-lg font-semibold">Edu Eats</h1>
+                        <h1 className="bg-gradient-to-r from-purple-600 via-pink-500 to-indigo-600 bg-clip-text text-lg font-bold text-transparent transition-all duration-300 hover:scale-105 dark:from-pink-400 dark:via-purple-300 dark:to-cyan-300">
+                            Edu Eats
+                        </h1>
                     </div>
                     <div className="flex items-center gap-2">
                         <ThemeSwitch />

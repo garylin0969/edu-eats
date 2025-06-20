@@ -1,5 +1,5 @@
 import { ChevronDownIcon } from 'lucide-react';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Calendar, CalendarDayButton } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -11,13 +11,16 @@ interface DatePickerProps {
 }
 
 const DatePicker = ({ className, placeholder = 'Select date' }: DatePickerProps) => {
+    const buttonRef = useRef<HTMLButtonElement | null>(null);
     const [open, setOpen] = useState(false);
     const [date, setDate] = useState<Date | undefined>(undefined);
+
     return (
         <div className={cn('flex w-full flex-col gap-3', className)}>
             <Popover open={open} onOpenChange={setOpen}>
                 <PopoverTrigger asChild>
                     <Button
+                        ref={buttonRef}
                         variant="outline"
                         id="date"
                         className="hover:text-foreground w-full justify-between font-normal"
@@ -26,15 +29,11 @@ const DatePicker = ({ className, placeholder = 'Select date' }: DatePickerProps)
                         <ChevronDownIcon />
                     </Button>
                 </PopoverTrigger>
-                <PopoverContent className="w-auto overflow-hidden p-0 dark:bg-slate-800" align="start">
+                <PopoverContent className="w-auto overflow-hidden p-0 dark:bg-slate-800" align="center">
                     <Calendar
                         mode="single"
                         selected={date}
                         captionLayout="dropdown"
-                        onSelect={(date) => {
-                            setDate(date);
-                            setOpen(false);
-                        }}
                         classNames={{
                             today: 'bg-accent dark:bg-slate-700 text-accent-foreground rounded-md data-[selected=true]:rounded-none',
                         }}
@@ -47,6 +46,10 @@ const DatePicker = ({ className, placeholder = 'Select date' }: DatePickerProps)
                                     />
                                 );
                             },
+                        }}
+                        onSelect={(date) => {
+                            setDate(date);
+                            setOpen(false);
                         }}
                     />
                 </PopoverContent>

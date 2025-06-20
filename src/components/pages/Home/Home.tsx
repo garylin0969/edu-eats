@@ -46,7 +46,7 @@ const Home = () => {
                             <Combobox form={form} name="username" options={exampleOptions} />
                         </CustomForm.Col>
                         <CustomForm.Col lg="6">
-                            <DatePicker />
+                            <DatePicker form={form} name="date" />
                         </CustomForm.Col>
                     </CustomForm.Group>
                 </form>

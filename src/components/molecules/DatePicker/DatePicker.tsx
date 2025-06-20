@@ -17,7 +17,11 @@ const DatePicker = ({ className, placeholder = 'Select date' }: DatePickerProps)
         <div className={cn('flex w-full flex-col gap-3', className)}>
             <Popover open={open} onOpenChange={setOpen}>
                 <PopoverTrigger asChild>
-                    <Button variant="outline" id="date" className="w-full justify-between font-normal">
+                    <Button
+                        variant="outline"
+                        id="date"
+                        className="hover:text-foreground w-full justify-between font-normal"
+                    >
                         {date ? date.toLocaleDateString() : placeholder}
                         <ChevronDownIcon />
                     </Button>

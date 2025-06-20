@@ -47,7 +47,12 @@ const Combobox = ({
         <div className={cn('w-full', className)}>
             <Popover open={open} onOpenChange={setOpen}>
                 <PopoverTrigger asChild>
-                    <Button variant="outline" role="combobox" aria-expanded={open} className="w-full justify-between">
+                    <Button
+                        variant="outline"
+                        role="combobox"
+                        aria-expanded={open}
+                        className="hover:text-foreground w-full justify-between"
+                    >
                         {value ? options.find((option) => option.value === value)?.label : placeholder}
                         <ChevronsUpDown className="opacity-50" />
                     </Button>

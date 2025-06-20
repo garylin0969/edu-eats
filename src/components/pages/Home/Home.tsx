@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
-import { GetCounty } from '@/api/form';
+import { GetCounty } from '@/api/form-api';
 import Combobox from '@/components/molecules/Combobox';
 import CustomForm from '@/components/molecules/CustomForm';
 import DatePicker from '@/components/molecules/DatePicker';

@@ -1,6 +1,6 @@
 import { ChevronDownIcon } from 'lucide-react';
 import { FieldValues, UseFormReturn, Path, ControllerRenderProps } from 'react-hook-form';
-import { useRef, useState, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Calendar, CalendarDayButton } from '@/components/ui/calendar';
 import { FormField } from '@/components/ui/form';
@@ -30,7 +30,6 @@ const DatePicker = <T extends FieldValues>({
     valueFormat,
     onChange,
 }: DatePickerProps<T>) => {
-    const buttonRef = useRef<HTMLButtonElement | null>(null);
     const [open, setOpen] = useState(false);
 
     // 使用 useCallback 優化日期變更處理函數
@@ -53,7 +52,6 @@ const DatePicker = <T extends FieldValues>({
                     <Popover open={open} onOpenChange={setOpen}>
                         <PopoverTrigger asChild>
                             <Button
-                                ref={buttonRef}
                                 variant="outline"
                                 id="date"
                                 disabled={disabled}

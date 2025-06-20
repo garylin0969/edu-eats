@@ -41,11 +41,6 @@ const Combobox = <T extends FieldValues>({
         [onChange]
     );
 
-    // 使用 useMemo 緩存按鈕寬度用於 PopoverContent
-    const buttonWidth = useMemo(() => {
-        return buttonRef.current?.clientWidth;
-    }, [buttonRef]);
-
     // 使用 useMemo 緩存當前選中項的標籤
     const selectedLabel = useMemo(() => {
         return options?.find((option) => option?.value === form.watch(name))?.label || placeholder;
@@ -72,7 +67,7 @@ const Combobox = <T extends FieldValues>({
                                 <ChevronsUpDown className="opacity-50" />
                             </Button>
                         </PopoverTrigger>
-                        <PopoverContent className="p-0" style={{ width: buttonWidth }}>
+                        <PopoverContent className="p-0" style={{ width: buttonRef?.current?.clientWidth }}>
                             <Command className="dark:bg-slate-800">
                                 <CommandInput className="h-9" placeholder="Search ..." />
                                 <CommandList>

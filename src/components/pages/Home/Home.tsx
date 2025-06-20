@@ -28,17 +28,18 @@ const Home = () => {
                         </FormLayout.Col>
                     </FormLayout.Group>
                     <FormLayout.Group as={FormLayout.Row}>
-                        <FormLayout.Col lg="6">
+                        <FormLayout.Col lg="5">
                             <Combobox form={form} name="CountyId" placeholder="縣市" options={countyOptions} />
                         </FormLayout.Col>
-                        <FormLayout.Col lg="6">
+                        <FormLayout.Col lg="5">
                             <DatePicker form={form} name="date" />
+                        </FormLayout.Col>
+                        <FormLayout.Col lg="2" className="">
+                            <Button className="w-full">查詢</Button>
                         </FormLayout.Col>
                     </FormLayout.Group>
                 </form>
             </Form>
-
-            <Button>Click me</Button>
         </div>
     );
 };

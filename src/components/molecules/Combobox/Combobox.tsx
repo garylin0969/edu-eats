@@ -46,14 +46,15 @@ const Combobox = ({ label = 'label', placeholder = 'Select ...', options = examp
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="w-[200px] p-0">
-                <Command>
-                    <CommandInput placeholder={`Search ${label}...`} className="h-9" />
+                <Command className="dark:bg-slate-800">
+                    <CommandInput className="h-9" placeholder={`Search ${label}...`} />
                     <CommandList>
                         <CommandEmpty>No {label} found.</CommandEmpty>
                         <CommandGroup>
                             {options.map((option) => (
                                 <CommandItem
                                     key={option.value}
+                                    className="data-[selected=true]:bg-transparent dark:hover:bg-slate-700"
                                     value={option.value}
                                     onSelect={(currentValue) => {
                                         setValue(currentValue === value ? '' : currentValue);

@@ -3,19 +3,21 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Calendar, CalendarDayButton } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { cn } from '@/lib/utils';
 
 interface DatePickerProps {
+    className?: string;
     placeholder?: string;
 }
 
-const DatePicker = ({ placeholder = 'Select date' }: DatePickerProps) => {
+const DatePicker = ({ className, placeholder = 'Select date' }: DatePickerProps) => {
     const [open, setOpen] = useState(false);
     const [date, setDate] = useState<Date | undefined>(undefined);
     return (
-        <div className="flex flex-col gap-3">
+        <div className={cn('flex w-full flex-col gap-3', className)}>
             <Popover open={open} onOpenChange={setOpen}>
                 <PopoverTrigger asChild>
-                    <Button variant="outline" id="date" className="w-48 justify-between font-normal">
+                    <Button variant="outline" id="date" className="w-full justify-between font-normal">
                         {date ? date.toLocaleDateString() : placeholder}
                         <ChevronDownIcon />
                     </Button>

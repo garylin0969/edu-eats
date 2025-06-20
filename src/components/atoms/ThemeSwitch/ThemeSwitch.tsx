@@ -1,10 +1,16 @@
 import * as SwitchPrimitive from '@radix-ui/react-switch';
 import { Moon, Sun } from 'lucide-react';
 import { useTheme } from 'next-themes';
+import { useEffect } from 'react';
 import { cn } from '@/lib/utils';
 
 const ThemeSwitch = () => {
-    const { theme, setTheme } = useTheme();
+    const { theme, setTheme, systemTheme } = useTheme();
+
+    useEffect(() => {
+        setTheme(systemTheme === 'dark' ? 'dark' : 'light');
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [systemTheme]);
 
     return (
         <SwitchPrimitive.Root

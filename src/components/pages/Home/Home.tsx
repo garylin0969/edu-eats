@@ -15,7 +15,7 @@ const Home = () => {
     console.log(watch());
 
     return (
-        <div className="min-h-[calc(100vh-48px)] w-full">
+        <div className="min-h-[calc(100vh-68px)] w-full">
             <section className="my-5">
                 <Form {...form}>
                     <form className="w-full">

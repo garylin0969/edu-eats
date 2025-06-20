@@ -2,6 +2,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { lazy } from 'react';
+import DefaultLayout from './components/templates/DefaultLayout';
 
 const Home = lazy(() => import('@/components/pages/Home'));
 const Swagger = lazy(() => import('@/components/pages/Swagger')); // API Docs
@@ -25,7 +26,7 @@ const queryClient = new QueryClient({
 const router = createBrowserRouter([
     {
         path: '/',
-        // element: <DefaultLayout />,
+        element: <DefaultLayout />,
         children: [
             {
                 index: true,

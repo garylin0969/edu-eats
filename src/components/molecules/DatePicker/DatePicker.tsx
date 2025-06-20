@@ -15,7 +15,8 @@ interface DatePickerProps<T extends FieldValues> {
     disabled?: boolean;
     minDate?: Date;
     maxDate?: Date;
-    onChange?: (value: Date | undefined) => void;
+    valueFormat?: (date: Date) => string | number | Date;
+    onChange?: (value: string | number | Date | undefined) => void;
 }
 
 const DatePicker = <T extends FieldValues>({
@@ -26,6 +27,7 @@ const DatePicker = <T extends FieldValues>({
     disabled,
     minDate,
     maxDate,
+    valueFormat,
     onChange,
 }: DatePickerProps<T>) => {
     const buttonRef = useRef<HTMLButtonElement | null>(null);
@@ -34,11 +36,12 @@ const DatePicker = <T extends FieldValues>({
     // 使用 useCallback 優化日期變更處理函數
     const handleDateChange = useCallback(
         (newDate: Date | undefined, field: ControllerRenderProps<T, Path<T>>) => {
-            field.onChange(newDate);
+            const formValue = newDate && valueFormat ? valueFormat(newDate) : newDate;
+            field.onChange(formValue);
             setOpen(false);
-            onChange?.(newDate);
+            onChange?.(formValue);
         },
-        [onChange]
+        [onChange, valueFormat]
     );
 
     return (

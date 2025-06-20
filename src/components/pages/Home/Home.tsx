@@ -43,7 +43,7 @@ const Home = () => {
                 <form className="md:w-2/3">
                     <CustomForm.Group as={CustomForm.Row}>
                         <CustomForm.Col lg="6">
-                            <Combobox form={form} name="username" options={exampleOptions} />
+                            <Combobox form={form} name="CountyId" placeholder="縣市" options={exampleOptions} />
                         </CustomForm.Col>
                         <CustomForm.Col lg="6">
                             <DatePicker form={form} name="date" />

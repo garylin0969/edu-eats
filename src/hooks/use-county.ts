@@ -7,7 +7,7 @@ import { County, Option } from '@/types';
  * 縣市數據自定義 Hook
  * @returns {Object} 包含 countyData, isCountyLoading, isCountyError, countyOptions
  */
-export const useCounty = () => {
+const useCounty = () => {
     const {
         data: countyData,
         isLoading: isCountyLoading,
@@ -35,3 +35,5 @@ export const useCounty = () => {
         countyOptions,
     };
 };
+
+export default useCounty;

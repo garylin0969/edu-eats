@@ -8,7 +8,9 @@ const ThemeSwitch = () => {
     const { theme, setTheme, systemTheme } = useTheme();
 
     useEffect(() => {
-        setTheme(systemTheme === 'dark' ? 'dark' : 'light');
+        if (theme === 'system') {
+            setTheme(systemTheme === 'dark' ? 'dark' : 'light');
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [systemTheme]);
 

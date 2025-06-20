@@ -1,19 +1,19 @@
 import { Check, ChevronsUpDown } from 'lucide-react';
 import { FieldValues, UseFormReturn, Path, ControllerRenderProps } from 'react-hook-form';
 import { useRef, useState, useCallback, useMemo } from 'react';
-import { CountyOption } from '@/api/form-api';
 import { Button } from '@/components/ui/button';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
 import { FormField } from '@/components/ui/form';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
+import { Option } from '@/types';
 
 interface ComboboxProps<T extends FieldValues> {
     className?: string;
     name: Path<T>;
     placeholder?: string;
     form: UseFormReturn<T>;
-    options?: CountyOption[];
+    options?: Option[];
     disabled?: boolean;
     onChange?: (value: string) => void;
 }

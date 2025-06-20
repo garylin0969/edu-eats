@@ -1,12 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { useMemo } from 'react';
-import { GetCounty, CountyOption } from '@/api/form-api';
+import { GetCounty } from '@/api/form-api';
 import Combobox from '@/components/molecules/Combobox';
 import DatePicker from '@/components/molecules/DatePicker';
 import FormLayout from '@/components/molecules/FormLayout';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
+import { Option } from '@/types';
 
 const Home = () => {
     const form = useForm();
@@ -18,7 +19,7 @@ const Home = () => {
     });
 
     // 使用 useMemo 緩存 countyOptions，避免每次渲染都重新計算
-    const countyOptions: CountyOption[] = useMemo(() => {
+    const countyOptions: Option[] = useMemo(() => {
         return (
             countyData?.map((item) => ({
                 label: item.County ?? '',

@@ -1,5 +1,6 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { ThemeProvider } from 'next-themes';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { lazy } from 'react';
 import DefaultLayout from './components/templates/DefaultLayout';
@@ -42,10 +43,12 @@ const router = createBrowserRouter([
 
 function App() {
     return (
-        <QueryClientProvider client={queryClient}>
-            <RouterProvider router={router} />
-            <ReactQueryDevtools initialIsOpen={false} />
-        </QueryClientProvider>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            <QueryClientProvider client={queryClient}>
+                <RouterProvider router={router} />
+                <ReactQueryDevtools initialIsOpen={false} />
+            </QueryClientProvider>
+        </ThemeProvider>
     );
 }
 

@@ -5,10 +5,14 @@ import FormLayout from '@/components/molecules/FormLayout';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
 import { useCounty } from '@/hooks';
+import { formatDate } from '@/utils/date';
 
 const Home = () => {
     const form = useForm();
     const { countyOptions } = useCounty(); // 縣市選項
+
+    const { watch } = form;
+    console.log(watch());
 
     return (
         <div className="min-h-[calc(100vh-48px)] w-full">
@@ -31,7 +35,12 @@ const Home = () => {
                                 <Combobox form={form} name="CountyId" placeholder="學校名稱" options={countyOptions} />
                             </FormLayout.Col>
                             <FormLayout.Col xs="6" lg="5">
-                                <DatePicker form={form} name="date" placeholder="日期" />
+                                <DatePicker
+                                    form={form}
+                                    name="date"
+                                    placeholder="日期"
+                                    valueFormat={(date) => formatDate(date, 'YYYY-MM-DD')}
+                                />
                             </FormLayout.Col>
                             <FormLayout.Col xs="6" lg="2">
                                 <Button className="w-full">查詢</Button>

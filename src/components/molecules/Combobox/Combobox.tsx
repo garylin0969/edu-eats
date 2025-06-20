@@ -8,8 +8,8 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { cn } from '@/lib/utils';
 
 interface ComboboxOption {
-    value: string;
     label: string;
+    value: string;
 }
 
 interface ComboboxProps<T extends FieldValues> {

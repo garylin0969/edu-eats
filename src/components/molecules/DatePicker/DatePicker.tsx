@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Calendar, CalendarDayButton } from '@/components/ui/calendar';
 import { FormField } from '@/components/ui/form';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { cn } from '@/lib/utils';
+import { cn } from '@/utils/shadcn';
 
 interface DatePickerProps<T extends FieldValues> {
     className?: string;

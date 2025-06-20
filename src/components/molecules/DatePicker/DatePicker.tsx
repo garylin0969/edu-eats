@@ -1,7 +1,7 @@
 import { ChevronDownIcon } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Calendar } from '@/components/ui/calendar';
+import { Calendar, CalendarDayButton } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
 interface DatePickerProps {
@@ -20,7 +20,7 @@ const DatePicker = ({ placeholder = 'Select date' }: DatePickerProps) => {
                         <ChevronDownIcon />
                     </Button>
                 </PopoverTrigger>
-                <PopoverContent className="w-auto overflow-hidden p-0" align="start">
+                <PopoverContent className="w-auto overflow-hidden p-0 dark:bg-slate-800" align="start">
                     <Calendar
                         mode="single"
                         selected={date}
@@ -28,6 +28,16 @@ const DatePicker = ({ placeholder = 'Select date' }: DatePickerProps) => {
                         onSelect={(date) => {
                             setDate(date);
                             setOpen(false);
+                        }}
+                        components={{
+                            DayButton: ({ ...props }) => {
+                                return (
+                                    <CalendarDayButton
+                                        {...props}
+                                        className="dark:data-[range-end=true]:bg-primary dark:data-[range-start=true]:bg-primary dark:data-[selected-single=true]:bg-primary data-[range-end=true]:bg-[#9333eacc] data-[range-start=true]:bg-[#9333eacc] data-[selected-single=true]:bg-[#9333eacc]"
+                                    />
+                                );
+                            },
                         }}
                     />
                 </PopoverContent>

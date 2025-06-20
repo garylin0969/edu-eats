@@ -37,7 +37,7 @@ const Home = () => {
 
     return (
         <div className="flex min-h-[calc(100vh-48px)] w-full flex-col items-center justify-center space-y-4">
-            <h1 className="text-4xl font-bold">Hello World</h1>
+            <h2 className="text-4xl font-bold">Hello World</h2>
 
             <Form {...form}>
                 <form className="md:w-2/3">

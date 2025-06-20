@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
-import { GetCounty } from '@/api/form-api';
+import { useMemo } from 'react';
+import { GetCounty, CountyOption } from '@/api/form-api';
 import Combobox from '@/components/molecules/Combobox';
 import CustomForm from '@/components/molecules/CustomForm';
 import DatePicker from '@/components/molecules/DatePicker';
@@ -9,9 +10,6 @@ import { Form } from '@/components/ui/form';
 
 const Home = () => {
     const form = useForm();
-    const { watch } = form;
-
-    console.log(watch());
 
     const { data: countyData } = useQuery({
         queryKey: ['county'],
@@ -19,10 +17,15 @@ const Home = () => {
         select: (result) => result?.data,
     });
 
-    const countyOptions = countyData?.map((item) => ({
-        label: item.County ?? '',
-        value: item.CountyId?.toString() ?? '',
-    }));
+    // 使用 useMemo 緩存 countyOptions，避免每次渲染都重新計算
+    const countyOptions: CountyOption[] = useMemo(() => {
+        return (
+            countyData?.map((item) => ({
+                label: item.County ?? '',
+                value: item.CountyId?.toString() ?? '',
+            })) ?? []
+        );
+    }, [countyData]);
 
     return (
         <div className="flex min-h-[calc(100vh-48px)] w-full flex-col items-center justify-center space-y-4">

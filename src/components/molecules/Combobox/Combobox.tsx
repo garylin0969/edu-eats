@@ -1,23 +1,19 @@
 import { Check, ChevronsUpDown } from 'lucide-react';
 import { FieldValues, UseFormReturn, Path, ControllerRenderProps } from 'react-hook-form';
 import { useRef, useState, useCallback, useMemo } from 'react';
+import { CountyOption } from '@/api/form-api';
 import { Button } from '@/components/ui/button';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
 import { FormField } from '@/components/ui/form';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
 
-interface ComboboxOption {
-    label: string;
-    value: string;
-}
-
 interface ComboboxProps<T extends FieldValues> {
     className?: string;
     name: Path<T>;
     placeholder?: string;
     form: UseFormReturn<T>;
-    options?: ComboboxOption[];
+    options?: CountyOption[];
     disabled?: boolean;
     onChange?: (value: string) => void;
 }
@@ -50,6 +46,11 @@ const Combobox = <T extends FieldValues>({
         return buttonRef.current?.clientWidth;
     }, [buttonRef]);
 
+    // 使用 useMemo 緩存當前選中項的標籤
+    const selectedLabel = useMemo(() => {
+        return options?.find((option) => option?.value === form.watch(name))?.label || placeholder;
+    }, [options, form, name, placeholder]);
+
     return (
         <FormField
             control={form.control}
@@ -67,7 +68,7 @@ const Combobox = <T extends FieldValues>({
                                 onBlur={field.onBlur}
                                 className="hover:text-foreground w-full justify-between"
                             >
-                                {options?.find((option) => option?.value === field?.value)?.label || placeholder}
+                                {selectedLabel}
                                 <ChevronsUpDown className="opacity-50" />
                             </Button>
                         </PopoverTrigger>

@@ -20,7 +20,9 @@ const DefaultLayout = () => {
                     </div>
                 </div>
             </header>
-            <Outlet />
+            <main className="container mx-auto px-5 md:px-0">
+                <Outlet />
+            </main>
         </>
     );
 };

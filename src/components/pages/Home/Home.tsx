@@ -15,7 +15,18 @@ const Home = () => {
             <h2 className="text-4xl font-bold">Hello World</h2>
 
             <Form {...form}>
-                <form className="md:w-2/3">
+                <form className="w-full">
+                    <FormLayout.Group as={FormLayout.Row}>
+                        <FormLayout.Col lg="4">
+                            <Combobox form={form} name="CountyId" placeholder="縣市" options={countyOptions} />
+                        </FormLayout.Col>
+                        <FormLayout.Col lg="4">
+                            <Combobox form={form} name="CountyId" placeholder="區域" options={countyOptions} />
+                        </FormLayout.Col>
+                        <FormLayout.Col lg="4">
+                            <Combobox form={form} name="CountyId" placeholder="學校院所" options={countyOptions} />
+                        </FormLayout.Col>
+                    </FormLayout.Group>
                     <FormLayout.Group as={FormLayout.Row}>
                         <FormLayout.Col lg="6">
                             <Combobox form={form} name="CountyId" placeholder="縣市" options={countyOptions} />

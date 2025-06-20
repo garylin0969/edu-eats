@@ -29,12 +29,15 @@ const DatePicker = ({ placeholder = 'Select date' }: DatePickerProps) => {
                             setDate(date);
                             setOpen(false);
                         }}
+                        classNames={{
+                            today: 'bg-accent dark:bg-slate-700 text-accent-foreground rounded-md data-[selected=true]:rounded-none',
+                        }}
                         components={{
                             DayButton: ({ ...props }) => {
                                 return (
                                     <CalendarDayButton
                                         {...props}
-                                        className="dark:data-[range-end=true]:bg-primary dark:data-[range-start=true]:bg-primary dark:data-[selected-single=true]:bg-primary data-[range-end=true]:bg-[#9333eacc] data-[range-start=true]:bg-[#9333eacc] data-[selected-single=true]:bg-[#9333eacc]"
+                                        className="dark:data-[range-end=true]:bg-primary dark:data-[range-start=true]:bg-primary dark:data-[selected-single=true]:bg-primary data-[range-end=true]:bg-[#9333eacc] data-[range-start=true]:bg-[#9333eacc] data-[selected-single=true]:bg-[#9333eacc] dark:hover:!bg-slate-700"
                                     />
                                 );
                             },

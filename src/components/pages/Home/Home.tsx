@@ -31,7 +31,7 @@ const Home = () => {
                                 <Combobox form={form} name="CountyId" placeholder="學校名稱" options={countyOptions} />
                             </FormLayout.Col>
                             <FormLayout.Col xs="6" lg="5">
-                                <DatePicker form={form} name="date" />
+                                <DatePicker form={form} name="date" placeholder="日期" />
                             </FormLayout.Col>
                             <FormLayout.Col xs="6" lg="2">
                                 <Button className="w-full">查詢</Button>

@@ -15,21 +15,21 @@ interface ComboboxOption {
 interface ComboboxProps<T extends FieldValues> {
     className?: string;
     name: Path<T>;
-    label?: string;
     placeholder?: string;
     form: UseFormReturn<T>;
     options?: ComboboxOption[];
     disabled?: boolean;
+    onChange?: (value: string) => void;
 }
 
 const Combobox = <T extends FieldValues>({
     className,
     name,
-    label = 'label',
     placeholder = 'Select ...',
     form,
     options = [],
     disabled,
+    onChange,
 }: ComboboxProps<T>) => {
     const buttonRef = useRef<HTMLButtonElement | null>(null);
     const [open, setOpen] = useState(false);
@@ -43,6 +43,7 @@ const Combobox = <T extends FieldValues>({
                     const finalValue = newValue === field.value ? '' : newValue;
                     field.onChange(finalValue);
                     setOpen(false);
+                    onChange?.(finalValue);
                 };
 
                 return (
@@ -67,9 +68,9 @@ const Combobox = <T extends FieldValues>({
                             </PopoverTrigger>
                             <PopoverContent className="p-0" style={{ width: buttonRef?.current?.clientWidth }}>
                                 <Command className="dark:bg-slate-800">
-                                    <CommandInput className="h-9" placeholder={`Search ${label}...`} />
+                                    <CommandInput className="h-9" placeholder="Search..." />
                                     <CommandList>
-                                        <CommandEmpty>No {label} found.</CommandEmpty>
+                                        <CommandEmpty>Not found.</CommandEmpty>
                                         <CommandGroup>
                                             {options?.map((option: ComboboxOption) => (
                                                 <CommandItem

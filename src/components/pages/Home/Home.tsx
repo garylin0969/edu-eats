@@ -1,32 +1,14 @@
-import { useQuery } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
-import { useMemo } from 'react';
-import { GetCounty } from '@/api/form-api';
+import { useCounty } from '@/components/hooks';
 import Combobox from '@/components/molecules/Combobox';
 import DatePicker from '@/components/molecules/DatePicker';
 import FormLayout from '@/components/molecules/FormLayout';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
-import { Option } from '@/types';
 
 const Home = () => {
     const form = useForm();
-
-    const { data: countyData } = useQuery({
-        queryKey: ['county'],
-        queryFn: GetCounty,
-        select: (result) => result?.data,
-    });
-
-    // 使用 useMemo 緩存 countyOptions，避免每次渲染都重新計算
-    const countyOptions: Option[] = useMemo(() => {
-        return (
-            countyData?.map((item) => ({
-                label: item.County ?? '',
-                value: item.CountyId?.toString() ?? '',
-            })) ?? []
-        );
-    }, [countyData]);
+    const { countyOptions } = useCounty(); // 縣市選項
 
     return (
         <div className="flex min-h-[calc(100vh-48px)] w-full flex-col items-center justify-center space-y-4">

@@ -6,7 +6,7 @@ const HamburgerMenu = () => {
     return (
         <Sheet>
             <SheetTrigger asChild>
-                <Button variant="outline" size="icon" className="h-9 w-9">
+                <Button variant="outline" size="icon" className="h-9 w-9 bg-transparent">
                     <Menu className="h-4 w-4" />
                     <span className="sr-only">Open menu</span>
                 </Button>

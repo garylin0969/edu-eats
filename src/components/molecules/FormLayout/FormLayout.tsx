@@ -8,7 +8,7 @@ interface GroupProps {
 }
 
 const Group = ({ children, className, as: Component = 'div' }: GroupProps) => {
-    return <Component className={cn('mb-4 w-full', className)}>{children}</Component>;
+    return <Component className={cn('w-full', className)}>{children}</Component>;
 };
 
 // Row 元件用於橫向排列
@@ -67,7 +67,7 @@ const Col = ({ children, className, sm, md, lg }: ColProps) => {
     };
 
     const colClasses = cn(
-        'px-2 w-full mb-2',
+        'px-2 w-full mb-2 md:mb-4',
         sm && getColClass(sm, 'sm'),
         md && getColClass(md, 'md'),
         lg && getColClass(lg, 'lg'),

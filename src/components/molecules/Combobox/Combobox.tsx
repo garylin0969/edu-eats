@@ -73,7 +73,7 @@ const Combobox = <T extends FieldValues>({
                         </PopoverTrigger>
                         <PopoverContent className="p-0" style={{ width: buttonWidth }}>
                             <Command className="dark:bg-slate-800">
-                                <CommandInput className="h-9" placeholder="Search..." />
+                                <CommandInput className="h-9" placeholder="Search ..." />
                                 <CommandList>
                                     <CommandEmpty>Not found.</CommandEmpty>
                                     <CommandGroup>

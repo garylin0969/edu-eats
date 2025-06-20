@@ -1,5 +1,5 @@
 import { ElementType, ReactNode } from 'react';
-import { cn } from '@/lib/utils';
+import { cn } from '@/utils/shadcn';
 
 interface GroupProps {
     children: ReactNode;

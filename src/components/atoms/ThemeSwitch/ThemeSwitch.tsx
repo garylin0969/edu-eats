@@ -2,7 +2,7 @@ import * as SwitchPrimitive from '@radix-ui/react-switch';
 import { Moon, Sun } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { useEffect } from 'react';
-import { cn } from '@/lib/utils';
+import { cn } from '@/utils/shadcn';
 
 const ThemeSwitch = () => {
     const { theme, setTheme, systemTheme } = useTheme();

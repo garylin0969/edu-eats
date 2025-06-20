@@ -3,19 +3,21 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Calendar, CalendarDayButton } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { cn } from '@/lib/utils';
 
 interface DatePickerProps {
+    className?: string;
     placeholder?: string;
 }
 
-const DatePicker = ({ placeholder = 'Select date' }: DatePickerProps) => {
+const DatePicker = ({ className, placeholder = 'Select date' }: DatePickerProps) => {
     const [open, setOpen] = useState(false);
     const [date, setDate] = useState<Date | undefined>(undefined);
     return (
-        <div className="flex flex-col gap-3">
+        <div className={cn('flex w-full flex-col gap-3', className)}>
             <Popover open={open} onOpenChange={setOpen}>
                 <PopoverTrigger asChild>
-                    <Button variant="outline" id="date" className="w-48 justify-between font-normal">
+                    <Button variant="outline" id="date" className="w-full justify-between font-normal">
                         {date ? date.toLocaleDateString() : placeholder}
                         <ChevronDownIcon />
                     </Button>
@@ -29,12 +31,15 @@ const DatePicker = ({ placeholder = 'Select date' }: DatePickerProps) => {
                             setDate(date);
                             setOpen(false);
                         }}
+                        classNames={{
+                            today: 'bg-accent dark:bg-slate-700 text-accent-foreground rounded-md data-[selected=true]:rounded-none',
+                        }}
                         components={{
                             DayButton: ({ ...props }) => {
                                 return (
                                     <CalendarDayButton
                                         {...props}
-                                        className="dark:data-[range-end=true]:bg-primary dark:data-[range-start=true]:bg-primary dark:data-[selected-single=true]:bg-primary data-[range-end=true]:bg-[#9333eacc] data-[range-start=true]:bg-[#9333eacc] data-[selected-single=true]:bg-[#9333eacc]"
+                                        className="dark:data-[range-end=true]:bg-primary dark:data-[range-start=true]:bg-primary dark:data-[selected-single=true]:bg-primary data-[range-end=true]:bg-[#9333eacc] data-[range-start=true]:bg-[#9333eacc] data-[selected-single=true]:bg-[#9333eacc] dark:hover:!bg-slate-700"
                                     />
                                 );
                             },

@@ -4,6 +4,7 @@ import { GetArea, GetSchool } from '@/api/form-api';
 import Combobox from '@/components/molecules/Combobox';
 import DatePicker from '@/components/molecules/DatePicker';
 import FormLayout from '@/components/molecules/FormLayout';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
 import { SCHOOL_TYPE_OPTIONS } from '@/constants';
@@ -152,25 +153,25 @@ const Home = () => {
                 </Form>
             </section>
             <section>
-                <div className="rounded-lg border border-purple-200 p-6 shadow-sm">
-                    <div className="flex items-start gap-4">
-                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-purple-100">
-                            <svg
-                                className="h-5 w-5 text-purple-600 dark:text-purple-400"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                                />
-                            </svg>
-                        </div>
-                        <div className="flex-1">
-                            <h3 className="mb-2 text-lg font-semibold text-gray-900">查詢資訊</h3>
+                <Alert className="flex items-start gap-4 rounded-lg border border-purple-200 bg-transparent p-6 shadow-sm">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-purple-100">
+                        <svg
+                            className="h-5 w-5 text-purple-600 dark:text-purple-400"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                            />
+                        </svg>
+                    </div>
+                    <div className="flex-1">
+                        <AlertTitle className="mb-2 text-lg font-semibold text-gray-900">查詢資訊</AlertTitle>
+                        <AlertDescription>
                             <p className="mb-3 text-sm leading-relaxed text-gray-600">
                                 透過上方表單選擇縣市、區域、院所類型和學校名稱，即可查詢指定日期的餐飲資訊。
                             </p>
@@ -184,9 +185,9 @@ const Home = () => {
                                     選擇院所類型有助於縮小搜尋範圍
                                 </li>
                             </ul>
-                        </div>
+                        </AlertDescription>
                     </div>
-                </div>
+                </Alert>
             </section>
         </>
     );

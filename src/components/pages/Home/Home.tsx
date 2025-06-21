@@ -154,7 +154,7 @@ const Home = () => {
             </section>
             <section>
                 <Alert className="dark:border-input flex items-start gap-4 rounded-lg border border-purple-200 bg-transparent p-6 shadow-sm dark:bg-transparent dark:shadow-white/10">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-purple-100 dark:bg-purple-900/50">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-purple-100 dark:bg-transparent">
                         <svg
                             className="h-5 w-5 text-purple-600 dark:text-purple-400"
                             fill="none"

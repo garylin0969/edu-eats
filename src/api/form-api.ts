@@ -1,4 +1,4 @@
-import { ApiResponse, County, Area } from '@/types';
+import { ApiResponse, County, Area, School, SchoolParams } from '@/types';
 import { http } from './axios';
 
 /**
@@ -17,4 +17,13 @@ export const GetCounty = (): Promise<ApiResponse<County[]>> => {
 export const GetArea = (CountyId: string): Promise<ApiResponse<Area[]>> => {
     const params = { CountyId };
     return http.get<ApiResponse<Area[]>>('/area', { params });
+};
+
+/**
+ * 搜尋學校資料
+ * @param searchParams 搜尋參數 (CountyId, AreaId, SchoolType, SchoolName)
+ * @returns Promise<ApiResponse<School[]>>
+ */
+export const GetSchool = (params: SchoolParams): Promise<ApiResponse<School[]>> => {
+    return http.get<ApiResponse<School[]>>('/school', { params });
 };

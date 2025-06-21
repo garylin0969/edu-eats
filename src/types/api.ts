@@ -20,3 +20,21 @@ export interface Area {
     Area: string | null;
     AreaId: number | null;
 }
+
+// 學校搜尋參數類型
+export interface SchoolParams {
+    CountyId?: string;
+    AreaId?: string;
+    SchoolType?: string;
+    SchoolName?: string;
+}
+
+// 學校數據類型
+export interface School {
+    SchoolId: number | null;
+    SchoolCode: string | null;
+    SchoolName: string | null;
+    CountyId: number | null;
+    AreaId: number | null;
+    SchoolType: number | null;
+}

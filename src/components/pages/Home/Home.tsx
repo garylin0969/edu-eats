@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form';
 import { useCallback, useState } from 'react';
-import { GetArea } from '@/api/form-api';
+import { GetArea, GetSchool } from '@/api/form-api';
 import Combobox from '@/components/molecules/Combobox';
 import DatePicker from '@/components/molecules/DatePicker';
 import FormLayout from '@/components/molecules/FormLayout';
@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
 import { SCHOOL_TYPE_OPTIONS } from '@/constants';
 import { useCounty } from '@/hooks';
-import { Area, Option } from '@/types';
+import { Area, Option, School } from '@/types';
 import { formatDate } from '@/utils/date';
 
 interface FormData {
@@ -38,19 +38,33 @@ const formatDateValue = (date: Date): string => formatDate(date, DATE_FORMAT);
 const Home = () => {
     const { countyOptions } = useCounty(); //縣市選項
     const [areaOptions, setAreaOptions] = useState<Option[]>([]); //區域選項
+    const [schoolOptions, setSchoolOptions] = useState<Option[]>([]); //學校選項
 
     // 表單
     const form = useForm<FormData>({ defaultValues });
-    const { handleSubmit, setValue } = form;
+    const { handleSubmit, setValue, getValues } = form;
+
+    // 搜尋學校選項
+    const handleChangeToSearchSchoolOptions = useCallback(async () => {
+        const currentFormData = getValues();
+        const { CountyId, AreaId, SchoolType } = currentFormData;
+        const result = await GetSchool({ CountyId, AreaId, SchoolType });
+        const newSchoolOptions = result?.data?.map((item: School) => ({
+            label: item?.SchoolName ?? '',
+            value: item?.SchoolId?.toString() ?? '',
+        }));
+        setSchoolOptions(newSchoolOptions ?? []);
+    }, [getValues]);
 
     // 縣市選擇變更
     const handleCountyChange = useCallback(
         async (CountyId: string) => {
             setValue('AreaId', ''); //清空區域
 
-            // 如果縣市選擇為空，則清空區域選項
+            // 如果縣市選擇為空，則清空區域選項、學校選項
             if (!CountyId) {
                 setAreaOptions([]);
+                setSchoolOptions([]);
                 return;
             }
 
@@ -61,8 +75,10 @@ const Home = () => {
                     value: item?.AreaId?.toString() ?? '',
                 })) ?? [];
             setAreaOptions(newAreaOptions ?? []);
+
+            handleChangeToSearchSchoolOptions(); //搜尋學校選項
         },
-        [setValue]
+        [handleChangeToSearchSchoolOptions, setValue]
     );
 
     // 提交表單
@@ -85,7 +101,13 @@ const Home = () => {
                             />
                         </FormLayout.Col>
                         <FormLayout.Col xs="6" md="4">
-                            <Combobox form={form} name="AreaId" placeholder="區域" options={areaOptions} />
+                            <Combobox
+                                form={form}
+                                name="AreaId"
+                                placeholder="區域"
+                                options={areaOptions}
+                                onChange={handleChangeToSearchSchoolOptions}
+                            />
                         </FormLayout.Col>
                         <FormLayout.Col xs="12" md="4">
                             <Combobox
@@ -93,12 +115,13 @@ const Home = () => {
                                 name="SchoolType"
                                 placeholder="院所類型"
                                 options={SCHOOL_TYPE_OPTIONS}
+                                onChange={handleChangeToSearchSchoolOptions}
                             />
                         </FormLayout.Col>
                     </FormLayout.Group>
                     <FormLayout.Group as={FormLayout.Row}>
                         <FormLayout.Col xs="12" lg="5">
-                            <Combobox form={form} name="SchoolId" placeholder="學校名稱" options={countyOptions} />
+                            <Combobox form={form} name="SchoolId" placeholder="學校名稱" options={schoolOptions} />
                         </FormLayout.Col>
                         <FormLayout.Col xs="6" lg="5">
                             <DatePicker form={form} name="period" placeholder="日期" valueFormat={formatDateValue} />

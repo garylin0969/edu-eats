@@ -152,45 +152,43 @@ const Home = () => {
                     </form>
                 </Form>
             </section>
-            <section>
-                <Alert className="dark:border-input flex items-start gap-4 rounded-lg border border-purple-200 bg-transparent p-6 shadow-sm dark:bg-transparent dark:shadow-white/10">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-purple-100 dark:bg-transparent">
-                        <svg
-                            className="h-5 w-5 text-purple-600 dark:text-purple-400"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                            />
-                        </svg>
-                    </div>
-                    <div className="flex-1">
-                        <AlertTitle className="mb-2 text-lg font-semibold text-gray-900 dark:text-gray-100">
-                            查詢資訊
-                        </AlertTitle>
-                        <AlertDescription>
-                            <p className="mb-3 text-sm leading-relaxed text-gray-600 dark:text-gray-300">
-                                透過上方表單選擇縣市、區域、院所類型和學校名稱，即可查詢指定日期的餐飲資訊。
-                            </p>
-                            <ul className="space-y-1 text-sm text-gray-500 dark:text-gray-400">
-                                <li className="flex items-center gap-2">
-                                    <span className="h-1.5 w-1.5 rounded-full bg-purple-400" />
-                                    請先選擇縣市，系統會自動載入對應的區域選項
-                                </li>
-                                <li className="flex items-center gap-2">
-                                    <span className="h-1.5 w-1.5 rounded-full bg-purple-400" />
-                                    選擇院所類型有助於縮小搜尋範圍
-                                </li>
-                            </ul>
-                        </AlertDescription>
-                    </div>
-                </Alert>
-            </section>
+            <Alert className="dark:border-input flex items-start gap-4 rounded-lg border border-purple-200 bg-transparent p-6 shadow-sm dark:bg-transparent dark:shadow-white/10">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-purple-100 dark:bg-transparent">
+                    <svg
+                        className="h-5 w-5 text-purple-600 dark:text-purple-400"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                        />
+                    </svg>
+                </div>
+                <div className="flex-1">
+                    <AlertTitle className="mb-2 text-lg font-semibold text-gray-900 dark:text-gray-100">
+                        查詢資訊
+                    </AlertTitle>
+                    <AlertDescription>
+                        <p className="mb-3 text-sm leading-relaxed text-gray-600 dark:text-gray-300">
+                            透過上方表單選擇縣市、區域、院所類型和學校名稱，即可查詢指定日期的餐飲資訊。
+                        </p>
+                        <ul className="space-y-1 text-sm text-gray-500 dark:text-gray-400">
+                            <li className="flex items-center gap-2">
+                                <span className="h-1.5 w-1.5 rounded-full bg-purple-400" />
+                                請先選擇縣市，系統會自動載入對應的區域選項
+                            </li>
+                            <li className="flex items-center gap-2">
+                                <span className="h-1.5 w-1.5 rounded-full bg-purple-400" />
+                                選擇院所類型有助於縮小搜尋範圍
+                            </li>
+                        </ul>
+                    </AlertDescription>
+                </div>
+            </Alert>
         </>
     );
 };

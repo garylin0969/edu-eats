@@ -17,17 +17,17 @@ interface FormData {
 
 const formatDateValue = (date: Date) => formatDate(date, 'YYYY-MM-DD');
 
+const defaultValues: FormData = {
+    CountyId: '',
+    AreaId: '',
+    SchoolType: '',
+    SchoolName: '',
+    date: formatDate(new Date(), 'YYYY-MM-DD'), // 預設值為今天
+};
+
 const Home = () => {
     // 表單
-    const form = useForm<FormData>({
-        defaultValues: {
-            CountyId: '',
-            AreaId: '',
-            SchoolType: '',
-            SchoolName: '',
-            date: formatDateValue(new Date()),
-        },
-    });
+    const form = useForm<FormData>({ defaultValues });
     const { handleSubmit } = form;
 
     // 縣市選項

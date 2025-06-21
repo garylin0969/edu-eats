@@ -4,9 +4,9 @@ import { GetArea, GetSchool } from '@/api/form-api';
 import Combobox from '@/components/molecules/Combobox';
 import DatePicker from '@/components/molecules/DatePicker';
 import FormLayout from '@/components/molecules/FormLayout';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { SCHOOL_TYPE_OPTIONS } from '@/constants';
 import { useCounty } from '@/hooks';
 import { Area, Option, School } from '@/types';
@@ -152,31 +152,33 @@ const Home = () => {
                     </form>
                 </Form>
             </section>
-            <Alert className="dark:border-input flex items-start gap-4 rounded-lg border border-purple-200 bg-transparent p-6 shadow-sm dark:bg-transparent dark:shadow-white/10">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-purple-100 dark:bg-transparent">
-                    <svg
-                        className="h-5 w-5 text-purple-600 dark:text-purple-400"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                    >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                    </svg>
-                </div>
-                <div className="flex-1">
-                    <AlertTitle className="mb-2 text-lg font-semibold text-gray-900 dark:text-gray-100">
-                        查詢資訊
-                    </AlertTitle>
-                    <AlertDescription>
-                        <p className="mb-3 text-sm leading-relaxed text-gray-600 dark:text-gray-300">
+            <Tooltip>
+                <TooltipTrigger asChild>
+                    <div className="inline-flex cursor-pointer items-center gap-2">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-purple-100 dark:bg-transparent">
+                            <svg
+                                className="h-5 w-5 text-purple-600 dark:text-purple-400"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                />
+                            </svg>
+                        </div>
+                        <span className="text-lg font-semibold text-gray-900 dark:text-gray-100">查詢說明</span>
+                    </div>
+                </TooltipTrigger>
+                <TooltipContent className="bg-light mx-3 flex items-start gap-4 rounded-lg border border-purple-200 p-6 shadow-sm">
+                    <div className="mb-3 text-sm leading-relaxed text-gray-600">
+                        <p className="mb-3 text-sm leading-relaxed text-gray-600">
                             透過上方表單選擇縣市、區域、院所類型和學校名稱，即可查詢指定日期的餐飲資訊。
                         </p>
-                        <ul className="space-y-1 text-sm text-gray-500 dark:text-gray-400">
+                        <ul className="space-y-1 text-sm text-gray-500">
                             <li className="flex items-center gap-2">
                                 <span className="h-1.5 w-1.5 rounded-full bg-purple-400" />
                                 請先選擇縣市，系統會自動載入對應的區域選項
@@ -186,9 +188,9 @@ const Home = () => {
                                 選擇院所類型有助於縮小搜尋範圍
                             </li>
                         </ul>
-                    </AlertDescription>
-                </div>
-            </Alert>
+                    </div>
+                </TooltipContent>
+            </Tooltip>
         </>
     );
 };

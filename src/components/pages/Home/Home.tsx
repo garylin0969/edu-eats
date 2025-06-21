@@ -1,6 +1,6 @@
 import { Utensils } from 'lucide-react';
 import { useForm } from 'react-hook-form';
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import { GetArea, GetSchool } from '@/api/form-api';
 import Combobox from '@/components/molecules/Combobox';
 import DatePicker from '@/components/molecules/DatePicker';
@@ -47,6 +47,63 @@ const Home = () => {
     // 表單
     const form = useForm<FormData>({ defaultValues });
     const { handleSubmit, setValue, getValues } = form;
+
+    // 從URL參數自動填入表單
+    useEffect(() => {
+        const initializeFormFromUrl = async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const schoolId = urlParams.get('SchoolId');
+            const period = urlParams.get('period');
+
+            // 如果有日期參數，直接設定
+            if (period) {
+                setValue('period', period);
+            }
+
+            // 如果有SchoolId參數，需要先搜尋學校資料來獲取其他相關資訊
+            if (schoolId) {
+                try {
+                    // 使用SchoolId搜尋學校資料
+                    const schoolResult = await GetSchool({ SchoolName: '', CountyId: '', AreaId: '', SchoolType: '' });
+                    const targetSchool = schoolResult?.data?.find((school) => school.SchoolId?.toString() === schoolId);
+
+                    if (targetSchool && targetSchool.CountyId && targetSchool.AreaId) {
+                        // 設定縣市
+                        setValue('CountyId', targetSchool.CountyId.toString());
+
+                        // 獲取並設定區域選項
+                        const areaResult = await GetArea(targetSchool.CountyId.toString());
+                        const newAreaOptions = transformToOptions(areaResult?.data, 'Area', 'AreaId');
+                        setAreaOptions(newAreaOptions);
+
+                        // 設定區域
+                        setValue('AreaId', targetSchool.AreaId.toString());
+
+                        // 設定學校類型
+                        if (targetSchool.SchoolType) {
+                            setValue('SchoolType', targetSchool.SchoolType.toString());
+                        }
+
+                        // 獲取並設定學校選項
+                        const schoolSearchResult = await GetSchool({
+                            CountyId: targetSchool.CountyId.toString(),
+                            AreaId: targetSchool.AreaId.toString(),
+                            SchoolType: targetSchool.SchoolType?.toString() || '',
+                        });
+                        const newSchoolOptions = transformToOptions(schoolSearchResult?.data, 'SchoolName', 'SchoolId');
+                        setSchoolOptions(newSchoolOptions);
+
+                        // 設定學校
+                        setValue('SchoolId', schoolId);
+                    }
+                } catch (error) {
+                    console.error('Error initializing form from URL:', error);
+                }
+            }
+        };
+
+        initializeFormFromUrl();
+    }, [setValue]);
 
     // 搜尋學校選項
     const handleChangeToSearchSchoolOptions = useCallback(async () => {

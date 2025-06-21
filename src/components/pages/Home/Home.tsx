@@ -23,9 +23,6 @@ interface FormData {
 const DATE_FORMAT = 'YYYY-MM-DD';
 const TODAY_FORMATTED = formatDate(new Date(), DATE_FORMAT);
 
-// 日期格式化 for DatePicker
-const formatDateValue = (date: Date): string => formatDate(date, DATE_FORMAT);
-
 // 表單預設值
 const defaultValues: FormData = {
     CountyId: '',
@@ -34,6 +31,9 @@ const defaultValues: FormData = {
     SchoolId: '',
     period: TODAY_FORMATTED, //預設值為今天
 };
+
+// 日期格式化 for DatePicker
+const formatDateValue = (date: Date): string => formatDate(date, DATE_FORMAT);
 
 const Home = () => {
     const { countyOptions } = useCounty(); //縣市選項

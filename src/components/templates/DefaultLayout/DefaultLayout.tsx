@@ -5,7 +5,7 @@ const DefaultLayout = () => {
     return (
         <div className="flex min-h-screen flex-col">
             <Header />
-            <main className="container mx-auto flex-1">
+            <main className="container mx-auto flex-1 px-3 md:px-0">
                 <Outlet />
             </main>
         </div>

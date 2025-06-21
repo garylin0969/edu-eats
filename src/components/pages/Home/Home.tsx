@@ -153,12 +153,11 @@ const Home = () => {
                     </form>
                 </Form>
             </section>
-            {/* 空狀態區域 */}
-            <Placeholder
-                className="min-h-[calc(100vh_/_2)]"
-                icon={<Utensils className="h-12 w-12 text-gray-400" />}
-                title="目前無食材相關資料"
-            />
+            <Placeholder type="empty" />
+            <Placeholder type="loading" />
+            <Placeholder type="error" />
+            <Placeholder type="custom" />
+            <Placeholder icon={<Utensils className="h-12 w-12 text-gray-400" />} title="目前無食材相關資料" />
         </>
     );
 };

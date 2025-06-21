@@ -2,17 +2,6 @@ import { Loader2, FileX, AlertCircle, Package } from 'lucide-react';
 import { ReactNode } from 'react';
 import { cn } from '@/utils/shadcn';
 
-interface PlaceholderProps {
-    type?: 'loading' | 'empty' | 'error' | 'custom';
-    icon?: ReactNode;
-    title?: string;
-    description?: string;
-    className?: string;
-    iconClassName?: string;
-    titleClassName?: string;
-    descriptionClassName?: string;
-}
-
 // 默認配置
 const defaultConfigs = {
     loading: {
@@ -40,6 +29,17 @@ const defaultConfigs = {
         iconClassName: 'bg-muted/50',
     },
 };
+
+interface PlaceholderProps {
+    type?: 'loading' | 'empty' | 'error' | 'custom';
+    icon?: ReactNode;
+    title?: string;
+    description?: string;
+    className?: string;
+    iconClassName?: string;
+    titleClassName?: string;
+    descriptionClassName?: string;
+}
 
 const Placeholder = ({
     type = 'custom',

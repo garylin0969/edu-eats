@@ -72,7 +72,7 @@ const Combobox = <T extends FieldValues>({
                                             <CommandItem
                                                 key={option.value}
                                                 className="hover:!text-foreground data-[selected=true]:text-foreground hover:cursor-pointer hover:!bg-slate-100 data-[selected=true]:bg-transparent dark:hover:!bg-slate-700"
-                                                value={option.value}
+                                                value={option.label}
                                                 onSelect={() => handleValueChange(option.value, field)}
                                             >
                                                 {option.label}

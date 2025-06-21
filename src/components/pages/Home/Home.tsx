@@ -15,7 +15,7 @@ interface FormData {
     CountyId: string;
     AreaId: string;
     SchoolType: string;
-    SchoolName: string;
+    SchoolId: string;
     period: string;
 }
 
@@ -31,7 +31,7 @@ const defaultValues: FormData = {
     CountyId: '',
     AreaId: '',
     SchoolType: '',
-    SchoolName: '',
+    SchoolId: '',
     period: TODAY_FORMATTED, //預設值為今天
 };
 
@@ -98,7 +98,7 @@ const Home = () => {
                     </FormLayout.Group>
                     <FormLayout.Group as={FormLayout.Row}>
                         <FormLayout.Col xs="12" lg="5">
-                            <Combobox form={form} name="SchoolName" placeholder="學校名稱" options={countyOptions} />
+                            <Combobox form={form} name="SchoolId" placeholder="學校名稱" options={countyOptions} />
                         </FormLayout.Col>
                         <FormLayout.Col xs="6" lg="5">
                             <DatePicker form={form} name="period" placeholder="日期" valueFormat={formatDateValue} />

@@ -39,48 +39,36 @@ const Home = () => {
     };
 
     return (
-        <div className="min-h-[calc(100vh-68px)] w-full">
-            <section className="my-5">
-                <Form {...form}>
-                    <form className="w-full" onSubmit={handleSubmit(onSubmit)}>
-                        <FormLayout.Group as={FormLayout.Row}>
-                            <FormLayout.Col xs="6" md="4">
-                                <Combobox form={form} name="CountyId" placeholder="縣市" options={countyOptions} />
-                            </FormLayout.Col>
-                            <FormLayout.Col xs="6" md="4">
-                                <Combobox form={form} name="AreaId" placeholder="區域" options={countyOptions} />
-                            </FormLayout.Col>
-                            <FormLayout.Col xs="12" md="4">
-                                <Combobox
-                                    form={form}
-                                    name="SchoolType"
-                                    placeholder="院所類型"
-                                    options={countyOptions}
-                                />
-                            </FormLayout.Col>
-                        </FormLayout.Group>
-                        <FormLayout.Group as={FormLayout.Row}>
-                            <FormLayout.Col xs="12" lg="5">
-                                <Combobox
-                                    form={form}
-                                    name="SchoolName"
-                                    placeholder="學校名稱"
-                                    options={countyOptions}
-                                />
-                            </FormLayout.Col>
-                            <FormLayout.Col xs="6" lg="5">
-                                <DatePicker form={form} name="date" placeholder="日期" valueFormat={formatDateValue} />
-                            </FormLayout.Col>
-                            <FormLayout.Col xs="6" lg="2">
-                                <Button className="w-full" type="submit">
-                                    查詢
-                                </Button>
-                            </FormLayout.Col>
-                        </FormLayout.Group>
-                    </form>
-                </Form>
-            </section>
-        </div>
+        <section className="my-5">
+            <Form {...form}>
+                <form className="w-full" onSubmit={handleSubmit(onSubmit)}>
+                    <FormLayout.Group as={FormLayout.Row}>
+                        <FormLayout.Col xs="6" md="4">
+                            <Combobox form={form} name="CountyId" placeholder="縣市" options={countyOptions} />
+                        </FormLayout.Col>
+                        <FormLayout.Col xs="6" md="4">
+                            <Combobox form={form} name="AreaId" placeholder="區域" options={countyOptions} />
+                        </FormLayout.Col>
+                        <FormLayout.Col xs="12" md="4">
+                            <Combobox form={form} name="SchoolType" placeholder="院所類型" options={countyOptions} />
+                        </FormLayout.Col>
+                    </FormLayout.Group>
+                    <FormLayout.Group as={FormLayout.Row}>
+                        <FormLayout.Col xs="12" lg="5">
+                            <Combobox form={form} name="SchoolName" placeholder="學校名稱" options={countyOptions} />
+                        </FormLayout.Col>
+                        <FormLayout.Col xs="6" lg="5">
+                            <DatePicker form={form} name="date" placeholder="日期" valueFormat={formatDateValue} />
+                        </FormLayout.Col>
+                        <FormLayout.Col xs="6" lg="2">
+                            <Button className="w-full" type="submit">
+                                查詢
+                            </Button>
+                        </FormLayout.Col>
+                    </FormLayout.Group>
+                </form>
+            </Form>
+        </section>
     );
 };
 

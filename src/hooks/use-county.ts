@@ -5,9 +5,14 @@ import { County, Option } from '@/types';
 
 /**
  * 縣市數據自定義 Hook
- * @returns {Object} 包含 countyData, isCountyLoading, isCountyError, countyOptions
+ * 包含 countyData, isCountyLoading, isCountyError, countyOptions
  */
-const useCounty = () => {
+const useCounty = (): {
+    countyData: County[] | undefined;
+    isCountyLoading: boolean;
+    isCountyError: boolean;
+    countyOptions: Option[];
+} => {
     const {
         data: countyData,
         isLoading: isCountyLoading,
@@ -22,8 +27,8 @@ const useCounty = () => {
     const countyOptions: Option[] = useMemo(() => {
         return (
             countyData?.map((item: County) => ({
-                label: item.County ?? '',
-                value: item.CountyId?.toString() ?? '',
+                label: item?.County ?? '',
+                value: item?.CountyId?.toString() ?? '',
             })) ?? []
         );
     }, [countyData]);

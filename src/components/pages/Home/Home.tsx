@@ -1,3 +1,4 @@
+import { Utensils } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { useCallback, useState } from 'react';
 import { GetArea, GetSchool } from '@/api/form-api';
@@ -150,6 +151,17 @@ const Home = () => {
                         </FormLayout.Group>
                     </form>
                 </Form>
+            </section>
+            {/* 空狀態區域 */}
+            <section className="flex flex-col items-center justify-center">
+                <div className="max-w-md space-y-4 text-center">
+                    {/* 圖標 */}
+                    <div className="mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-gray-100">
+                        <Utensils className="h-12 w-12 text-gray-400" />
+                    </div>
+                    {/* 主標題 */}
+                    <h3 className="text-xl font-semibold">目前無食材相關資料</h3>
+                </div>
             </section>
         </>
     );

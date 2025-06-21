@@ -97,7 +97,7 @@ const Col = ({ children, className, xs, sm, md, lg }: ColProps) => {
     };
 
     const colClasses = cn(
-        'px-2 mb-2 md:mb-4 w-full',
+        'mb-2 md:mb-4 w-full',
         xs && getColClass(xs, 'xs'),
         sm && getColClass(sm, 'sm'),
         md && getColClass(md, 'md'),

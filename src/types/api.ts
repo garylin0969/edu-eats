@@ -11,3 +11,12 @@ export interface County {
     County: string | null;
     Code: string | null;
 }
+
+// 區域數據類型
+export interface Area {
+    CountyId: number | null;
+    County: string | null;
+    Code: string | null;
+    Area: string | null;
+    AreaId: number | null;
+}

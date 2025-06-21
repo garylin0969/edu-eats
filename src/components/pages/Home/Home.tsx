@@ -48,7 +48,17 @@ const Home = () => {
     const handleChangeToSearchSchoolOptions = useCallback(async () => {
         const currentFormData = getValues();
         const { CountyId, AreaId, SchoolType } = currentFormData;
-        const result = await GetSchool({ CountyId, AreaId, SchoolType });
+        const searchParams = { CountyId, AreaId, SchoolType };
+        // 過濾掉空值參數
+        const params = Object?.fromEntries(
+            Object?.entries(searchParams)?.filter(([, value]) => value !== undefined && value !== '')
+        );
+        // 如果沒有參數，則清空學校選項
+        if (Object?.keys(params)?.length === 0) {
+            setSchoolOptions([]);
+            return;
+        }
+        const result = await GetSchool(params);
         const newSchoolOptions = result?.data?.map((item: School) => ({
             label: item?.SchoolName ?? '',
             value: item?.SchoolId?.toString() ?? '',

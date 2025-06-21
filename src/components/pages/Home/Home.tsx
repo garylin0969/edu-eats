@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { GetArea } from '@/api/form-api';
 import Combobox from '@/components/molecules/Combobox';
 import DatePicker from '@/components/molecules/DatePicker';
@@ -18,42 +18,52 @@ interface FormData {
     period: string;
 }
 
-const formatDateValue = (date: Date) => formatDate(date, 'YYYY-MM-DD');
+//日期格式化
+const formatDateValue = (date: Date): string => formatDate(date, 'YYYY-MM-DD');
 
+//表單預設值
 const defaultValues: FormData = {
     CountyId: '',
     AreaId: '',
     SchoolType: '',
     SchoolName: '',
-    period: formatDate(new Date(), 'YYYY-MM-DD'), // 預設值為今天
+    period: formatDate(new Date(), 'YYYY-MM-DD'), //預設值為今天
 };
 
 const Home = () => {
-    // 區域選項
-    const [areaOptions, setAreaOptions] = useState<Option[]>([]);
+    const { countyOptions } = useCounty(); //縣市選項
+    const [areaOptions, setAreaOptions] = useState<Option[]>([]); //區域選項
 
-    // 表單
+    //表單
     const form = useForm<FormData>({ defaultValues });
-    const { handleSubmit } = form;
+    const { handleSubmit, setValue } = form;
 
-    // 縣市選項
-    const { countyOptions } = useCounty();
+    //縣市選擇變更
+    const handleCountyChange = useCallback(
+        async (CountyId: string) => {
+            setValue('AreaId', ''); //清空區域
 
-    // 提交表單
-    const onSubmit = (data: FormData) => {
+            //如果縣市選擇為空，則清空區域選項
+            if (!CountyId) {
+                setAreaOptions([]);
+                return;
+            }
+
+            const result = await GetArea(CountyId);
+            const newAreaOptions =
+                result?.data?.map((item: Area) => ({
+                    label: item?.Area ?? '',
+                    value: item?.AreaId?.toString() ?? '',
+                })) ?? [];
+            setAreaOptions(newAreaOptions ?? []);
+        },
+        [setValue]
+    );
+
+    //提交表單
+    const onSubmit = useCallback((data: FormData) => {
         console.log(data);
-    };
-
-    // 縣市選擇變更
-    const handleCountyChange = async (value: string) => {
-        const countyId = value;
-        const result = await GetArea(countyId);
-        const areaOptions = result?.data?.map((item: Area) => ({
-            label: item?.Area ?? '',
-            value: item?.AreaId?.toString() ?? '',
-        }));
-        setAreaOptions(areaOptions);
-    };
+    }, []);
 
     return (
         <section className="my-5">

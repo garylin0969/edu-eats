@@ -16,6 +16,10 @@
             "description": "縣市資料相關操作"
         },
         {
+            "name": "area",
+            "description": "區域資料相關操作"
+        },
+        {
             "name": "school",
             "description": "學校資料相關操作"
         }
@@ -35,6 +39,39 @@
                         "description": "成功取得縣市資料",
                         "schema": {
                             "$ref": "#/definitions/CountyResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "請求參數錯誤"
+                    },
+                    "500": {
+                        "description": "伺服器內部錯誤"
+                    }
+                }
+            }
+        },
+        "/area": {
+            "get": {
+                "tags": ["area"],
+                "summary": "查詢區域資料",
+                "description": "根據縣市ID查詢該縣市下的所有區域資料",
+                "operationId": "getAreas",
+                "produces": ["application/json"],
+                "parameters": [
+                    {
+                        "name": "CountyId",
+                        "in": "query",
+                        "description": "縣市ID",
+                        "required": true,
+                        "type": "integer",
+                        "example": 19
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功取得區域資料",
+                        "schema": {
+                            "$ref": "#/definitions/AreaResponse"
                         }
                     },
                     "400": {
@@ -147,6 +184,60 @@
                 }
             },
             "required": ["CountyId", "County", "Code"]
+        },
+        "AreaResponse": {
+            "type": "object",
+            "properties": {
+                "result": {
+                    "type": "integer",
+                    "description": "回應結果狀態",
+                    "example": 1
+                },
+                "message": {
+                    "type": "string",
+                    "description": "回應訊息",
+                    "example": "Search Area Successful"
+                },
+                "data": {
+                    "type": "array",
+                    "description": "區域資料陣列",
+                    "items": {
+                        "$ref": "#/definitions/Area"
+                    }
+                }
+            },
+            "required": ["result", "message", "data"]
+        },
+        "Area": {
+            "type": "object",
+            "properties": {
+                "CountyId": {
+                    "type": "integer",
+                    "description": "縣市ID",
+                    "example": 19
+                },
+                "County": {
+                    "type": "string",
+                    "description": "縣市名稱",
+                    "example": "新北市"
+                },
+                "Code": {
+                    "type": "string",
+                    "description": "縣市代碼",
+                    "example": "F"
+                },
+                "Area": {
+                    "type": "string",
+                    "description": "區域名稱",
+                    "example": "萬里區"
+                },
+                "AreaId": {
+                    "type": "integer",
+                    "description": "區域ID",
+                    "example": 131374
+                }
+            },
+            "required": ["CountyId", "County", "Code", "Area", "AreaId"]
         },
         "SchoolResponse": {
             "type": "object",

@@ -10,7 +10,8 @@ import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
 import { SCHOOL_TYPE_OPTIONS } from '@/constants';
 import { useCounty } from '@/hooks';
-import { Area, Option, School } from '@/types';
+import { Option } from '@/types';
+import { transformToOptions } from '@/utils/common';
 import { formatDate } from '@/utils/date';
 import { filterObjectEmptyValues, objectIsEmpty } from '@/utils/object';
 
@@ -59,12 +60,10 @@ const Home = () => {
             setSchoolOptions([]);
             return;
         }
+        // 搜尋學校選項
         const result = await GetSchool(params);
-        const newSchoolOptions = result?.data?.map((item: School) => ({
-            label: item?.SchoolName ?? '',
-            value: item?.SchoolId?.toString() ?? '',
-        }));
-        setSchoolOptions(newSchoolOptions ?? []);
+        const newSchoolOptions = transformToOptions(result?.data, 'SchoolName', 'SchoolId');
+        setSchoolOptions(newSchoolOptions);
     }, [getValues]);
 
     // 縣市選擇變更
@@ -79,13 +78,10 @@ const Home = () => {
                 return;
             }
 
+            // 搜尋區域選項
             const result = await GetArea(CountyId);
-            const newAreaOptions =
-                result?.data?.map((item: Area) => ({
-                    label: item?.Area ?? '',
-                    value: item?.AreaId?.toString() ?? '',
-                })) ?? [];
-            setAreaOptions(newAreaOptions ?? []);
+            const newAreaOptions = transformToOptions(result?.data, 'Area', 'AreaId');
+            setAreaOptions(newAreaOptions);
 
             handleChangeToSearchSchoolOptions(); //搜尋學校選項
         },

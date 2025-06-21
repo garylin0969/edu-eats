@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import { GetCounty } from '@/api/form-api';
 import { County, Option } from '@/types';
+import { transformToOptions } from '@/utils/common';
 
 interface UseCountyReturn {
     countyData: County[] | undefined;
@@ -27,12 +28,7 @@ const useCounty = (): UseCountyReturn => {
 
     //使用 useMemo 緩存 countyOptions，避免每次渲染都重新計算
     const countyOptions = useMemo((): Option[] => {
-        if (!countyData) return [];
-
-        return countyData?.map((item: County) => ({
-            label: item?.County ?? '',
-            value: item?.CountyId?.toString() ?? '',
-        }));
+        return transformToOptions(countyData, 'County', 'CountyId');
     }, [countyData]);
 
     return {

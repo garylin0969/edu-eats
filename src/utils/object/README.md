@@ -84,9 +84,16 @@ const cloned = objectDeepClone(original);
 ## 使用方式
 
 ```typescript
-import { filterObjectEmptyValues, filterNullish, objectIsEmpty, objectDeepClone } from '@/utils/object';
+import { filterObjectEmptyValues, objectIsEmpty, objectDeepClone } from '@/utils/object';
 
 // 使用範例
 const formData = { name: 'John', email: '', age: undefined };
 const cleanData = filterObjectEmptyValues(formData);
+
+// 深度克隆物件
+const original = { user: { name: 'John', age: 30 } };
+const cloned = objectDeepClone(original);
+
+// 檢查物件是否為空
+const isEmpty = objectIsEmpty(cleanData);
 ```

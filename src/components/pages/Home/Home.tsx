@@ -18,32 +18,36 @@ interface FormData {
     period: string;
 }
 
-//日期格式化
-const formatDateValue = (date: Date): string => formatDate(date, 'YYYY-MM-DD');
+// 日期格式化
+const DATE_FORMAT = 'YYYY-MM-DD';
+const TODAY_FORMATTED = formatDate(new Date(), DATE_FORMAT);
 
-//表單預設值
+// 日期格式化 for DatePicker
+const formatDateValue = (date: Date): string => formatDate(date, DATE_FORMAT);
+
+// 表單預設值
 const defaultValues: FormData = {
     CountyId: '',
     AreaId: '',
     SchoolType: '',
     SchoolName: '',
-    period: formatDate(new Date(), 'YYYY-MM-DD'), //預設值為今天
+    period: TODAY_FORMATTED, //預設值為今天
 };
 
 const Home = () => {
     const { countyOptions } = useCounty(); //縣市選項
     const [areaOptions, setAreaOptions] = useState<Option[]>([]); //區域選項
 
-    //表單
+    // 表單
     const form = useForm<FormData>({ defaultValues });
     const { handleSubmit, setValue } = form;
 
-    //縣市選擇變更
+    // 縣市選擇變更
     const handleCountyChange = useCallback(
         async (CountyId: string) => {
             setValue('AreaId', ''); //清空區域
 
-            //如果縣市選擇為空，則清空區域選項
+            // 如果縣市選擇為空，則清空區域選項
             if (!CountyId) {
                 setAreaOptions([]);
                 return;
@@ -60,7 +64,7 @@ const Home = () => {
         [setValue]
     );
 
-    //提交表單
+    // 提交表單
     const onSubmit = useCallback((data: FormData) => {
         console.log(data);
     }, []);

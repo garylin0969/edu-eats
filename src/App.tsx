@@ -6,7 +6,8 @@ import { lazy } from 'react';
 import DefaultLayout from './components/templates/DefaultLayout';
 
 const Home = lazy(() => import('@/components/pages/Home'));
-const Swagger = lazy(() => import('@/components/pages/Swagger')); // API Docs
+// API Docs - 只在開發環境中載入
+const Swagger = import.meta.env.DEV ? lazy(() => import('@/components/pages/Swagger')) : null;
 
 const TEN_MINUTES_IN_MS = 10 * 60 * 1000;
 const THIRTY_SECONDS_IN_MS = 30 * 60 * 1000;
@@ -24,20 +25,29 @@ const queryClient = new QueryClient({
         },
     },
 });
+
+// 根據環境動態建立路由
+const routeChildren = [
+    {
+        index: true,
+        element: <Home />,
+    },
+    // 只在開發環境中添加 swagger 路由
+    ...(import.meta.env.DEV && Swagger
+        ? [
+              {
+                  path: 'swagger',
+                  element: <Swagger />,
+              },
+          ]
+        : []),
+];
+
 const router = createBrowserRouter([
     {
         path: '/',
         element: <DefaultLayout />,
-        children: [
-            {
-                index: true,
-                element: <Home />,
-            },
-            {
-                path: 'swagger',
-                element: <Swagger />,
-            },
-        ],
+        children: routeChildren,
     },
 ]);
 

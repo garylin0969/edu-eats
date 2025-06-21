@@ -1,6 +1,6 @@
 import { Utensils } from 'lucide-react';
 import { useForm } from 'react-hook-form';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import { useCallback, useState, useEffect } from 'react';
 import { GetArea, GetSchool } from '@/api/form-api';
 import Combobox from '@/components/molecules/Combobox';
@@ -110,6 +110,35 @@ const useSchoolOptions = (setValue: (name: keyof FormData, value: string) => voi
     };
 };
 
+// 自定義 hook：管理 URL 參數更新
+const useUrlUpdater = () => {
+    const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+
+    const updateUrlParams = useCallback(
+        (schoolId: string, period: string) => {
+            const newSearchParams = new URLSearchParams(searchParams);
+
+            if (schoolId) {
+                newSearchParams.set('SchoolId', schoolId);
+            } else {
+                newSearchParams.delete('SchoolId');
+            }
+
+            if (period) {
+                newSearchParams.set('period', period);
+            } else {
+                newSearchParams.delete('period');
+            }
+
+            navigate(`?${newSearchParams.toString()}`, { replace: true });
+        },
+        [navigate, searchParams]
+    );
+
+    return { updateUrlParams };
+};
+
 // 自定義 hook：從 URL 參數初始化表單
 const useUrlFormInitialization = (
     setValue: (name: keyof FormData, value: string) => void,
@@ -173,7 +202,10 @@ const Home = () => {
 
     // 表單
     const form = useForm<FormData>({ defaultValues });
-    const { handleSubmit, setValue, getValues } = form;
+    const { handleSubmit, setValue, getValues, watch } = form;
+
+    // URL 參數管理
+    const { updateUrlParams } = useUrlUpdater();
 
     // 學校選項管理
     const {
@@ -187,6 +219,20 @@ const Home = () => {
 
     // URL 參數初始化
     useUrlFormInitialization(setValue, searchAreaOptions, searchSchoolOptions);
+
+    // 學校類型變更
+    const handleSchoolTypeChange = useCallback(() => {
+        setValue('SchoolId', '');
+        handleChangeToSearchSchoolOptions();
+    }, [setValue, handleChangeToSearchSchoolOptions]);
+
+    // 監聽學校和日期變化並更新 URL
+    const schoolId = watch('SchoolId');
+    const period = watch('period');
+
+    useEffect(() => {
+        updateUrlParams(schoolId, period);
+    }, [schoolId, period, updateUrlParams]);
 
     // 提交表單
     const onSubmit = useCallback((data: FormData) => {
@@ -223,7 +269,7 @@ const Home = () => {
                                     name="SchoolType"
                                     placeholder="院所類型"
                                     options={SCHOOL_TYPE_OPTIONS}
-                                    onChange={handleChangeToSearchSchoolOptions}
+                                    onChange={handleSchoolTypeChange}
                                 />
                             </FormLayout.Col>
                         </FormLayout.Group>

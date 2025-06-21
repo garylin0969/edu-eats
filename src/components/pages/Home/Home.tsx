@@ -12,7 +12,7 @@ interface FormData {
     AreaId: string;
     SchoolType: string;
     SchoolName: string;
-    date: string;
+    period: string;
 }
 
 const formatDateValue = (date: Date) => formatDate(date, 'YYYY-MM-DD');
@@ -22,7 +22,7 @@ const defaultValues: FormData = {
     AreaId: '',
     SchoolType: '',
     SchoolName: '',
-    date: formatDate(new Date(), 'YYYY-MM-DD'), // 預設值為今天
+    period: formatDate(new Date(), 'YYYY-MM-DD'), // 預設值為今天
 };
 
 const Home = () => {
@@ -58,7 +58,7 @@ const Home = () => {
                             <Combobox form={form} name="SchoolName" placeholder="學校名稱" options={countyOptions} />
                         </FormLayout.Col>
                         <FormLayout.Col xs="6" lg="5">
-                            <DatePicker form={form} name="date" placeholder="日期" valueFormat={formatDateValue} />
+                            <DatePicker form={form} name="period" placeholder="日期" valueFormat={formatDateValue} />
                         </FormLayout.Col>
                         <FormLayout.Col xs="6" lg="2">
                             <Button className="w-full" type="submit">

@@ -1,10 +1,13 @@
 import { useForm } from 'react-hook-form';
+import { useState } from 'react';
+import { GetArea } from '@/api/form-api';
 import Combobox from '@/components/molecules/Combobox';
 import DatePicker from '@/components/molecules/DatePicker';
 import FormLayout from '@/components/molecules/FormLayout';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
 import { useCounty } from '@/hooks';
+import { Area, Option } from '@/types';
 import { formatDate } from '@/utils/date';
 
 interface FormData {
@@ -26,6 +29,9 @@ const defaultValues: FormData = {
 };
 
 const Home = () => {
+    // 區域選項
+    const [areaOptions, setAreaOptions] = useState<Option[]>([]);
+
     // 表單
     const form = useForm<FormData>({ defaultValues });
     const { handleSubmit } = form;
@@ -38,16 +44,33 @@ const Home = () => {
         console.log(data);
     };
 
+    // 縣市選擇變更
+    const handleCountyChange = async (value: string) => {
+        const countyId = value;
+        const result = await GetArea(countyId);
+        const areaOptions = result?.data?.map((item: Area) => ({
+            label: item?.Area ?? '',
+            value: item?.AreaId?.toString() ?? '',
+        }));
+        setAreaOptions(areaOptions);
+    };
+
     return (
         <section className="my-5">
             <Form {...form}>
                 <form className="w-full" onSubmit={handleSubmit(onSubmit)}>
                     <FormLayout.Group as={FormLayout.Row}>
                         <FormLayout.Col xs="6" md="4">
-                            <Combobox form={form} name="CountyId" placeholder="縣市" options={countyOptions} />
+                            <Combobox
+                                form={form}
+                                name="CountyId"
+                                placeholder="縣市"
+                                options={countyOptions}
+                                onChange={handleCountyChange}
+                            />
                         </FormLayout.Col>
                         <FormLayout.Col xs="6" md="4">
-                            <Combobox form={form} name="AreaId" placeholder="區域" options={countyOptions} />
+                            <Combobox form={form} name="AreaId" placeholder="區域" options={areaOptions} />
                         </FormLayout.Col>
                         <FormLayout.Col xs="12" md="4">
                             <Combobox form={form} name="SchoolType" placeholder="院所類型" options={countyOptions} />

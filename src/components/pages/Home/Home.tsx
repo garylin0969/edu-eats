@@ -6,6 +6,7 @@ import DatePicker from '@/components/molecules/DatePicker';
 import FormLayout from '@/components/molecules/FormLayout';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
+import { SCHOOL_TYPE_OPTIONS } from '@/constants';
 import { useCounty } from '@/hooks';
 import { Area, Option } from '@/types';
 import { formatDate } from '@/utils/date';
@@ -87,7 +88,12 @@ const Home = () => {
                             <Combobox form={form} name="AreaId" placeholder="區域" options={areaOptions} />
                         </FormLayout.Col>
                         <FormLayout.Col xs="12" md="4">
-                            <Combobox form={form} name="SchoolType" placeholder="院所類型" options={countyOptions} />
+                            <Combobox
+                                form={form}
+                                name="SchoolType"
+                                placeholder="院所類型"
+                                options={SCHOOL_TYPE_OPTIONS}
+                            />
                         </FormLayout.Col>
                     </FormLayout.Group>
                     <FormLayout.Group as={FormLayout.Row}>

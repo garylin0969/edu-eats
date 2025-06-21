@@ -12,6 +12,7 @@ import { SCHOOL_TYPE_OPTIONS } from '@/constants';
 import { useCounty } from '@/hooks';
 import { Area, Option, School } from '@/types';
 import { formatDate } from '@/utils/date';
+import { filterObjectEmptyValues, objectIsEmpty } from '@/utils/object';
 
 interface FormData {
     CountyId: string;
@@ -52,11 +53,9 @@ const Home = () => {
         const { CountyId, AreaId, SchoolType } = currentFormData;
         const searchParams = { CountyId, AreaId, SchoolType };
         // 過濾掉空值參數
-        const params = Object?.fromEntries(
-            Object?.entries(searchParams)?.filter(([, value]) => value !== undefined && value !== '')
-        );
+        const params = filterObjectEmptyValues(searchParams);
         // 如果沒有參數，則清空學校選項
-        if (Object?.keys(params)?.length === 0) {
+        if (objectIsEmpty(params)) {
             setSchoolOptions([]);
             return;
         }

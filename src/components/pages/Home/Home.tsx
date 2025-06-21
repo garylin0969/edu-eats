@@ -153,7 +153,7 @@ const Home = () => {
                 </Form>
             </section>
             {/* 空狀態區域 */}
-            <section className="flex flex-col items-center justify-center">
+            <section className="flex min-h-[calc(100vh_/_2)] flex-col items-center justify-center">
                 <div className="max-w-md space-y-4 text-center">
                     {/* 圖標 */}
                     <div className="mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-gray-100">

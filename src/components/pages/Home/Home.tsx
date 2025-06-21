@@ -97,54 +97,98 @@ const Home = () => {
     }, []);
 
     return (
-        <section className="my-5">
-            <Form {...form}>
-                <form className="w-full" onSubmit={handleSubmit(onSubmit)}>
-                    <FormLayout.Group as={FormLayout.Row}>
-                        <FormLayout.Col xs="6" md="4">
-                            <Combobox
-                                form={form}
-                                name="CountyId"
-                                placeholder="縣市"
-                                options={countyOptions}
-                                onChange={handleCountyChange}
-                            />
-                        </FormLayout.Col>
-                        <FormLayout.Col xs="6" md="4">
-                            <Combobox
-                                form={form}
-                                name="AreaId"
-                                placeholder="區域"
-                                options={areaOptions}
-                                onChange={handleChangeToSearchSchoolOptions}
-                            />
-                        </FormLayout.Col>
-                        <FormLayout.Col xs="12" md="4">
-                            <Combobox
-                                form={form}
-                                name="SchoolType"
-                                placeholder="院所類型"
-                                options={SCHOOL_TYPE_OPTIONS}
-                                onChange={handleChangeToSearchSchoolOptions}
-                            />
-                        </FormLayout.Col>
-                    </FormLayout.Group>
-                    <FormLayout.Group as={FormLayout.Row}>
-                        <FormLayout.Col xs="12" lg="5">
-                            <Combobox form={form} name="SchoolId" placeholder="學校名稱" options={schoolOptions} />
-                        </FormLayout.Col>
-                        <FormLayout.Col xs="6" lg="5">
-                            <DatePicker form={form} name="period" placeholder="日期" valueFormat={formatDateValue} />
-                        </FormLayout.Col>
-                        <FormLayout.Col xs="6" lg="2">
-                            <Button className="w-full" type="submit">
-                                查詢
-                            </Button>
-                        </FormLayout.Col>
-                    </FormLayout.Group>
-                </form>
-            </Form>
-        </section>
+        <>
+            <section className="my-5">
+                <Form {...form}>
+                    <form className="w-full" onSubmit={handleSubmit(onSubmit)}>
+                        <FormLayout.Group as={FormLayout.Row}>
+                            <FormLayout.Col xs="6" md="4">
+                                <Combobox
+                                    form={form}
+                                    name="CountyId"
+                                    placeholder="縣市"
+                                    options={countyOptions}
+                                    onChange={handleCountyChange}
+                                />
+                            </FormLayout.Col>
+                            <FormLayout.Col xs="6" md="4">
+                                <Combobox
+                                    form={form}
+                                    name="AreaId"
+                                    placeholder="區域"
+                                    options={areaOptions}
+                                    onChange={handleChangeToSearchSchoolOptions}
+                                />
+                            </FormLayout.Col>
+                            <FormLayout.Col xs="12" md="4">
+                                <Combobox
+                                    form={form}
+                                    name="SchoolType"
+                                    placeholder="院所類型"
+                                    options={SCHOOL_TYPE_OPTIONS}
+                                    onChange={handleChangeToSearchSchoolOptions}
+                                />
+                            </FormLayout.Col>
+                        </FormLayout.Group>
+                        <FormLayout.Group as={FormLayout.Row}>
+                            <FormLayout.Col xs="12" lg="5">
+                                <Combobox form={form} name="SchoolId" placeholder="學校名稱" options={schoolOptions} />
+                            </FormLayout.Col>
+                            <FormLayout.Col xs="6" lg="5">
+                                <DatePicker
+                                    form={form}
+                                    name="period"
+                                    placeholder="日期"
+                                    valueFormat={formatDateValue}
+                                />
+                            </FormLayout.Col>
+                            <FormLayout.Col xs="6" lg="2">
+                                <Button className="w-full" type="submit">
+                                    查詢
+                                </Button>
+                            </FormLayout.Col>
+                        </FormLayout.Group>
+                    </form>
+                </Form>
+            </section>
+            <section>
+                <div className="rounded-lg border border-purple-200 p-6 shadow-sm">
+                    <div className="flex items-start gap-4">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-purple-100">
+                            <svg
+                                className="h-5 w-5 text-purple-600 dark:text-purple-400"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                />
+                            </svg>
+                        </div>
+                        <div className="flex-1">
+                            <h3 className="mb-2 text-lg font-semibold text-gray-900">查詢資訊</h3>
+                            <p className="mb-3 text-sm leading-relaxed text-gray-600">
+                                透過上方表單選擇縣市、區域、院所類型和學校名稱，即可查詢指定日期的餐飲資訊。
+                            </p>
+                            <ul className="space-y-1 text-sm text-gray-500">
+                                <li className="flex items-center gap-2">
+                                    <span className="h-1.5 w-1.5 rounded-full bg-purple-400" />
+                                    請先選擇縣市，系統會自動載入對應的區域選項
+                                </li>
+                                <li className="flex items-center gap-2">
+                                    <span className="h-1.5 w-1.5 rounded-full bg-purple-400" />
+                                    選擇院所類型有助於縮小搜尋範圍
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </>
     );
 };
 

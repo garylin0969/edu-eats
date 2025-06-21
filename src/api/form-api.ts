@@ -14,7 +14,7 @@ export const GetCounty = (): Promise<ApiResponse<County[]>> => {
  * @param CountyId 縣市ID
  * @returns Promise<ApiResponse<Area[]>>
  */
-export const GetArea = (CountyId: number): Promise<ApiResponse<Area[]>> => {
+export const GetArea = (CountyId: string): Promise<ApiResponse<Area[]>> => {
     const params = { CountyId };
     return http.get<ApiResponse<Area[]>>('/area', { params });
 };

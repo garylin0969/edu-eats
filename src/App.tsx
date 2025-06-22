@@ -53,7 +53,7 @@ const router = createBrowserRouter([
 
 function App() {
     return (
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
             <QueryClientProvider client={queryClient}>
                 <RouterProvider router={router} />
                 <ReactQueryDevtools initialIsOpen={false} />

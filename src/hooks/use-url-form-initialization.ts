@@ -1,16 +1,9 @@
 import { useEffect } from 'react';
 import { GetSchool } from '@/api/form-api';
-
-interface FormData {
-    CountyId: string;
-    AreaId: string;
-    SchoolType: string;
-    SchoolId: string;
-    period: string;
-}
+import { HomeFormData } from '@/types';
 
 interface UseUrlFormInitializationParams {
-    setValue: (name: keyof FormData, value: string) => void;
+    setValue: (name: keyof HomeFormData, value: string) => void;
     searchAreaOptions: (countyId: string) => Promise<unknown[]>;
     searchSchoolOptions: (params: { CountyId?: string; AreaId?: string; SchoolType?: string }) => Promise<unknown[]>;
     searchParams: URLSearchParams;

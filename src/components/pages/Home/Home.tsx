@@ -16,22 +16,15 @@ import {
     useUrlManager,
     useUrlFormInitialization,
 } from '@/hooks';
+import { HomeFormData } from '@/types';
 import { formatDate } from '@/utils/date';
-
-interface FormData {
-    CountyId: string;
-    AreaId: string;
-    SchoolType: string;
-    SchoolId: string;
-    period: string;
-}
 
 // 日期格式化
 const DATE_FORMAT = 'YYYY-MM-DD';
 const TODAY_FORMATTED = formatDate(new Date(), DATE_FORMAT);
 
 // 表單預設值
-const defaultValues: FormData = {
+const defaultValues: HomeFormData = {
     CountyId: '',
     AreaId: '',
     SchoolType: '',
@@ -44,7 +37,7 @@ const formatDateValue = (date: Date): string => formatDate(date, DATE_FORMAT);
 
 const Home = () => {
     // 表單
-    const form = useForm<FormData>({ defaultValues });
+    const form = useForm<HomeFormData>({ defaultValues });
     const { handleSubmit, setValue, getValues, watch } = form;
 
     // 縣市選項
@@ -85,7 +78,7 @@ const Home = () => {
     }, [schoolId, period, updateUrlParams]);
 
     // 提交表單
-    const onSubmit = useCallback((data: FormData) => {
+    const onSubmit = useCallback((data: HomeFormData) => {
         console.log(data);
     }, []);
 

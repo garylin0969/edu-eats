@@ -1,16 +1,9 @@
 import { useCallback } from 'react';
-
-interface FormData {
-    CountyId: string;
-    AreaId: string;
-    SchoolType: string;
-    SchoolId: string;
-    period: string;
-}
+import { HomeFormData } from '@/types';
 
 interface UseFormInteractionsParams {
-    setValue: (name: keyof FormData, value: string) => void;
-    getValues: () => FormData;
+    setValue: (name: keyof HomeFormData, value: string) => void;
+    getValues: () => HomeFormData;
     searchAreaOptions: (countyId: string) => Promise<unknown[]>;
     clearAreaOptions: () => void;
     searchSchoolOptions: (params: { CountyId?: string; AreaId?: string; SchoolType?: string }) => Promise<unknown[]>;

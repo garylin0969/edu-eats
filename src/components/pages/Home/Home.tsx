@@ -1,8 +1,6 @@
 import { Utensils } from 'lucide-react';
 import { useForm } from 'react-hook-form';
-import { useSearchParams, useNavigate } from 'react-router-dom';
-import { useCallback, useState, useEffect } from 'react';
-import { GetArea, GetSchool } from '@/api/form-api';
+import { useCallback, useEffect } from 'react';
 import Combobox from '@/components/molecules/Combobox';
 import DatePicker from '@/components/molecules/DatePicker';
 import FormLayout from '@/components/molecules/FormLayout';
@@ -10,11 +8,15 @@ import Placeholder from '@/components/molecules/Placeholder';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
 import { SCHOOL_TYPE_OPTIONS } from '@/constants';
-import { useCounty } from '@/hooks';
-import { Option } from '@/types';
-import { transformToOptions } from '@/utils/common';
+import {
+    useCounty,
+    useAreaOptions,
+    useSchoolOptions,
+    useFormInteractions,
+    useUrlManager,
+    useUrlFormInitialization,
+} from '@/hooks';
 import { formatDate } from '@/utils/date';
-import { filterObjectEmptyValues, objectIsEmpty } from '@/utils/object';
 
 interface FormData {
     CountyId: string;
@@ -40,212 +42,13 @@ const defaultValues: FormData = {
 // 日期格式化 for DatePicker
 const formatDateValue = (date: Date): string => formatDate(date, DATE_FORMAT);
 
-// 管理區域選項
-const useAreaOptions = () => {
-    const [areaOptions, setAreaOptions] = useState<Option[]>([]);
-
-    const searchAreaOptions = useCallback(async (countyId: string) => {
-        if (!countyId) {
-            setAreaOptions([]);
-            return [];
-        }
-
-        // 搜尋區域
-        const result = await GetArea(countyId);
-        // 轉換為選項
-        const newAreaOptions = transformToOptions(result?.data, 'Area', 'AreaId');
-        setAreaOptions(newAreaOptions);
-        return result?.data || [];
-    }, []);
-
-    const clearAreaOptions = useCallback(() => {
-        setAreaOptions([]);
-    }, []);
-
-    return {
-        areaOptions,
-        searchAreaOptions,
-        clearAreaOptions,
-    };
-};
-
-// 管理學校選項
-const useSchoolOptions = () => {
-    const [schoolOptions, setSchoolOptions] = useState<Option[]>([]);
-
-    const searchSchoolOptions = useCallback(
-        async (params: { CountyId?: string; AreaId?: string; SchoolType?: string }) => {
-            const filteredParams = filterObjectEmptyValues(params);
-            if (objectIsEmpty(filteredParams)) {
-                setSchoolOptions([]);
-                return [];
-            }
-
-            // 搜尋學校
-            const result = await GetSchool(filteredParams);
-            // 轉換為選項
-            const newSchoolOptions = transformToOptions(result?.data, 'SchoolName', 'SchoolId');
-            setSchoolOptions(newSchoolOptions);
-            return result?.data || [];
-        },
-        []
-    );
-
-    const clearSchoolOptions = useCallback(() => {
-        setSchoolOptions([]);
-    }, []);
-
-    return {
-        schoolOptions,
-        searchSchoolOptions,
-        clearSchoolOptions,
-    };
-};
-
-// 管理表單聯動邏輯
-const useFormInteractions = (
-    setValue: (name: keyof FormData, value: string) => void,
-    getValues: () => FormData,
-    searchAreaOptions: (countyId: string) => Promise<unknown[]>,
-    clearAreaOptions: () => void,
-    searchSchoolOptions: (params: { CountyId?: string; AreaId?: string; SchoolType?: string }) => Promise<unknown[]>,
-    clearSchoolOptions: () => void
-) => {
-    // 基於當前表單值搜尋學校選項
-    const handleSearchSchoolOptions = useCallback(async () => {
-        const { CountyId, AreaId, SchoolType } = getValues();
-        await searchSchoolOptions({ CountyId, AreaId, SchoolType });
-    }, [getValues, searchSchoolOptions]);
-
-    // 縣市選擇變更
-    const handleCountyChange = useCallback(
-        async (countyId: string) => {
-            setValue('AreaId', ''); // 清空區域選擇
-            setValue('SchoolId', ''); // 清空學校選擇
-
-            if (!countyId) {
-                clearAreaOptions();
-                clearSchoolOptions();
-                return;
-            }
-
-            await searchAreaOptions(countyId);
-            await handleSearchSchoolOptions();
-        },
-        [setValue, searchAreaOptions, clearAreaOptions, clearSchoolOptions, handleSearchSchoolOptions]
-    );
-
-    // 區域選擇變更
-    const handleAreaChange = useCallback(async () => {
-        setValue('SchoolId', ''); // 清空學校選擇
-        await handleSearchSchoolOptions();
-    }, [setValue, handleSearchSchoolOptions]);
-
-    // 學校類型變更
-    const handleSchoolTypeChange = useCallback(async () => {
-        setValue('SchoolId', ''); // 清空學校選擇
-        await handleSearchSchoolOptions();
-    }, [setValue, handleSearchSchoolOptions]);
-
-    return {
-        handleCountyChange,
-        handleAreaChange,
-        handleSchoolTypeChange,
-    };
-};
-
-// 管理 URL 參數
-const useUrlManager = () => {
-    const navigate = useNavigate();
-    const [searchParams] = useSearchParams();
-
-    const updateUrlParams = useCallback(
-        (schoolId: string, period: string) => {
-            const newSearchParams = new URLSearchParams(searchParams);
-
-            if (schoolId) {
-                newSearchParams.set('SchoolId', schoolId);
-            } else {
-                newSearchParams.delete('SchoolId');
-            }
-
-            if (period) {
-                newSearchParams.set('period', period);
-            } else {
-                newSearchParams.delete('period');
-            }
-
-            navigate(`?${newSearchParams.toString()}`, { replace: true });
-        },
-        [navigate, searchParams]
-    );
-
-    return { updateUrlParams, searchParams };
-};
-
-// 從 URL 參數初始化表單
-const useUrlFormInitialization = (
-    setValue: (name: keyof FormData, value: string) => void,
-    searchAreaOptions: (countyId: string) => Promise<unknown[]>,
-    searchSchoolOptions: (params: { CountyId?: string; AreaId?: string; SchoolType?: string }) => Promise<unknown[]>,
-    searchParams: URLSearchParams
-) => {
-    useEffect(() => {
-        const initializeFormFromUrl = async () => {
-            const schoolId = searchParams.get('SchoolId');
-            const period = searchParams.get('period');
-
-            // 設定日期參數
-            if (period) {
-                setValue('period', period);
-            }
-
-            // 設定學校參數
-            if (schoolId) {
-                try {
-                    // 搜尋所有學校來找到目標學校
-                    const schoolResult = await GetSchool({ SchoolName: '', CountyId: '', AreaId: '', SchoolType: '' });
-                    const targetSchool = schoolResult?.data?.find((school) => school.SchoolId?.toString() === schoolId);
-
-                    if (targetSchool?.CountyId && targetSchool?.AreaId) {
-                        const { CountyId, AreaId, SchoolType } = targetSchool;
-
-                        // 設定縣市
-                        setValue('CountyId', CountyId.toString());
-
-                        // 設定區域
-                        await searchAreaOptions(CountyId.toString());
-                        setValue('AreaId', AreaId.toString());
-
-                        // 設定學校類型
-                        if (SchoolType) {
-                            setValue('SchoolType', SchoolType.toString());
-                        }
-
-                        // 設定學校選項和值
-                        await searchSchoolOptions({
-                            CountyId: CountyId.toString(),
-                            AreaId: AreaId.toString(),
-                            SchoolType: SchoolType?.toString() || '',
-                        });
-                        setValue('SchoolId', schoolId);
-                    }
-                } catch (error) {
-                    console.error('Error initializing form from URL:', error);
-                }
-            }
-        };
-
-        initializeFormFromUrl();
-    }, [searchParams, setValue, searchAreaOptions, searchSchoolOptions]);
-};
-
 const Home = () => {
-    const { countyOptions } = useCounty(); // 縣市選項
-
     // 表單
     const form = useForm<FormData>({ defaultValues });
     const { handleSubmit, setValue, getValues, watch } = form;
+
+    // 縣市選項
+    const { countyOptions } = useCounty();
 
     // URL 管理
     const { updateUrlParams, searchParams } = useUrlManager();
@@ -257,17 +60,22 @@ const Home = () => {
     const { schoolOptions, searchSchoolOptions, clearSchoolOptions } = useSchoolOptions();
 
     // 表單聯動邏輯
-    const { handleCountyChange, handleAreaChange, handleSchoolTypeChange } = useFormInteractions(
+    const { handleCountyChange, handleAreaChange, handleSchoolTypeChange } = useFormInteractions({
         setValue,
         getValues,
         searchAreaOptions,
         clearAreaOptions,
         searchSchoolOptions,
-        clearSchoolOptions
-    );
+        clearSchoolOptions,
+    });
 
     // URL 參數初始化
-    useUrlFormInitialization(setValue, searchAreaOptions, searchSchoolOptions, searchParams);
+    useUrlFormInitialization({
+        setValue,
+        searchAreaOptions,
+        searchSchoolOptions,
+        searchParams,
+    });
 
     // 監聽學校和日期變化並更新 URL
     const schoolId = watch('SchoolId');

@@ -25,7 +25,7 @@ export interface DateFormatOptions {
  * @param options - 格式化選項
  * @returns 格式化後的日期字串
  */
-export function formatDate(
+export const formatDate = (
     date: Date | string | number,
     format:
         | 'iso'
@@ -39,7 +39,7 @@ export function formatDate(
         | 'custom'
         | string = 'local',
     options: DateFormatOptions = {}
-): string {
+): string => {
     const dateObj = new Date(date);
 
     if (isNaN(dateObj.getTime())) {
@@ -126,12 +126,12 @@ export function formatDate(
             // 處理自定義格式字串
             return formatWithPattern(dateObj, format);
     }
-}
+};
 
 /**
  * 獲取相對時間（例如：2小時前、3天前）
  */
-function getRelativeTime(date: Date): string {
+const getRelativeTime = (date: Date): string => {
     const now = new Date();
     const diffInMs = now.getTime() - date.getTime();
     const diffInSeconds = Math.floor(diffInMs / 1000);
@@ -157,12 +157,12 @@ function getRelativeTime(date: Date): string {
     } else {
         return `${diffInYears}年前`;
     }
-}
+};
 
 /**
  * 自定義日期格式化
  */
-function formatCustomDate(date: Date, options: DateFormatOptions): string {
+const formatCustomDate = (date: Date, options: DateFormatOptions): string => {
     const { locale = 'zh-TW', timeZone = 'Asia/Taipei' } = options;
 
     return date.toLocaleString(locale, {
@@ -176,12 +176,12 @@ function formatCustomDate(date: Date, options: DateFormatOptions): string {
         second: '2-digit',
         hour12: false,
     });
-}
+};
 
 /**
  * 使用模式字串格式化日期
  */
-function formatWithPattern(date: Date, pattern: string): string {
+const formatWithPattern = (date: Date, pattern: string): string => {
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
     const day = date.getDate();
@@ -204,7 +204,7 @@ function formatWithPattern(date: Date, pattern: string): string {
         .replace('ss', seconds.toString().padStart(2, '0'))
         .replace('s', seconds.toString())
         .replace('SSS', milliseconds.toString().padStart(3, '0'));
-}
+};
 
 /**
  * 獲取日期範圍
@@ -213,65 +213,65 @@ function formatWithPattern(date: Date, pattern: string): string {
  * @param format - 輸出格式
  * @returns 日期範圍字串
  */
-export function getDateRange(
+export const getDateRange = (
     startDate: Date | string | number,
     endDate: Date | string | number,
     format: 'iso' | 'local' | 'short' | 'long' = 'local'
-): string {
+): string => {
     const start = formatDate(startDate, format);
     const end = formatDate(endDate, format);
     return `${start} - ${end}`;
-}
+};
 
 /**
  * 檢查日期是否為今天
  */
-export function isToday(date: Date | string | number): boolean {
+export const isToday = (date: Date | string | number): boolean => {
     const dateObj = new Date(date);
     const today = new Date();
     return dateObj.toDateString() === today.toDateString();
-}
+};
 
 /**
  * 檢查日期是否為昨天
  */
-export function isYesterday(date: Date | string | number): boolean {
+export const isYesterday = (date: Date | string | number): boolean => {
     const dateObj = new Date(date);
     const yesterday = new Date();
     yesterday.setDate(yesterday.getDate() - 1);
     return dateObj.toDateString() === yesterday.toDateString();
-}
+};
 
 /**
  * 檢查日期是否為明天
  */
-export function isTomorrow(date: Date | string | number): boolean {
+export const isTomorrow = (date: Date | string | number): boolean => {
     const dateObj = new Date(date);
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
     return dateObj.toDateString() === tomorrow.toDateString();
-}
+};
 
 /**
  * 獲取日期是星期幾
  */
-export function getDayOfWeek(date: Date | string | number, locale: string = 'zh-TW'): string {
+export const getDayOfWeek = (date: Date | string | number, locale: string = 'zh-TW'): string => {
     const dateObj = new Date(date);
     return dateObj.toLocaleDateString(locale, { weekday: 'long' });
-}
+};
 
 /**
  * 獲取月份名稱
  */
-export function getMonthName(date: Date | string | number, locale: string = 'zh-TW'): string {
+export const getMonthName = (date: Date | string | number, locale: string = 'zh-TW'): string => {
     const dateObj = new Date(date);
     return dateObj.toLocaleDateString(locale, { month: 'long' });
-}
+};
 
 /**
  * 計算兩個日期之間的差異
  */
-export function getDateDifference(
+export const getDateDifference = (
     date1: Date | string | number,
     date2: Date | string | number
 ): {
@@ -280,7 +280,7 @@ export function getDateDifference(
     minutes: number;
     seconds: number;
     milliseconds: number;
-} {
+} => {
     const d1 = new Date(date1);
     const d2 = new Date(date2);
     const diffInMs = Math.abs(d2.getTime() - d1.getTime());
@@ -292,55 +292,150 @@ export function getDateDifference(
     const milliseconds = diffInMs % 1000;
 
     return { days, hours, minutes, seconds, milliseconds };
-}
+};
 
 /**
  * 添加天數到日期
  */
-export function addDays(date: Date | string | number, days: number): Date {
+export const addDays = (date: Date | string | number, days: number): Date => {
     const dateObj = new Date(date);
     dateObj.setDate(dateObj.getDate() + days);
     return dateObj;
-}
+};
 
 /**
  * 添加月份到日期
  */
-export function addMonths(date: Date | string | number, months: number): Date {
+export const addMonths = (date: Date | string | number, months: number): Date => {
     const dateObj = new Date(date);
     dateObj.setMonth(dateObj.getMonth() + months);
     return dateObj;
-}
+};
 
 /**
  * 添加年份到日期
  */
-export function addYears(date: Date | string | number, years: number): Date {
+export const addYears = (date: Date | string | number, years: number): Date => {
     const dateObj = new Date(date);
     dateObj.setFullYear(dateObj.getFullYear() + years);
     return dateObj;
-}
+};
 
 /**
  * 獲取月份的第一天
  */
-export function getFirstDayOfMonth(date: Date | string | number): Date {
+export const getFirstDayOfMonth = (date: Date | string | number): Date => {
     const dateObj = new Date(date);
     return new Date(dateObj.getFullYear(), dateObj.getMonth(), 1);
-}
+};
 
 /**
  * 獲取月份的最後一天
  */
-export function getLastDayOfMonth(date: Date | string | number): Date {
+export const getLastDayOfMonth = (date: Date | string | number): Date => {
     const dateObj = new Date(date);
     return new Date(dateObj.getFullYear(), dateObj.getMonth() + 1, 0);
-}
+};
 
 /**
  * 檢查是否為閏年
  */
-export function isLeapYear(date: Date | string | number): boolean {
+export const isLeapYear = (date: Date | string | number): boolean => {
     const year = new Date(date).getFullYear();
     return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
-}
+};
+
+/**
+ * 獲取格式對應的正則表達式
+ */
+export const getFormatRegex = (format: string): RegExp => {
+    switch (format) {
+        case 'YYYY-MM-DD':
+            return /^\d{4}-\d{2}-\d{2}$/;
+        case 'YYYY/MM/DD':
+            return /^\d{4}\/\d{2}\/\d{2}$/;
+        case 'DD/MM/YYYY':
+            return /^\d{2}\/\d{2}\/\d{4}$/;
+        case 'MM/DD/YYYY':
+            return /^\d{2}\/\d{2}\/\d{4}$/;
+        case 'DD-MM-YYYY':
+            return /^\d{2}-\d{2}-\d{4}$/;
+        case 'MM-DD-YYYY':
+            return /^\d{2}-\d{2}-\d{4}$/;
+        default:
+            return /^\d{4}-\d{2}-\d{2}$/;
+    }
+};
+
+/**
+ * 將日期字串轉換為標準格式進行驗證
+ */
+export const parseToStandardDate = (dateString: string, format: string): Date | null => {
+    let year: number, month: number, day: number;
+
+    const parts = dateString.split(/[-/]/);
+    if (parts.length !== 3) return null;
+
+    switch (format) {
+        case 'YYYY-MM-DD':
+        case 'YYYY/MM/DD':
+            [year, month, day] = parts.map(Number);
+            break;
+        case 'DD/MM/YYYY':
+        case 'DD-MM-YYYY':
+            [day, month, year] = parts.map(Number);
+            break;
+        case 'MM/DD/YYYY':
+        case 'MM-DD-YYYY':
+            [month, day, year] = parts.map(Number);
+            break;
+        default:
+            return null;
+    }
+
+    // 檢查數值是否有效
+    if (isNaN(year) || isNaN(month) || isNaN(day)) return null;
+    if (year < 1000 || year > 9999) return null;
+    if (month < 1 || month > 12) return null;
+    if (day < 1 || day > 31) return null;
+
+    return new Date(year, month - 1, day);
+};
+
+/**
+ * 驗證日期格式是否符合指定格式
+ * @param dateString - 要驗證的日期字串
+ * @param format - 日期格式字串（如 'YYYY-MM-DD'），預設為 'YYYY-MM-DD'
+ * @returns 是否為有效的日期格式
+ */
+export const isValidDateFormat = (dateString: string, format: string = 'YYYY-MM-DD'): boolean => {
+    try {
+        // 基本格式檢查
+        const formatRegex = getFormatRegex(format);
+        if (!formatRegex.test(dateString)) {
+            return false;
+        }
+
+        // 解析日期
+        const parsedDate = parseToStandardDate(dateString, format);
+        if (!parsedDate || isNaN(parsedDate.getTime())) {
+            return false;
+        }
+
+        // 使用現有的 formatWithPattern 函數來格式化回原格式進行比較
+        const formattedBack = formatWithPattern(parsedDate, format);
+        return formattedBack === dateString;
+    } catch {
+        return false;
+    }
+};
+
+/**
+ * 獲取今日日期的指定格式字串
+ * @param format - 日期格式字串（如 'YYYY-MM-DD'），預設為 'YYYY-MM-DD'
+ * @returns 今日日期字串
+ */
+export const getTodayDateString = (format: string = 'YYYY-MM-DD'): string => {
+    const today = new Date();
+    return formatWithPattern(today, format);
+};

@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { GetSchool } from '@/api/form-api';
 import { HomeFormData } from '@/types';
+import { isValidDateFormat, getTodayDateString } from '@/utils/date';
 
 interface UseUrlFormInitializationParams {
     setValue: (name: keyof HomeFormData, value: string) => void;
@@ -26,7 +27,9 @@ const useUrlFormInitialization = ({
 
             // 設定日期參數
             if (period) {
-                setValue('period', period);
+                // 驗證日期格式，如果不符合 YYYY-MM-DD 格式則使用今日日期
+                const validPeriod = isValidDateFormat(period) ? period : getTodayDateString();
+                setValue('period', validPeriod);
             }
 
             // 設定學校參數

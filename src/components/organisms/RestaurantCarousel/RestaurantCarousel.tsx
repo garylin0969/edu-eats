@@ -18,6 +18,8 @@ const RestaurantCarousel = ({ className }: RestaurantCarouselProps) => {
                         return (
                             <CarouselItem key={index} className="basis-1/3 md:basis-1/4 lg:basis-1/6">
                                 <ComposableCard
+                                    title=""
+                                    description=""
                                     cardClassName="overflow-hidden p-0"
                                     cardHeaderClassName="visuallyhidden"
                                     cardContentClassName="p-0"

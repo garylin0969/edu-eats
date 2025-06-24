@@ -21,31 +21,18 @@ interface RestaurantCarouselProps {
  */
 const RestaurantCarousel = ({ className, onRestaurantClick }: RestaurantCarouselProps) => {
     // 餐廳查詢 - 當 URL 中同時存在 SchoolId 和 period 時自動調用
-    const { data, isLoading, isError, shouldFetch, schoolId, period, refetch } = useCanteenQuery();
+    const { data, isLoading, isFetching, isError, schoolId, period, refetch } = useCanteenQuery();
 
     const handleRestaurantClick = (restaurant: Restaurant) => () => onRestaurantClick?.(restaurant);
-
-    // 渲染內容
-    if (!shouldFetch) {
-        return (
-            <>
-                <section className={className}>
-                    <Carousel opts={{ dragFree: true, align: 'start', loop: true }}>
-                        <CarouselContent>{/* 空的輪播 */}</CarouselContent>
-                        <CarouselPrevious className="-left-3" />
-                        <CarouselNext className="-right-3" />
-                    </Carousel>
-                </section>
-                <Placeholder type="empty" />
-            </>
-        );
-    }
 
     if (isLoading) {
         return <Placeholder type="loading" />;
     }
 
     if (isError) {
+        if (isFetching) {
+            return <Placeholder type="loading" />;
+        }
         return <Placeholder type="error" refetch={refetch} />;
     }
 

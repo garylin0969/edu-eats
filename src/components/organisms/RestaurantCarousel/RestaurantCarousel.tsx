@@ -28,6 +28,9 @@ const RestaurantCarousel = ({ className }: RestaurantCarouselProps) => {
                                             imageSrc="https://img.4gamers.com.tw/news-image/8043dc2a-bcfa-4265-934d-4657d05b67a3.jpg"
                                             imageAlt="餐廳圖片"
                                             title="餐廳名稱"
+                                            onClick={() => {
+                                                console.log('click:', index);
+                                            }}
                                         />
                                     }
                                 />

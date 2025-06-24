@@ -136,6 +136,7 @@ const Home = () => {
                     </form>
                 </Form>
             </section>
+            {/* 餐廳輪播 */}
             <RestaurantCarousel />
             <Placeholder type="empty" />
             <Placeholder type="loading" />

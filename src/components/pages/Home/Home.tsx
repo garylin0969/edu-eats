@@ -1,6 +1,9 @@
+import { useQuery } from '@tanstack/react-query';
 import { Utensils } from 'lucide-react';
 import { useForm } from 'react-hook-form';
-import { useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { GetYesNo } from '@/api/test';
+import type { YesNoResponse } from '@/api/test';
 import Combobox from '@/components/molecules/Combobox';
 import DatePicker from '@/components/molecules/DatePicker';
 import FormLayout from '@/components/molecules/FormLayout';
@@ -37,6 +40,13 @@ const defaultValues: HomeFormData = {
 const formatDateValue = (date: Date): string => formatDate(date, DATE_FORMAT);
 
 const Home = () => {
+    // 測試
+    const [yesNo, setYesNo] = useState<YesNoResponse | null>(null);
+    const { data } = useQuery({
+        queryKey: ['yes-no'],
+        queryFn: () => GetYesNo(),
+        select: (result) => result.data,
+    });
     // 表單
     const form = useForm<HomeFormData>({ defaultValues });
     const { handleSubmit, setValue, getValues } = form;
@@ -80,6 +90,12 @@ const Home = () => {
         },
         [updateUrlParams]
     );
+
+    useEffect(() => {
+        GetYesNo().then((res) => {
+            setYesNo(res.data);
+        });
+    }, []);
 
     return (
         <>
@@ -145,6 +161,12 @@ const Home = () => {
                     // 這裡可以添加點擊餐廳後的邏輯，比如顯示菜單
                 }}
             />
+
+            {/* 測試 */}
+            <p>測試API useEffect</p>
+            <pre>{JSON.stringify(yesNo, null, 2)}</pre>
+            <p>測試API useQuery</p>
+            <pre>{JSON.stringify(data, null, 2)}</pre>
 
             {/* 其他 Placeholder 示例 */}
             <Placeholder type="loading" />

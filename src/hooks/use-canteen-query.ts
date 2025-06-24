@@ -38,6 +38,7 @@ const useCanteenQuery = () => {
         enabled: shouldFetch, // 只有當參數完整時才執行查詢
         staleTime: 5 * 60 * 1000, // 5分鐘緩存
         refetchOnWindowFocus: false,
+        select: (result) => result?.data,
     });
 
     return {

@@ -38,3 +38,70 @@ export interface School {
     AreaId: number | null;
     SchoolType: number | null;
 }
+
+// 餐廳搜尋參數類型
+export interface CanteenParams {
+    SchoolId: number;
+    SFStreetId?: number;
+    period?: string;
+}
+
+// 餐廳數據類型
+export interface Restaurant {
+    SchoolId: number;
+    SchoolName: string;
+    SFStreetId: number;
+    SFStreetName: string;
+    RestaurantId: number;
+    RestaurantName: string;
+    kitchenId: string;
+    companyId: string;
+    address: string;
+    tel: string;
+    Hours1_desc: string;
+    Hours1_value: string;
+    Hours2_desc: string;
+    Hours2_value: string;
+    mealItems: string;
+    manager: string;
+    isEnable: string;
+    enable: number;
+    createDate: string;
+    RmodifyDate: string;
+    sfsmodifyDate: string;
+}
+
+// 餐廳菜單搜尋參數類型
+export interface MealParams {
+    SchoolId: number;
+    RestaurantId: number;
+    period: string;
+}
+
+// 菜單項目類型
+export interface MealItem {
+    RMenuDishId: number;
+    RDishTypeId: string;
+    RDishTypeName: string;
+    RDishId: number;
+    RDishName: string;
+    MenuDate: string;
+    SortOrder: number;
+    IngredientList: string;
+    calorie: number;
+    createUser: string;
+    createDate: string;
+    modifyUser: string | null;
+    modifyDate: string | null;
+}
+
+// 餐廳菜單數據類型
+export interface RestaurantMeal {
+    SchoolId: number;
+    SchoolName: string;
+    SFStreetId: number;
+    SFStreetName: string;
+    RestaurantId: number;
+    RestaurantName: string;
+    Meal: MealItem[];
+}

@@ -251,6 +251,46 @@
                     }
                 }
             }
+        },
+        "/kitchen/logo/{kitchenId}": {
+            "get": {
+                "tags": [
+                    "canteen"
+                ],
+                "summary": "取得廚房/餐廳 Logo 圖片",
+                "description": "根據廚房ID取得對應的 Logo 圖片",
+                "operationId": "getKitchenLogo",
+                "produces": [
+                    "image/jpeg",
+                    "image/png",
+                    "image/gif",
+                    "image/webp"
+                ],
+                "parameters": [
+                    {
+                        "name": "kitchenId",
+                        "in": "path",
+                        "description": "廚房ID",
+                        "required": true,
+                        "type": "string",
+                        "example": "15833"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功取得 Logo 圖片",
+                        "schema": {
+                            "type": "file"
+                        }
+                    },
+                    "404": {
+                        "description": "找不到對應的 Logo 圖片"
+                    },
+                    "500": {
+                        "description": "伺服器內部錯誤"
+                    }
+                }
+            }
         }
     },
     "definitions": {

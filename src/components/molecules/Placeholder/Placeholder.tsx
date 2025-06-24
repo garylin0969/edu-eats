@@ -88,7 +88,7 @@ const Placeholder = ({
                 {finalDescription && (
                     <p className={cn('text-muted-foreground', descriptionClassName)}>{finalDescription}</p>
                 )}
-                {type === 'error' && (
+                {type === 'error' && refetch && (
                     <Button
                         className={cn('mt-4 p-5 text-lg font-normal', refetchButtonClassName)}
                         onClick={handleRefetch}

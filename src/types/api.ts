@@ -39,6 +39,15 @@ export interface School {
     SchoolType: number | null;
 }
 
+// 學校詳細資料類型
+export interface SchoolDetail {
+    SchoolId: number;
+    SchoolName: string;
+    CountyId: number;
+    AreaId: number;
+    SchoolType: number;
+}
+
 // 餐廳搜尋參數類型
 export interface CanteenParams {
     SchoolId: number;

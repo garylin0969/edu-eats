@@ -3,7 +3,7 @@ import ComposableCard from '@/components/molecules/ComposableCard';
 import ImageCard from '@/components/molecules/ImageCard';
 import Placeholder from '@/components/molecules/Placeholder';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
-import { useCanteenQuery } from '@/hooks';
+import { useCanteenQuery, useSchoolById } from '@/hooks';
 import { Restaurant } from '@/types';
 
 /**
@@ -22,6 +22,9 @@ interface RestaurantCarouselProps {
 const RestaurantCarousel = ({ className, onRestaurantClick }: RestaurantCarouselProps) => {
     // 餐廳查詢 - 當 URL 中同時存在 SchoolId 和 period 時自動調用
     const { data, isLoading, isFetching, isError, schoolId, period, refetch } = useCanteenQuery();
+
+    // 學校查詢 - 當 URL 中存在 SchoolId 時自動調用
+    const { data: schoolDetail } = useSchoolById({ schoolId });
 
     const handleRestaurantClick = (restaurant: Restaurant) => () => onRestaurantClick?.(restaurant);
 
@@ -55,7 +58,7 @@ const RestaurantCarousel = ({ className, onRestaurantClick }: RestaurantCarousel
                                         <ImageCard
                                             imageSrc={`${DEFAULT_RESTAURANT_IMAGE_PATH}${restaurant?.kitchenId}`}
                                             imageAlt={`${restaurant?.RestaurantName}餐廳圖片`}
-                                            title={restaurant?.RestaurantName || '餐廳名稱'}
+                                            title={restaurant?.RestaurantName ?? '餐廳名稱'}
                                             onClick={handleRestaurantClick(restaurant)}
                                         />
                                     }
@@ -74,7 +77,7 @@ const RestaurantCarousel = ({ className, onRestaurantClick }: RestaurantCarousel
             <Placeholder
                 icon={<Utensils className="h-12 w-12 text-gray-400" />}
                 title="目前無餐廳相關資料"
-                description={`學校ID: ${schoolId}, 日期: ${period}`}
+                description={`學校: ${schoolDetail?.SchoolName ?? ''}, 日期: ${period ?? ''}`}
             />
         );
     }

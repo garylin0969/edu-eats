@@ -12,7 +12,7 @@ interface RestaurantCarouselProps {
 const RestaurantCarousel = ({ className }: RestaurantCarouselProps) => {
     return (
         <section className={className}>
-            <Carousel className="" opts={{ dragFree: true, align: 'start', loop: true }}>
+            <Carousel opts={{ dragFree: true, align: 'start', loop: true }}>
                 <CarouselContent>
                     {Array.from({ length: 12 }).map((_, index) => {
                         return (

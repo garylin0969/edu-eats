@@ -22,6 +22,10 @@
         {
             "name": "school",
             "description": "學校資料相關操作"
+        },
+        {
+            "name": "canteen",
+            "description": "餐廳資料相關操作"
         }
     ],
     "schemes": [
@@ -188,6 +192,59 @@
                     },
                     "404": {
                         "description": "學校不存在"
+                    },
+                    "500": {
+                        "description": "伺服器內部錯誤"
+                    }
+                }
+            }
+        },
+        "/canteen": {
+            "get": {
+                "tags": [
+                    "canteen"
+                ],
+                "summary": "搜尋學校餐廳資料",
+                "description": "根據學校ID搜尋該學校的餐廳資料，可選擇性指定校區和時間期間",
+                "operationId": "searchCanteens",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "SchoolId",
+                        "in": "query",
+                        "description": "學校ID",
+                        "required": true,
+                        "type": "integer",
+                        "example": 64741748
+                    },
+                    {
+                        "name": "SFStreetId",
+                        "in": "query",
+                        "description": "校區ID",
+                        "required": false,
+                        "type": "integer",
+                        "example": 71
+                    },
+                    {
+                        "name": "period",
+                        "in": "query",
+                        "description": "查詢時間期間 (格式: YYYY-MM-DD)",
+                        "required": false,
+                        "type": "string",
+                        "example": "2025-06-24"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功取得餐廳資料",
+                        "schema": {
+                            "$ref": "#/definitions/CanteenResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "請求參數錯誤"
                     },
                     "500": {
                         "description": "伺服器內部錯誤"
@@ -440,6 +497,169 @@
                 "CountyId",
                 "AreaId",
                 "SchoolType"
+            ]
+        },
+        "CanteenResponse": {
+            "type": "object",
+            "properties": {
+                "result": {
+                    "type": "integer",
+                    "description": "回應結果狀態",
+                    "example": 1
+                },
+                "message": {
+                    "type": "string",
+                    "description": "回應訊息",
+                    "example": "Search School - Restaurant Successful"
+                },
+                "data": {
+                    "type": "array",
+                    "description": "餐廳資料陣列",
+                    "items": {
+                        "$ref": "#/definitions/Restaurant"
+                    }
+                }
+            },
+            "required": [
+                "result",
+                "message",
+                "data"
+            ]
+        },
+        "Restaurant": {
+            "type": "object",
+            "properties": {
+                "SchoolId": {
+                    "type": "integer",
+                    "description": "學校ID",
+                    "example": 64741748
+                },
+                "SchoolName": {
+                    "type": "string",
+                    "description": "學校名稱",
+                    "example": "臺北市大安區國立臺灣師範大學"
+                },
+                "SFStreetId": {
+                    "type": "integer",
+                    "description": "校區ID",
+                    "example": 71
+                },
+                "SFStreetName": {
+                    "type": "string",
+                    "description": "校區名稱",
+                    "example": "公館校區"
+                },
+                "RestaurantId": {
+                    "type": "integer",
+                    "description": "餐廳ID",
+                    "example": 100133
+                },
+                "RestaurantName": {
+                    "type": "string",
+                    "description": "餐廳名稱",
+                    "example": "學7中餐廳"
+                },
+                "kitchenId": {
+                    "type": "string",
+                    "description": "廚房ID",
+                    "example": "15833"
+                },
+                "companyId": {
+                    "type": "string",
+                    "description": "公司ID",
+                    "example": "225535673"
+                },
+                "address": {
+                    "type": "string",
+                    "description": "地址",
+                    "example": "台北市汀洲路4段89號學2舍中餐廳"
+                },
+                "tel": {
+                    "type": "string",
+                    "description": "電話",
+                    "example": "(03) 4317235"
+                },
+                "Hours1_desc": {
+                    "type": "string",
+                    "description": "營業時間1描述",
+                    "example": "平日"
+                },
+                "Hours1_value": {
+                    "type": "string",
+                    "description": "營業時間1時段",
+                    "example": "11:00~14:00"
+                },
+                "Hours2_desc": {
+                    "type": "string",
+                    "description": "營業時間2描述",
+                    "example": "平日"
+                },
+                "Hours2_value": {
+                    "type": "string",
+                    "description": "營業時間2時段",
+                    "example": "17:00~19:00"
+                },
+                "mealItems": {
+                    "type": "string",
+                    "description": "餐點類型",
+                    "example": "自助餐"
+                },
+                "manager": {
+                    "type": "string",
+                    "description": "負責人",
+                    "example": "林麗蓉"
+                },
+                "isEnable": {
+                    "type": "string",
+                    "description": "是否啟用 (字串格式)",
+                    "example": "1"
+                },
+                "enable": {
+                    "type": "integer",
+                    "description": "是否啟用 (數字格式)",
+                    "example": 1
+                },
+                "createDate": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "建立時間",
+                    "example": "2016-01-27T07:06:08.000Z"
+                },
+                "RmodifyDate": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "最後修改時間",
+                    "example": "2025-02-19T07:50:33.000Z"
+                },
+                "sfsmodifyDate": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "SFS最後修改時間",
+                    "example": "2020-03-03T01:04:13.000Z"
+                }
+            },
+            "required": [
+                "SchoolId",
+                "SchoolName",
+                "SFStreetId",
+                "SFStreetName",
+                "RestaurantId",
+                "RestaurantName",
+                "kitchenId",
+                "companyId",
+                "address",
+                "tel",
+                "Hours1_desc",
+                "Hours1_value",
+                "Hours2_desc",
+                "Hours2_value",
+                "mealItems",
+                "manager",
+                "isEnable",
+                "enable",
+                "createDate",
+                "RmodifyDate",
+                "sfsmodifyDate"
             ]
         }
     }

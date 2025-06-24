@@ -1,6 +1,6 @@
 import { Utensils } from 'lucide-react';
 import { useForm } from 'react-hook-form';
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 import Combobox from '@/components/molecules/Combobox';
 import DatePicker from '@/components/molecules/DatePicker';
 import FormLayout from '@/components/molecules/FormLayout';
@@ -38,7 +38,7 @@ const formatDateValue = (date: Date): string => formatDate(date, DATE_FORMAT);
 const Home = () => {
     // 表單
     const form = useForm<HomeFormData>({ defaultValues });
-    const { handleSubmit, setValue, getValues, watch } = form;
+    const { handleSubmit, setValue, getValues } = form;
 
     // 縣市選項
     const { countyOptions } = useCounty();
@@ -70,17 +70,15 @@ const Home = () => {
         searchParams,
     });
 
-    // 監聽學校和日期變化並更新 URL
-    const schoolId = watch('SchoolId');
-    const period = watch('period');
-    useEffect(() => {
-        updateUrlParams(schoolId, period);
-    }, [schoolId, period, updateUrlParams]);
-
     // 提交表單
-    const onSubmit = useCallback((data: HomeFormData) => {
-        console.log(data);
-    }, []);
+    const onSubmit = useCallback(
+        (data: HomeFormData) => {
+            // 在提交表單時更新 URL 參數
+            updateUrlParams(data.SchoolId, data.period);
+            console.log(data);
+        },
+        [updateUrlParams]
+    );
 
     return (
         <>

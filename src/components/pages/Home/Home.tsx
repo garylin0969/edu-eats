@@ -140,14 +140,18 @@ const Home = () => {
 
             <div className="flex items-center justify-between">
                 <div>Tab</div>
-                <Accordion type="single" collapsible>
-                    <AccordionItem className="relative" value="street">
-                        <AccordionTrigger>校舍區域選擇</AccordionTrigger>
-                        <AccordionContent className="absolute top-[100%] right-0 z-50 w-60 rounded-md bg-white p-2 shadow-lg">
-                            Yes. It adheres to the WAI-ARIA design pattern.
-                        </AccordionContent>
-                    </AccordionItem>
-                </Accordion>
+                <div className="relative h-13 w-60">
+                    <Accordion className="absolute top-0 right-0 z-2 h-full w-full" type="single" collapsible>
+                        <AccordionItem value="street">
+                            <AccordionTrigger>
+                                <span className="flex-1 text-right">校舍區域選擇</span>
+                            </AccordionTrigger>
+                            <AccordionContent className="top-[100%] right-0 z-50 w-60 rounded-md bg-white p-2 shadow-lg">
+                                Yes. It adheres to the WAI-ARIA design pattern.
+                            </AccordionContent>
+                        </AccordionItem>
+                    </Accordion>
+                </div>
             </div>
 
             {/* 餐廳輪播 - 現在內部處理查詢和狀態管理 */}

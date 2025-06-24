@@ -1,5 +1,5 @@
 import ComposableCard from '@/components/molecules/ComposableCard';
-import { AspectRatio } from '@/components/ui/aspect-ratio';
+import ImageCard from '@/components/molecules/ImageCard';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 
 interface RestaurantCarouselProps {
@@ -24,18 +24,11 @@ const RestaurantCarousel = ({ className }: RestaurantCarouselProps) => {
                                     cardHeaderClassName="visuallyhidden"
                                     cardContentClassName="p-0"
                                     content={
-                                        <>
-                                            <AspectRatio ratio={1} className="relative">
-                                                <img
-                                                    className="h-full w-full object-cover select-none"
-                                                    src="https://img.4gamers.com.tw/news-image/8043dc2a-bcfa-4265-934d-4657d05b67a3.jpg"
-                                                    alt=""
-                                                />
-                                                <div className="absolute right-0 bottom-0 left-0 bg-black/50 p-2 text-white">
-                                                    <p className="truncate text-sm font-medium">餐廳名稱</p>
-                                                </div>
-                                            </AspectRatio>
-                                        </>
+                                        <ImageCard
+                                            imageSrc="https://img.4gamers.com.tw/news-image/8043dc2a-bcfa-4265-934d-4657d05b67a3.jpg"
+                                            imageAlt="餐廳圖片"
+                                            title="餐廳名稱"
+                                        />
                                     }
                                 />
                             </CarouselItem>

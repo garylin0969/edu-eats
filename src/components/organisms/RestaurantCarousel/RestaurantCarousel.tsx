@@ -15,6 +15,10 @@ interface RestaurantCarouselProps {
  * 餐廳輪播
  */
 const RestaurantCarousel = ({ className, restaurants = [], onRestaurantClick }: RestaurantCarouselProps) => {
+    const handleRestaurantClick = (restaurant: Restaurant) => {
+        onRestaurantClick?.(restaurant);
+    };
+
     return (
         <section className={className}>
             <Carousel opts={{ dragFree: true, align: 'start', loop: true }}>
@@ -32,10 +36,7 @@ const RestaurantCarousel = ({ className, restaurants = [], onRestaurantClick }: 
                                         imageSrc={`${DEFAULT_RESTAURANT_IMAGE_PATH}${restaurant?.kitchenId}`}
                                         imageAlt={`${restaurant.RestaurantName}餐廳圖片`}
                                         title={restaurant.RestaurantName || '餐廳名稱'}
-                                        onClick={() => {
-                                            console.log('click restaurant:', restaurant);
-                                            onRestaurantClick?.(restaurant);
-                                        }}
+                                        onClick={() => handleRestaurantClick(restaurant)}
                                     />
                                 }
                             />

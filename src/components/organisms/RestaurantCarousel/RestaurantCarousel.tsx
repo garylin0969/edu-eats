@@ -23,9 +23,7 @@ const RestaurantCarousel = ({ className, onRestaurantClick }: RestaurantCarousel
     // 餐廳查詢 - 當 URL 中同時存在 SchoolId 和 period 時自動調用
     const { data, isLoading, isError, shouldFetch, schoolId, period, refetch } = useCanteenQuery();
 
-    const handleRestaurantClick = (restaurant: Restaurant) => {
-        onRestaurantClick?.(restaurant);
-    };
+    const handleRestaurantClick = (restaurant: Restaurant) => () => onRestaurantClick?.(restaurant);
 
     // 渲染內容
     if (!shouldFetch) {
@@ -71,7 +69,7 @@ const RestaurantCarousel = ({ className, onRestaurantClick }: RestaurantCarousel
                                             imageSrc={`${DEFAULT_RESTAURANT_IMAGE_PATH}${restaurant?.kitchenId}`}
                                             imageAlt={`${restaurant?.RestaurantName}餐廳圖片`}
                                             title={restaurant?.RestaurantName || '餐廳名稱'}
-                                            onClick={() => handleRestaurantClick(restaurant)}
+                                            onClick={handleRestaurantClick(restaurant)}
                                         />
                                     }
                                 />

@@ -1,5 +1,6 @@
 import { Loader2, FileX, AlertCircle, Package } from 'lucide-react';
 import { ReactNode } from 'react';
+import { Button } from '@/components/ui/button';
 import { cn } from '@/utils/shadcn';
 
 // 默認配置
@@ -39,6 +40,7 @@ interface PlaceholderProps {
     iconClassName?: string;
     titleClassName?: string;
     descriptionClassName?: string;
+    refetch?: () => void;
 }
 
 const Placeholder = ({
@@ -50,6 +52,7 @@ const Placeholder = ({
     iconClassName,
     titleClassName,
     descriptionClassName,
+    refetch,
 }: PlaceholderProps) => {
     const config = defaultConfigs[type];
 
@@ -76,6 +79,11 @@ const Placeholder = ({
                 {/* 描述 */}
                 {finalDescription && (
                     <p className={cn('text-muted-foreground', descriptionClassName)}>{finalDescription}</p>
+                )}
+                {type === 'error' && (
+                    <Button variant="outline" size="sm" className="mt-4" onClick={refetch}>
+                        重試
+                    </Button>
                 )}
             </div>
         </section>

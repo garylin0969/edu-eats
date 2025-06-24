@@ -1,4 +1,5 @@
 import { Utensils } from 'lucide-react';
+import { useMemo, useCallback } from 'react';
 import ComposableCard from '@/components/molecules/ComposableCard';
 import ImageCard from '@/components/molecules/ImageCard';
 import Placeholder from '@/components/molecules/Placeholder';
@@ -11,13 +12,27 @@ import { Restaurant } from '@/types';
  */
 const DEFAULT_RESTAURANT_IMAGE_PATH = 'https://fatraceschool.k12ea.gov.tw/kitchen/logo/';
 
+/**
+ * 輪播設定選項
+ */
+const CAROUSEL_OPTIONS = {
+    dragFree: true,
+    align: 'start' as const,
+    loop: true,
+};
+
+/**
+ * 響應式基礎類別設定
+ */
+const CAROUSEL_ITEM_BASIS_CLASSES = 'basis-1/3 md:basis-1/4 lg:basis-1/6';
+
 interface RestaurantCarouselProps {
     className?: string;
     onRestaurantClick?: (restaurant: Restaurant) => void;
 }
 
 /**
- * 餐廳輪播
+ * 餐廳輪播組件
  */
 const RestaurantCarousel = ({ className, onRestaurantClick }: RestaurantCarouselProps) => {
     // 餐廳查詢 - 當 URL 中同時存在 SchoolId 和 period 時自動調用
@@ -26,66 +41,89 @@ const RestaurantCarousel = ({ className, onRestaurantClick }: RestaurantCarousel
     // 學校查詢 - 當 URL 中存在 SchoolId 時自動調用
     const { data: schoolDetail } = useSchoolById({ schoolId });
 
+    // 記憶化餐廳點擊處理函數
+    const handleRestaurantClick = useCallback(
+        (restaurant: Restaurant) => () => {
+            onRestaurantClick?.(restaurant);
+        },
+        [onRestaurantClick]
+    );
+
+    // 記憶化餐廳數據檢查
+    const hasRestaurantData = useMemo(() => {
+        return Array.isArray(data) && data.length > 0;
+    }, [data]);
+
+    // 記憶化無數據時的提示信息
+    const noDataDescription = useMemo(() => {
+        return `學校: ${schoolDetail?.SchoolName ?? ''}, 日期: ${period ?? ''}`;
+    }, [schoolDetail?.SchoolName, period]);
+
+    // 渲染餐廳輪播項目
+    const renderRestaurantItem = useCallback(
+        (restaurant: Restaurant) => (
+            <CarouselItem key={restaurant.RestaurantId} className={CAROUSEL_ITEM_BASIS_CLASSES}>
+                <ComposableCard
+                    cardClassName="overflow-hidden p-0"
+                    cardHeaderClassName="visuallyhidden"
+                    cardContentClassName="p-0"
+                    content={
+                        <ImageCard
+                            imageSrc={`${DEFAULT_RESTAURANT_IMAGE_PATH}${restaurant.kitchenId}`}
+                            imageAlt={`${restaurant.RestaurantName}餐廳圖片`}
+                            title={restaurant.RestaurantName ?? '餐廳名稱'}
+                            onClick={handleRestaurantClick(restaurant)}
+                        />
+                    }
+                />
+            </CarouselItem>
+        ),
+        [handleRestaurantClick]
+    );
+
+    // 渲染餐廳輪播內容
+    const renderCarouselContent = useCallback(
+        () => (
+            <section className={className}>
+                <Carousel opts={CAROUSEL_OPTIONS}>
+                    <CarouselContent>{data?.map(renderRestaurantItem)}</CarouselContent>
+                    <CarouselPrevious className="-left-3" />
+                    <CarouselNext className="-right-3" />
+                </Carousel>
+            </section>
+        ),
+        [className, data, renderRestaurantItem]
+    );
+
+    // 渲染無數據佔位符
+    const renderNoDataPlaceholder = useCallback(
+        () => (
+            <Placeholder
+                icon={<Utensils className="h-12 w-12 text-gray-400" />}
+                title="目前無餐廳相關資料"
+                description={noDataDescription}
+            />
+        ),
+        [noDataDescription]
+    );
+
     // 如果 URL 中不存在 SchoolId 或 period，則不顯示輪播
     if (!schoolId || !period) {
         return null;
     }
 
-    const handleRestaurantClick = (restaurant: Restaurant) => () => onRestaurantClick?.(restaurant);
-
+    // 處理加載狀態
     if (isLoading) {
         return <Placeholder type="loading" />;
     }
 
+    // 處理錯誤狀態
     if (isError) {
-        if (isFetching) {
-            return <Placeholder type="loading" />;
-        }
-        return <Placeholder type="error" refetch={refetch} />;
+        return isFetching ? <Placeholder type="loading" /> : <Placeholder type="error" refetch={refetch} />;
     }
 
-    if (Array.isArray(data) && data?.length > 0) {
-        // 有餐廳資料時顯示輪播
-        return (
-            <section className={className}>
-                <Carousel opts={{ dragFree: true, align: 'start', loop: true }}>
-                    <CarouselContent>
-                        {data?.map((restaurant) => (
-                            <CarouselItem
-                                key={restaurant?.RestaurantId}
-                                className="basis-1/3 md:basis-1/4 lg:basis-1/6"
-                            >
-                                <ComposableCard
-                                    cardClassName="overflow-hidden p-0"
-                                    cardHeaderClassName="visuallyhidden"
-                                    cardContentClassName="p-0"
-                                    content={
-                                        <ImageCard
-                                            imageSrc={`${DEFAULT_RESTAURANT_IMAGE_PATH}${restaurant?.kitchenId}`}
-                                            imageAlt={`${restaurant?.RestaurantName}餐廳圖片`}
-                                            title={restaurant?.RestaurantName ?? '餐廳名稱'}
-                                            onClick={handleRestaurantClick(restaurant)}
-                                        />
-                                    }
-                                />
-                            </CarouselItem>
-                        ))}
-                    </CarouselContent>
-                    <CarouselPrevious className="-left-3" />
-                    <CarouselNext className="-right-3" />
-                </Carousel>
-            </section>
-        );
-    } else {
-        // 查詢成功但沒有資料
-        return (
-            <Placeholder
-                icon={<Utensils className="h-12 w-12 text-gray-400" />}
-                title="目前無餐廳相關資料"
-                description={`學校: ${schoolDetail?.SchoolName ?? ''}, 日期: ${period ?? ''}`}
-            />
-        );
-    }
+    // 根據是否有餐廳數據渲染相應內容
+    return hasRestaurantData ? renderCarouselContent() : renderNoDataPlaceholder();
 };
 
 export default RestaurantCarousel;

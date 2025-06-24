@@ -10,6 +10,7 @@ interface ImageCardProps {
     imageAlt?: string;
     title?: string;
     description?: string;
+    onClick?: () => void;
 }
 
 /**
@@ -24,9 +25,14 @@ const ImageCard = ({
     imageAlt = '',
     title,
     description,
+    onClick,
 }: ImageCardProps) => {
     return (
-        <AspectRatio ratio={ratio} className={cn('relative', wrapperClassName)}>
+        <AspectRatio
+            ratio={ratio}
+            className={cn('relative', onClick && 'cursor-pointer', wrapperClassName)}
+            onClick={onClick}
+        >
             <img
                 className={cn('h-full w-full object-cover select-none', imageClassName)}
                 src={imageSrc}

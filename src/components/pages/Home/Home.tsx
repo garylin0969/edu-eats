@@ -16,6 +16,7 @@ import {
     useFormInteractions,
     useUrlManager,
     useUrlFormInitialization,
+    useCanteenQuery,
 } from '@/hooks';
 import { HomeFormData } from '@/types';
 import { formatDate } from '@/utils/date';
@@ -81,6 +82,59 @@ const Home = () => {
         [updateUrlParams]
     );
 
+    // 餐廳查詢 - 當 URL 中同時存在 SchoolId 和 period 時自動調用
+    const {
+        data: canteenData,
+        isLoading: isCanteenLoading,
+        isError: isCanteenError,
+        shouldFetch,
+        schoolId,
+        period,
+    } = useCanteenQuery();
+
+    // 渲染餐廳相關內容
+    const renderCanteenContent = () => {
+        if (!shouldFetch) {
+            return (
+                <>
+                    <RestaurantCarousel className="px-3" />
+                    <Placeholder type="empty" />
+                </>
+            );
+        }
+
+        if (isCanteenLoading) {
+            return <Placeholder type="loading" />;
+        }
+
+        if (isCanteenError) {
+            return <Placeholder type="error" />;
+        }
+
+        if (canteenData?.data && canteenData.data.length > 0) {
+            // 有餐廳資料時顯示輪播，並傳入餐廳資料
+            return (
+                <RestaurantCarousel
+                    className="px-3"
+                    restaurants={canteenData.data}
+                    onRestaurantClick={(restaurant) => {
+                        console.log('Selected restaurant:', restaurant);
+                        // 這裡可以添加點擊餐廳後的邏輯，比如顯示菜單
+                    }}
+                />
+            );
+        } else {
+            // 查詢成功但沒有資料
+            return (
+                <Placeholder
+                    icon={<Utensils className="h-12 w-12 text-gray-400" />}
+                    title="目前無餐廳相關資料"
+                    description={`學校ID: ${schoolId}, 日期: ${period}`}
+                />
+            );
+        }
+    };
+
     return (
         <>
             <section className="my-5">
@@ -136,9 +190,11 @@ const Home = () => {
                     </form>
                 </Form>
             </section>
-            {/* 餐廳輪播 */}
-            <RestaurantCarousel className="px-3" />
-            <Placeholder type="empty" />
+
+            {/* 餐廳相關內容 - 根據查詢狀態條件性渲染 */}
+            {renderCanteenContent()}
+
+            {/* 其他 Placeholder 示例 */}
             <Placeholder type="loading" />
             <Placeholder type="error" />
             <Placeholder type="custom" />

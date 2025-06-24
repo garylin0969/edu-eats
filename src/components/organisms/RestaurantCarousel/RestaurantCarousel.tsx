@@ -21,7 +21,7 @@ interface RestaurantCarouselProps {
  */
 const RestaurantCarousel = ({ className, onRestaurantClick }: RestaurantCarouselProps) => {
     // 餐廳查詢 - 當 URL 中同時存在 SchoolId 和 period 時自動調用
-    const { data, isLoading, isError, shouldFetch, schoolId, period } = useCanteenQuery();
+    const { data, isLoading, isError, shouldFetch, schoolId, period, refetch } = useCanteenQuery();
 
     const handleRestaurantClick = (restaurant: Restaurant) => {
         onRestaurantClick?.(restaurant);
@@ -48,7 +48,7 @@ const RestaurantCarousel = ({ className, onRestaurantClick }: RestaurantCarousel
     }
 
     if (isError) {
-        return <Placeholder type="error" />;
+        return <Placeholder type="error" refetch={refetch} />;
     }
 
     if (Array.isArray(data) && data?.length > 0) {

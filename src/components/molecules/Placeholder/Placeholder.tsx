@@ -1,4 +1,5 @@
 import { Loader2, FileX, AlertCircle, Package } from 'lucide-react';
+import { useCallback } from 'react';
 import { ReactNode } from 'react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/utils/shadcn';
@@ -40,7 +41,9 @@ interface PlaceholderProps {
     iconClassName?: string;
     titleClassName?: string;
     descriptionClassName?: string;
-    refetch?: () => void;
+    refetchButtonClassName?: string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    refetch?: (...args: any[]) => any;
 }
 
 const Placeholder = ({
@@ -52,6 +55,7 @@ const Placeholder = ({
     iconClassName,
     titleClassName,
     descriptionClassName,
+    refetchButtonClassName,
     refetch,
 }: PlaceholderProps) => {
     const config = defaultConfigs[type];
@@ -60,6 +64,10 @@ const Placeholder = ({
     const finalIcon = icon ?? config.icon;
     const finalTitle = title ?? config.title;
     const finalDescription = description ?? config.description;
+
+    const handleRefetch = useCallback(() => {
+        refetch?.();
+    }, [refetch]);
 
     return (
         <section className={cn('flex flex-col items-center justify-center py-12', className)}>
@@ -81,7 +89,10 @@ const Placeholder = ({
                     <p className={cn('text-muted-foreground', descriptionClassName)}>{finalDescription}</p>
                 )}
                 {type === 'error' && (
-                    <Button variant="outline" size="sm" className="mt-4" onClick={refetch}>
+                    <Button
+                        className={cn('mt-4 p-5 text-lg font-normal', refetchButtonClassName)}
+                        onClick={handleRefetch}
+                    >
                         重試
                     </Button>
                 )}

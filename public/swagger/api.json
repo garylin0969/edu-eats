@@ -392,6 +392,51 @@
                     }
                 }
             }
+        },
+        "/canteen/street": {
+            "get": {
+                "tags": [
+                    "canteen"
+                ],
+                "summary": "查詢學校校舍區域",
+                "description": "根據學校ID查詢該學校的所有校舍區域資料",
+                "operationId": "getCanteenStreets",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "SchoolId",
+                        "in": "query",
+                        "description": "學校ID",
+                        "required": true,
+                        "type": "integer",
+                        "example": 64741748
+                    },
+                    {
+                        "name": "period",
+                        "in": "query",
+                        "description": "查詢時間期間 (格式: YYYY-MM-DD)",
+                        "required": false,
+                        "type": "string",
+                        "example": "2025-06-24"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功取得校舍區域資料",
+                        "schema": {
+                            "$ref": "#/definitions/StreetResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "請求參數錯誤"
+                    },
+                    "500": {
+                        "description": "伺服器內部錯誤"
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -964,6 +1009,64 @@
                 "calorie",
                 "createUser",
                 "createDate"
+            ]
+        },
+        "StreetResponse": {
+            "type": "object",
+            "properties": {
+                "result": {
+                    "type": "integer",
+                    "description": "回應結果狀態",
+                    "example": 1
+                },
+                "message": {
+                    "type": "string",
+                    "description": "回應訊息",
+                    "example": "Search School - Street Successful"
+                },
+                "data": {
+                    "type": "array",
+                    "description": "校舍區域資料陣列",
+                    "items": {
+                        "$ref": "#/definitions/Street"
+                    }
+                }
+            },
+            "required": [
+                "result",
+                "message",
+                "data"
+            ]
+        },
+        "Street": {
+            "type": "object",
+            "properties": {
+                "SchoolId": {
+                    "type": "integer",
+                    "description": "學校ID",
+                    "example": 64741748
+                },
+                "SchoolName": {
+                    "type": "string",
+                    "description": "學校名稱",
+                    "example": "臺北市大安區國立臺灣師範大學"
+                },
+                "SFStreetId": {
+                    "type": "integer",
+                    "description": "校舍區域ID",
+                    "example": 71
+                },
+                "SFStreetName": {
+                    "type": "string",
+                    "description": "校舍區域名稱",
+                    "example": "公館校區"
+                }
+            },
+            "required": [
+                "SchoolId",
+                "SchoolName",
+                "SFStreetId",
+                "SFStreetName"
             ]
         }
     }

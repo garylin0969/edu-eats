@@ -26,6 +26,11 @@ const RestaurantCarousel = ({ className, onRestaurantClick }: RestaurantCarousel
     // 學校查詢 - 當 URL 中存在 SchoolId 時自動調用
     const { data: schoolDetail } = useSchoolById({ schoolId });
 
+    // 如果 URL 中不存在 SchoolId 或 period，則不顯示輪播
+    if (!schoolId || !period) {
+        return null;
+    }
+
     const handleRestaurantClick = (restaurant: Restaurant) => () => onRestaurantClick?.(restaurant);
 
     if (isLoading) {

@@ -44,8 +44,9 @@ const Home = () => {
     const { handleSubmit, setValue, getValues, watch } = form;
 
     // 監聽表單值變化
-    const formValues = watch();
-    const { CountyId, AreaId, SchoolType } = formValues;
+    const CountyId = watch('CountyId');
+    const AreaId = watch('AreaId');
+    const SchoolType = watch('SchoolType');
 
     // 縣市選項
     const { countyOptions } = useCountyQuery();

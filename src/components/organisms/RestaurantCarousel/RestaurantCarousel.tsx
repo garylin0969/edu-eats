@@ -4,7 +4,7 @@ import ComposableCard from '@/components/molecules/ComposableCard';
 import ImageCard from '@/components/molecules/ImageCard';
 import Placeholder from '@/components/molecules/Placeholder';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
-import { useCanteenQuery, useSchoolById } from '@/hooks';
+import { useCanteenQuery, useSchoolByIdQuery } from '@/hooks';
 import { Restaurant } from '@/types';
 
 /**
@@ -39,7 +39,7 @@ const RestaurantCarousel = ({ className, onRestaurantClick }: RestaurantCarousel
     const { data, isLoading, isFetching, isError, schoolId, period, refetch } = useCanteenQuery();
 
     // 學校查詢 - 當 URL 中存在 SchoolId 時自動調用
-    const { data: schoolDetail } = useSchoolById({ schoolId });
+    const { data: schoolDetail } = useSchoolByIdQuery({ schoolId });
 
     // 記憶化餐廳點擊處理函數
     const handleRestaurantClick = useCallback(

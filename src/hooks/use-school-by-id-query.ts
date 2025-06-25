@@ -12,7 +12,7 @@ interface UseSchoolByIdProps {
  * @param enabled 是否啟用查詢，預設為 true
  * @returns 包含學校詳細資料、載入狀態、錯誤狀態等的物件
  */
-const useSchoolById = ({ schoolId, enabled = true }: UseSchoolByIdProps) => {
+const useSchoolByIdQuery = ({ schoolId, enabled = true }: UseSchoolByIdProps) => {
     // 檢查是否應該執行查詢
     const shouldFetch = schoolId !== null && !isNaN(schoolId) && enabled;
 
@@ -28,4 +28,4 @@ const useSchoolById = ({ schoolId, enabled = true }: UseSchoolByIdProps) => {
     return query;
 };
 
-export default useSchoolById;
+export default useSchoolByIdQuery;

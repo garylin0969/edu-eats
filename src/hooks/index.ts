@@ -5,4 +5,4 @@ export { default as useFormInteractions } from './use-form-interactions';
 export { default as useUrlManager } from './use-url-manager';
 export { default as useUrlFormInitialization } from './use-url-form-initialization';
 export { default as useCanteenQuery } from './use-canteen-query';
-export { default as useSchoolById } from './use-school-by-id';
+export { default as useSchoolByIdQuery } from './use-school-by-id-query';

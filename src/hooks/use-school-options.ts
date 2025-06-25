@@ -20,17 +20,23 @@ const useSchoolOptions = (): UseSchoolOptionsReturn => {
     const searchSchoolOptions = useCallback(
         async (params: { CountyId?: string; AreaId?: string; SchoolType?: string }) => {
             const filteredParams = filterObjectEmptyValues(params);
+
             if (objectIsEmpty(filteredParams)) {
                 setSchoolOptions([]);
                 return [];
             }
 
-            // 搜尋學校
-            const result = await GetSchool(filteredParams);
-            // 轉換為選項
-            const newSchoolOptions = transformToOptions(result?.data, 'SchoolName', 'SchoolId');
-            setSchoolOptions(newSchoolOptions);
-            return result?.data || [];
+            try {
+                // 搜尋學校
+                const result = await GetSchool(filteredParams);
+                // 轉換為選項
+                const newSchoolOptions = transformToOptions(result?.data, 'SchoolName', 'SchoolId');
+                setSchoolOptions(newSchoolOptions);
+                return result?.data || [];
+            } catch (error) {
+                console.error('Error fetching school options:', error);
+                return [];
+            }
         },
         []
     );

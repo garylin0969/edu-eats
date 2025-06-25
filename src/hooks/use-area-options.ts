@@ -22,12 +22,17 @@ const useAreaOptions = (): UseAreaOptionsReturn => {
             return [];
         }
 
-        // 搜尋區域
-        const result = await GetArea(countyId);
-        // 轉換為選項
-        const newAreaOptions = transformToOptions(result?.data, 'Area', 'AreaId');
-        setAreaOptions(newAreaOptions);
-        return result?.data || [];
+        try {
+            // 搜尋區域
+            const result = await GetArea(countyId);
+            // 轉換為選項
+            const newAreaOptions = transformToOptions(result?.data, 'Area', 'AreaId');
+            setAreaOptions(newAreaOptions);
+            return result?.data || [];
+        } catch (error) {
+            console.error('Error fetching area options:', error);
+            return [];
+        }
     }, []);
 
     const clearAreaOptions = useCallback(() => {

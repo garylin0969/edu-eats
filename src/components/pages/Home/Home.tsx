@@ -13,7 +13,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { SCHOOL_TYPE_OPTIONS } from '@/constants';
 import {
     useCounty,
-    useAreaOptions,
+    useAreaQuery,
     useSchoolOptions,
     useFormInteractions,
     useUrlManager,
@@ -54,7 +54,7 @@ const Home = () => {
     const { updateUrlParams, searchParams } = useUrlManager();
 
     // 區域選項管理 - 基於當前選擇的縣市
-    const { areaOptions, isLoading: isLoadingAreas } = useAreaOptions(CountyId);
+    const { areaOptions, isLoading: isLoadingAreas } = useAreaQuery(CountyId);
 
     // 學校選項管理 - 基於當前選擇的縣市、區域和學校類型
     const schoolSearchParams = useMemo(() => {

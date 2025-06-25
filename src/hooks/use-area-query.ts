@@ -8,7 +8,7 @@ import { transformToOptions } from '@/utils/common';
  * 區域選項管理自定義 Hook
  * 使用 useQuery 提供區域選項的搜尋和清空功能
  */
-const useAreaOptions = (countyId?: string) => {
+const useAreaQuery = (countyId?: string) => {
     // 使用 useQuery 管理區域數據
     const query = useQuery({
         queryKey: ['area', countyId],
@@ -40,4 +40,4 @@ const useAreaOptions = (countyId?: string) => {
     };
 };
 
-export default useAreaOptions;
+export default useAreaQuery;

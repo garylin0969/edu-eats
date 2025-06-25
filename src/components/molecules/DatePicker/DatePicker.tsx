@@ -58,14 +58,15 @@ const DatePicker = <T extends FieldValues>({
                                 onBlur={field.onBlur}
                                 className="hover:text-foreground w-full justify-between font-normal"
                             >
-                                {field.value ? new Date(field.value).toLocaleDateString() : placeholder}
+                                {field.value ? new Date(field.value + 'T00:00:00').toLocaleDateString() : placeholder}
                                 <ChevronDownIcon />
                             </Button>
                         </PopoverTrigger>
                         <PopoverContent className="w-auto overflow-hidden p-0 dark:bg-slate-800" align="center">
                             <Calendar
                                 mode="single"
-                                selected={field.value ? new Date(field.value) : undefined}
+                                selected={field.value ? new Date(field.value + 'T00:00:00') : undefined}
+                                defaultMonth={field.value ? new Date(field.value + 'T00:00:00') : undefined}
                                 captionLayout="dropdown"
                                 disabled={(date) => {
                                     if (minDate && date < minDate) return true;

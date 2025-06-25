@@ -1,5 +1,8 @@
 import { ApiResponse, Restaurant, RestaurantMeal, CanteenParams, MealParams } from '@/types';
-import { http } from './axios';
+import { createHttpClient } from './axios';
+
+// 建立專用於 fatraceschool 的 API 實例
+const fatraceschoolApi = createHttpClient(import.meta.env.VITE_API_BASE_URL);
 
 /**
  * 搜尋學校餐廳資料
@@ -7,7 +10,7 @@ import { http } from './axios';
  * @returns Promise<ApiResponse<Restaurant[]>>
  */
 export const GetCanteen = (params: CanteenParams): Promise<ApiResponse<Restaurant[]>> => {
-    return http.get<ApiResponse<Restaurant[]>>('/canteen', { params });
+    return fatraceschoolApi.get<ApiResponse<Restaurant[]>>('/canteen', { params });
 };
 
 /**
@@ -16,5 +19,5 @@ export const GetCanteen = (params: CanteenParams): Promise<ApiResponse<Restauran
  * @returns Promise<ApiResponse<RestaurantMeal[]>>
  */
 export const GetCanteenMeal = (params: MealParams): Promise<ApiResponse<RestaurantMeal[]>> => {
-    return http.get<ApiResponse<RestaurantMeal[]>>('/canteen/meal', { params });
+    return fatraceschoolApi.get<ApiResponse<RestaurantMeal[]>>('/canteen/meal', { params });
 };

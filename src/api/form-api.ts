@@ -1,12 +1,15 @@
 import { ApiResponse, County, Area, School, SchoolParams } from '@/types';
-import { http } from './axios';
+import { createHttpClient } from './axios';
+
+// 建立專用於 fatraceschool 的 API 實例
+const fatraceschoolApi = createHttpClient(import.meta.env.VITE_API_BASE_URL);
 
 /**
  * 獲取縣市列表
  * @returns Promise<ApiResponse<County[]>>
  */
 export const GetCounty = (): Promise<ApiResponse<County[]>> => {
-    return http.get<ApiResponse<County[]>>('/county');
+    return fatraceschoolApi.get<ApiResponse<County[]>>('/county');
 };
 
 /**
@@ -16,7 +19,7 @@ export const GetCounty = (): Promise<ApiResponse<County[]>> => {
  */
 export const GetArea = (CountyId: string): Promise<ApiResponse<Area[]>> => {
     const params = { CountyId };
-    return http.get<ApiResponse<Area[]>>('/area', { params });
+    return fatraceschoolApi.get<ApiResponse<Area[]>>('/area', { params });
 };
 
 /**
@@ -25,5 +28,5 @@ export const GetArea = (CountyId: string): Promise<ApiResponse<Area[]>> => {
  * @returns Promise<ApiResponse<School[]>>
  */
 export const GetSchool = (params: SchoolParams): Promise<ApiResponse<School[]>> => {
-    return http.get<ApiResponse<School[]>>('/school', { params });
+    return fatraceschoolApi.get<ApiResponse<School[]>>('/school', { params });
 };

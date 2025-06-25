@@ -3,66 +3,43 @@ import { HomeFormData } from '@/types';
 
 interface UseFormInteractionsParams {
     setValue: (name: keyof HomeFormData, value: string) => void;
-    getValues: () => HomeFormData;
-    searchAreaOptions: (countyId: string) => Promise<unknown[]>;
-    clearAreaOptions: () => void;
-    searchSchoolOptions: (params: { CountyId?: string; AreaId?: string; SchoolType?: string }) => Promise<unknown[]>;
-    clearSchoolOptions: () => void;
 }
 
 interface UseFormInteractionsReturn {
-    handleCountyChange: (countyId: string) => Promise<void>;
-    handleAreaChange: () => Promise<void>;
-    handleSchoolTypeChange: () => Promise<void>;
+    handleCountyChange: (countyId: string) => void;
+    handleAreaChange: () => void;
+    handleSchoolTypeChange: () => void;
 }
 
 /**
  * 表單聯動邏輯管理自定義 Hook
  * 處理表單欄位之間的互動關係
+ * 使用 useQuery 後，不再需要手動管理搜尋邏輯
  */
-const useFormInteractions = ({
-    setValue,
-    getValues,
-    searchAreaOptions,
-    clearAreaOptions,
-    searchSchoolOptions,
-    clearSchoolOptions,
-}: UseFormInteractionsParams): UseFormInteractionsReturn => {
-    // 基於當前表單值搜尋學校選項
-    const handleSearchSchoolOptions = useCallback(async () => {
-        const { CountyId, AreaId, SchoolType } = getValues();
-        await searchSchoolOptions({ CountyId, AreaId, SchoolType });
-    }, [getValues, searchSchoolOptions]);
-
+const useFormInteractions = ({ setValue }: UseFormInteractionsParams): UseFormInteractionsReturn => {
     // 縣市選擇變更
     const handleCountyChange = useCallback(
-        async (countyId: string) => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        (_countyId: string) => {
             setValue('AreaId', ''); // 清空區域選擇
             setValue('SchoolId', ''); // 清空學校選擇
-
-            if (!countyId) {
-                clearAreaOptions();
-                clearSchoolOptions();
-                return;
-            }
-
-            await searchAreaOptions(countyId);
-            await handleSearchSchoolOptions();
+            // 區域選項會自動通過 useQuery 更新
+            // countyId 透過表單 setValue 自動處理，不需要在此處理
         },
-        [setValue, searchAreaOptions, clearAreaOptions, clearSchoolOptions, handleSearchSchoolOptions]
+        [setValue]
     );
 
     // 區域選擇變更
-    const handleAreaChange = useCallback(async () => {
+    const handleAreaChange = useCallback(() => {
         setValue('SchoolId', ''); // 清空學校選擇
-        await handleSearchSchoolOptions();
-    }, [setValue, handleSearchSchoolOptions]);
+        // 學校選項會自動通過 useQuery 更新
+    }, [setValue]);
 
     // 學校類型變更
-    const handleSchoolTypeChange = useCallback(async () => {
+    const handleSchoolTypeChange = useCallback(() => {
         setValue('SchoolId', ''); // 清空學校選擇
-        await handleSearchSchoolOptions();
-    }, [setValue, handleSearchSchoolOptions]);
+        // 學校選項會自動通過 useQuery 更新
+    }, [setValue]);
 
     return {
         handleCountyChange,

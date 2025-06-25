@@ -6,22 +6,15 @@ import { isValidDateFormat, getTodayDateString } from '@/utils/date';
 interface UseUrlFormInitializationParams {
     setValue: (name: keyof HomeFormData, value: string) => void;
     getValues: () => HomeFormData;
-    searchAreaOptions: (countyId: string) => Promise<unknown[]>;
-    searchSchoolOptions: (params: { CountyId?: string; AreaId?: string; SchoolType?: string }) => Promise<unknown[]>;
     searchParams: URLSearchParams;
 }
 
 /**
  * URL 表單初始化自定義 Hook
  * 從 URL 參數初始化表單狀態
+ * 使用 useQuery 後，不再需要手動搜尋選項
  */
-const useUrlFormInitialization = ({
-    setValue,
-    getValues,
-    searchAreaOptions,
-    searchSchoolOptions,
-    searchParams,
-}: UseUrlFormInitializationParams): void => {
+const useUrlFormInitialization = ({ setValue, getValues, searchParams }: UseUrlFormInitializationParams): void => {
     const lastUrlParamsRef = useRef<string>('');
 
     useEffect(() => {
@@ -75,7 +68,6 @@ const useUrlFormInitialization = ({
                         setValue('CountyId', countyId.toString());
 
                         // 設定區域
-                        await searchAreaOptions(countyId.toString());
                         setValue('AreaId', AreaId.toString());
 
                         // 設定學校類型
@@ -83,13 +75,10 @@ const useUrlFormInitialization = ({
                             setValue('SchoolType', SchoolType.toString());
                         }
 
-                        // 設定學校選項和值
-                        await searchSchoolOptions({
-                            CountyId: countyId.toString(),
-                            AreaId: AreaId.toString(),
-                            SchoolType: SchoolType?.toString() || '',
-                        });
+                        // 設定學校ID
                         setValue('SchoolId', schoolId);
+
+                        // 區域和學校選項會自動通過 useQuery 更新
                     }
                 } catch (error) {
                     console.error('Error initializing form from URL:', error);
@@ -98,7 +87,7 @@ const useUrlFormInitialization = ({
         };
 
         initializeFormFromUrl();
-    }, [searchParams, setValue, getValues, searchAreaOptions, searchSchoolOptions]);
+    }, [searchParams, setValue, getValues]);
 };
 
 export default useUrlFormInitialization;

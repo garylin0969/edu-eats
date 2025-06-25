@@ -1,6 +1,6 @@
 import { Utensils } from 'lucide-react';
 import { useForm } from 'react-hook-form';
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import Combobox from '@/components/molecules/Combobox';
 import DatePicker from '@/components/molecules/DatePicker';
 import FormLayout from '@/components/molecules/FormLayout';
@@ -41,7 +41,11 @@ const formatDateValue = (date: Date): string => formatDate(date, DATE_FORMAT);
 const Home = () => {
     // 表單
     const form = useForm<HomeFormData>({ defaultValues });
-    const { handleSubmit, setValue, getValues } = form;
+    const { handleSubmit, setValue, getValues, watch } = form;
+
+    // 監聽表單值變化
+    const formValues = watch();
+    const { CountyId, AreaId, SchoolType } = formValues;
 
     // 縣市選項
     const { countyOptions } = useCounty();
@@ -49,28 +53,26 @@ const Home = () => {
     // URL 管理
     const { updateUrlParams, searchParams } = useUrlManager();
 
-    // 區域選項管理
-    const { areaOptions, searchAreaOptions, clearAreaOptions } = useAreaOptions();
+    // 區域選項管理 - 基於當前選擇的縣市
+    const { areaOptions, isLoading: isLoadingAreas } = useAreaOptions(CountyId);
 
-    // 學校選項管理
-    const { schoolOptions, searchSchoolOptions, clearSchoolOptions } = useSchoolOptions();
+    // 學校選項管理 - 基於當前選擇的縣市、區域和學校類型
+    const schoolSearchParams = useMemo(() => {
+        if (!CountyId && !AreaId && !SchoolType) return undefined;
+        return { CountyId, AreaId, SchoolType };
+    }, [CountyId, AreaId, SchoolType]);
+
+    const { schoolOptions, isLoading: isLoadingSchools } = useSchoolOptions(schoolSearchParams);
 
     // 表單聯動邏輯
     const { handleCountyChange, handleAreaChange, handleSchoolTypeChange } = useFormInteractions({
         setValue,
-        getValues,
-        searchAreaOptions,
-        clearAreaOptions,
-        searchSchoolOptions,
-        clearSchoolOptions,
     });
 
     // URL 參數初始化
     useUrlFormInitialization({
         setValue,
         getValues,
-        searchAreaOptions,
-        searchSchoolOptions,
         searchParams,
     });
 
@@ -106,6 +108,7 @@ const Home = () => {
                                     placeholder="區域"
                                     options={areaOptions}
                                     onChange={handleAreaChange}
+                                    disabled={isLoadingAreas}
                                 />
                             </FormLayout.Col>
                             <FormLayout.Col xs="12" md="4">
@@ -120,7 +123,13 @@ const Home = () => {
                         </FormLayout.Group>
                         <FormLayout.Group as={FormLayout.Row}>
                             <FormLayout.Col xs="12" lg="5">
-                                <Combobox form={form} name="SchoolId" placeholder="學校名稱" options={schoolOptions} />
+                                <Combobox
+                                    form={form}
+                                    name="SchoolId"
+                                    placeholder="學校名稱"
+                                    options={schoolOptions}
+                                    disabled={isLoadingSchools}
+                                />
                             </FormLayout.Col>
                             <FormLayout.Col xs="6" lg="5">
                                 <DatePicker

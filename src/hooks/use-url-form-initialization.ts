@@ -28,9 +28,16 @@ const useUrlFormInitialization = ({
         const initializeFormFromUrl = async () => {
             const schoolId = searchParams.get('SchoolId');
             const period = searchParams.get('period');
+            const currentValues = getValues();
 
             // 如果沒有任何URL參數，則不需要初始化
             if (!schoolId && !period) {
+                return;
+            }
+
+            // 檢查表單當前值是否與URL參數一致，如果一致則跳過初始化
+            const isFormUpToDate = currentValues.SchoolId === schoolId && currentValues.period === period;
+            if (isFormUpToDate) {
                 return;
             }
 

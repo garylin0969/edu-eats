@@ -12,19 +12,11 @@ interface SchoolSearchParams {
     [key: string]: string | undefined;
 }
 
-interface UseSchoolOptionsReturn {
-    schoolOptions: Option[];
-    searchSchoolOptions: (params: SchoolSearchParams) => void;
-    clearSchoolOptions: () => void;
-    isLoading: boolean;
-    error: Error | null;
-}
-
 /**
  * 學校選項管理自定義 Hook
  * 使用 useQuery 提供學校選項的搜尋和清空功能
  */
-const useSchoolOptions = (searchParams?: SchoolSearchParams): UseSchoolOptionsReturn => {
+const useSchoolQuery = (searchParams?: SchoolSearchParams) => {
     // 過濾空值參數
     const filteredParams = useMemo(() => {
         if (!searchParams) return null;
@@ -33,12 +25,7 @@ const useSchoolOptions = (searchParams?: SchoolSearchParams): UseSchoolOptionsRe
     }, [searchParams]);
 
     // 使用 useQuery 管理學校數據
-    const {
-        data: schoolData,
-        isLoading,
-        error,
-        refetch,
-    } = useQuery({
+    const query = useQuery({
         queryKey: ['school', filteredParams],
         queryFn: () => GetSchool(filteredParams!),
         enabled: !!filteredParams, // 只有當參數存在時才執行查詢
@@ -47,10 +34,12 @@ const useSchoolOptions = (searchParams?: SchoolSearchParams): UseSchoolOptionsRe
         select: (result) => result?.data,
     });
 
+    const { data, refetch } = query;
+
     // 使用 useMemo 緩存 schoolOptions，避免每次渲染都重新計算
     const schoolOptions = useMemo((): Option[] => {
-        return transformToOptions(schoolData, 'SchoolName', 'SchoolId');
-    }, [schoolData]);
+        return transformToOptions(data, 'SchoolName', 'SchoolId');
+    }, [data]);
 
     // 搜尋學校選項（觸發重新獲取）
     const searchSchoolOptions = (params: SchoolSearchParams) => {
@@ -60,19 +49,11 @@ const useSchoolOptions = (searchParams?: SchoolSearchParams): UseSchoolOptionsRe
         }
     };
 
-    // 清空學校選項（實際上是通過 searchParams 為空來控制）
-    const clearSchoolOptions = () => {
-        // 這個方法主要是為了保持 API 兼容性
-        // 實際的清空邏輯應該在父組件中通過不傳遞 searchParams 來實現
-    };
-
     return {
+        ...query,
         schoolOptions: filteredParams ? schoolOptions : [],
         searchSchoolOptions,
-        clearSchoolOptions,
-        isLoading,
-        error,
     };
 };
 
-export default useSchoolOptions;
+export default useSchoolQuery;

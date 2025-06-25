@@ -14,7 +14,7 @@ import { SCHOOL_TYPE_OPTIONS } from '@/constants';
 import {
     useCountyQuery,
     useAreaQuery,
-    useSchoolOptions,
+    useSchoolQuery,
     useFormInteractions,
     useUrlManager,
     useUrlFormInitialization,
@@ -62,7 +62,7 @@ const Home = () => {
         return { CountyId, AreaId, SchoolType };
     }, [CountyId, AreaId, SchoolType]);
 
-    const { schoolOptions, isLoading: isLoadingSchools } = useSchoolOptions(schoolSearchParams);
+    const { schoolOptions, isLoading: isLoadingSchools } = useSchoolQuery(schoolSearchParams);
 
     // 表單聯動邏輯
     const { handleCountyChange, handleAreaChange, handleSchoolTypeChange } = useFormInteractions({

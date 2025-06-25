@@ -8,7 +8,7 @@ import { transformToOptions } from '@/utils/common';
  * 縣市數據自定義 Hook
  * 包含 countyData, isCountyLoading, isCountyError, countyOptions
  */
-const useCounty = () => {
+const useCountyQuery = () => {
     const query = useQuery({
         queryKey: ['county'],
         queryFn: GetCounty,
@@ -28,4 +28,4 @@ const useCounty = () => {
     };
 };
 
-export default useCounty;
+export default useCountyQuery;

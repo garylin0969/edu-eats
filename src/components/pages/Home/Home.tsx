@@ -12,7 +12,7 @@ import { Form } from '@/components/ui/form';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { SCHOOL_TYPE_OPTIONS } from '@/constants';
 import {
-    useCounty,
+    useCountyQuery,
     useAreaQuery,
     useSchoolOptions,
     useFormInteractions,
@@ -48,7 +48,7 @@ const Home = () => {
     const { CountyId, AreaId, SchoolType } = formValues;
 
     // 縣市選項
-    const { countyOptions } = useCounty();
+    const { countyOptions } = useCountyQuery();
 
     // URL 管理
     const { updateUrlParams, searchParams } = useUrlManager();

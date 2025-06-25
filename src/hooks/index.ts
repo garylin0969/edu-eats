@@ -1,4 +1,4 @@
-export { default as useCounty } from './use-county';
+export { default as useCountyQuery } from './use-county-query';
 export { default as useAreaQuery } from './use-area-query';
 export { default as useSchoolOptions } from './use-school-options';
 export { default as useFormInteractions } from './use-form-interactions';

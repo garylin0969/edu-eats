@@ -68,6 +68,7 @@ const Home = () => {
     // URL 參數初始化
     useUrlFormInitialization({
         setValue,
+        getValues,
         searchAreaOptions,
         searchSchoolOptions,
         searchParams,

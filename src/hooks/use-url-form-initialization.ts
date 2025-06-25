@@ -1,10 +1,11 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { GetSchool } from '@/api/form-api';
 import { HomeFormData } from '@/types';
 import { isValidDateFormat, getTodayDateString } from '@/utils/date';
 
 interface UseUrlFormInitializationParams {
     setValue: (name: keyof HomeFormData, value: string) => void;
+    getValues: () => HomeFormData;
     searchAreaOptions: (countyId: string) => Promise<unknown[]>;
     searchSchoolOptions: (params: { CountyId?: string; AreaId?: string; SchoolType?: string }) => Promise<unknown[]>;
     searchParams: URLSearchParams;
@@ -16,14 +17,23 @@ interface UseUrlFormInitializationParams {
  */
 const useUrlFormInitialization = ({
     setValue,
+    getValues,
     searchAreaOptions,
     searchSchoolOptions,
     searchParams,
 }: UseUrlFormInitializationParams): void => {
+    const initializedRef = useRef(false);
+
     useEffect(() => {
         const initializeFormFromUrl = async () => {
             const schoolId = searchParams.get('SchoolId');
             const period = searchParams.get('period');
+            const currentValues = getValues();
+
+            // 如果表單已經有對應的值，且與URL參數相同，則不需要重新初始化
+            if (initializedRef.current && currentValues.SchoolId === schoolId && currentValues.period === period) {
+                return;
+            }
 
             // 設定日期參數
             if (period) {
@@ -66,10 +76,12 @@ const useUrlFormInitialization = ({
                     console.error('Error initializing form from URL:', error);
                 }
             }
+
+            initializedRef.current = true;
         };
 
         initializeFormFromUrl();
-    }, [searchParams, setValue, searchAreaOptions, searchSchoolOptions]);
+    }, [searchParams, setValue, getValues, searchAreaOptions, searchSchoolOptions]);
 };
 
 export default useUrlFormInitialization;

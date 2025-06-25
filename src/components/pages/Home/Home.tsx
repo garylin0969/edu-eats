@@ -9,6 +9,7 @@ import RestaurantCarousel from '@/components/organisms/RestaurantCarousel';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { SCHOOL_TYPE_OPTIONS } from '@/constants';
 import {
     useCounty,
@@ -139,7 +140,16 @@ const Home = () => {
             </section>
 
             <div className="flex items-center justify-between">
-                <div>Tab</div>
+                <div>
+                    <Tabs defaultValue="account" className="w-[400px]">
+                        <TabsList>
+                            <TabsTrigger value="account">Account</TabsTrigger>
+                            <TabsTrigger value="password">Password</TabsTrigger>
+                        </TabsList>
+                        <TabsContent value="account">Make changes to your account here.</TabsContent>
+                        <TabsContent value="password">Change your password here.</TabsContent>
+                    </Tabs>
+                </div>
                 <div className="relative h-13 w-60">
                     <Accordion className="absolute top-0 right-0 z-2 h-full w-full" type="single" collapsible>
                         <AccordionItem value="street">

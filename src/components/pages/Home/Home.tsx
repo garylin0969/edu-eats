@@ -65,16 +65,10 @@ const Home = () => {
     const { schoolOptions, isLoading: isLoadingSchools } = useSchoolQuery(schoolSearchParams);
 
     // 表單聯動邏輯
-    const { handleCountyChange, handleAreaChange, handleSchoolTypeChange } = useFormInteractions({
-        setValue,
-    });
+    const { handleCountyChange, handleAreaChange, handleSchoolTypeChange } = useFormInteractions({ setValue });
 
     // URL 參數初始化
-    useUrlFormInitialization({
-        setValue,
-        getValues,
-        searchParams,
-    });
+    useUrlFormInitialization({ setValue, getValues, searchParams });
 
     // 提交表單
     const onSubmit = useCallback(

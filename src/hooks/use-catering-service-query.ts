@@ -11,7 +11,7 @@ import { ApiResponse, CateringServiceParams } from '@/types';
  */
 const useCateringServiceQuery = (params: CateringServiceParams) => {
     const query = useQuery({
-        queryKey: ['queryCateringService', params],
+        queryKey: ['query_catering_service', params],
         queryFn: async () => {
             if (isTauri()) {
                 // 在 App 環境中使用 Tauri Rust API
@@ -36,7 +36,6 @@ const useCateringServiceQuery = (params: CateringServiceParams) => {
                 return response;
             }
         },
-        enabled: !!params.schoolId, // 只有當 schoolId 存在時才執行查詢
     });
 
     return query;

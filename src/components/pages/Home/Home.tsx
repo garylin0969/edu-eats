@@ -19,6 +19,7 @@ import {
     useUrlManager,
     useUrlFormInitialization,
     useCateringServiceQuery,
+    useOfferingServiceQuery,
 } from '@/hooks';
 import { HomeFormData } from '@/types';
 import { formatDate } from '@/utils/date';
@@ -51,6 +52,8 @@ const Home = () => {
         schoolId: '64741889',
         key: 'storeList',
     });
+
+    const { offeringServiceOptions } = useOfferingServiceQuery();
 
     // 表單
     const form = useForm<HomeFormData>({ defaultValues });
@@ -157,36 +160,46 @@ const Home = () => {
                 </Form>
             </section>
 
-            <Tabs defaultValue="account" className="w-full">
-                <div className="flex items-center justify-between">
-                    <TabsList>
-                        <TabsTrigger value="account">Account</TabsTrigger>
-                        <TabsTrigger value="password">Password</TabsTrigger>
-                    </TabsList>
-                    <div className="relative h-13 w-60">
-                        <Accordion className="absolute top-0 right-0 z-2 h-full w-full" type="single" collapsible>
-                            <AccordionItem value="street">
-                                <AccordionTrigger>
-                                    <span className="flex-1 text-right">校舍區域選擇</span>
-                                </AccordionTrigger>
-                                <AccordionContent className="top-[100%] right-0 z-50 w-60 rounded-md bg-white p-2 shadow-lg">
-                                    Yes. It adheres to the WAI-ARIA design pattern.
-                                </AccordionContent>
-                            </AccordionItem>
-                        </Accordion>
+            {offeringServiceOptions?.length > 0 && (
+                <Tabs className="w-full" defaultValue={offeringServiceOptions?.[0]?.value}>
+                    <div className="flex items-center justify-between">
+                        <TabsList>
+                            {offeringServiceOptions?.map((option) => (
+                                <TabsTrigger key={option?.value} value={option?.value}>
+                                    {option?.label}
+                                </TabsTrigger>
+                            ))}
+                        </TabsList>
+                        <div className="relative h-13 w-60">
+                            <Accordion className="absolute top-0 right-0 z-2 h-full w-full" type="single" collapsible>
+                                <AccordionItem value="street">
+                                    <AccordionTrigger>
+                                        <span className="flex-1 text-right">校舍區域選擇</span>
+                                    </AccordionTrigger>
+                                    <AccordionContent className="top-[100%] right-0 z-50 w-60 rounded-md bg-white p-2 shadow-lg">
+                                        Yes. It adheres to the WAI-ARIA design pattern.
+                                    </AccordionContent>
+                                </AccordionItem>
+                            </Accordion>
+                        </div>
                     </div>
-                </div>
-                <TabsContent value="account">
-                    <RestaurantCarousel
-                        className="px-3"
-                        onRestaurantClick={(restaurant) => {
-                            console.log('Selected restaurant:', restaurant);
-                            // 這裡可以添加點擊餐廳後的邏輯，比如顯示菜單
-                        }}
-                    />
-                </TabsContent>
-                <TabsContent value="password">Change your password here.</TabsContent>
-            </Tabs>
+                    {offeringServiceOptions?.map((option) => {
+                        if (option?.value === '4') {
+                            return (
+                                <TabsContent value={option?.value}>
+                                    <RestaurantCarousel
+                                        className="px-3"
+                                        onRestaurantClick={(restaurant) => {
+                                            console.log('Selected restaurant:', restaurant);
+                                            // 這裡可以添加點擊餐廳後的邏輯，比如顯示菜單
+                                        }}
+                                    />
+                                </TabsContent>
+                            );
+                        }
+                    })}
+                </Tabs>
+            )}
 
             {/* 其他 Placeholder 示例 */}
             <Placeholder type="loading" />

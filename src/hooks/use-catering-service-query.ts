@@ -1,15 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useQuery } from '@tanstack/react-query';
-import { invoke } from '@tauri-apps/api/core';
+import { invoke, isTauri } from '@tauri-apps/api/core';
 import { GetCateringService } from '@/api/catering-service';
 import { ApiResponse, CateringServiceParams } from '@/types';
-
-/**
- * 檢查是否在 Tauri App 環境中運行
- */
-const isTauriApp = () => {
-    return typeof window !== 'undefined' && '__TAURI__' in window;
-};
 
 /**
  * 使用 Tauri 或 Web API 呼叫 QueryCateringService
@@ -20,9 +13,10 @@ const useCateringServiceQuery = (params: CateringServiceParams) => {
     const query = useQuery({
         queryKey: ['queryCateringService', params],
         queryFn: async () => {
-            if (isTauriApp()) {
+            if (isTauri()) {
                 // 在 App 環境中使用 Tauri Rust API
                 const response = await invoke<ApiResponse<any>>('query_catering_service', {
+                    key: params.key,
                     method: params.method,
                     schoolId: params.schoolId ? Number(params.schoolId) : undefined,
                     schoolCode: params.schoolCode,
@@ -33,7 +27,6 @@ const useCateringServiceQuery = (params: CateringServiceParams) => {
                     valueName: params.valueName,
                     token: params.token,
                     username: params.username,
-                    key: params.key,
                 });
                 return response;
             } else {

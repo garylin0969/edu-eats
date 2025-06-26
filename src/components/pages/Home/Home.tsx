@@ -30,6 +30,9 @@ import { objectToTanstackQueryKeys } from '@/utils/object';
 const DATE_FORMAT = 'YYYY-MM-DD';
 const TODAY_FORMATTED = formatDate(new Date(), DATE_FORMAT);
 
+// 日期格式化函數
+const formatDateValue = (date: Date): string => formatDate(date, DATE_FORMAT);
+
 // 表單預設值
 const defaultValues: HomeFormData = {
     CountyId: '',
@@ -39,24 +42,22 @@ const defaultValues: HomeFormData = {
     period: TODAY_FORMATTED, //預設值為今天
 };
 
-// 日期格式化 for DatePicker
-const formatDateValue = (date: Date): string => formatDate(date, DATE_FORMAT);
-
-const queryParams = {
+// 查詢參數
+const CATERING_SERVICE_QUERY_PARAMS = {
     method: 'QueryChainStore',
     schoolId: '64741889',
     key: 'storeList',
-};
+} as const;
 
 const Home = () => {
-    const _query = useQuery({
-        queryKey: ['query_catering_service', ...objectToTanstackQueryKeys(queryParams)],
-        queryFn: () => GetCateringService(queryParams),
+    const query = useQuery({
+        queryKey: ['query_catering_service', ...objectToTanstackQueryKeys(CATERING_SERVICE_QUERY_PARAMS)],
+        queryFn: () => GetCateringService(CATERING_SERVICE_QUERY_PARAMS),
     });
 
     const { offeringServiceOptions } = useOfferingServiceQuery();
 
-    // 表單
+    // 表單管理
     const form = useForm<HomeFormData>({ defaultValues });
     const { handleSubmit, setValue, getValues, watch } = form;
 
@@ -65,16 +66,11 @@ const Home = () => {
     const AreaId = watch('AreaId');
     const SchoolType = watch('SchoolType');
 
-    // 縣市選項
+    // 資料查詢
     const { countyOptions } = useCountyQuery();
-
-    // URL 管理
-    const { updateUrlParams, searchParams } = useUrlManager();
-
-    // 區域選項管理 - 基於當前選擇的縣市
     const { areaOptions, isLoading: isLoadingAreas } = useAreaQuery(CountyId);
 
-    // 學校選項管理 - 基於當前選擇的縣市、區域和學校類型
+    // 學校查詢參數
     const schoolSearchParams = useMemo(() => {
         if (!CountyId && !AreaId && !SchoolType) return undefined;
         return { CountyId, AreaId, SchoolType };
@@ -82,13 +78,16 @@ const Home = () => {
 
     const { schoolOptions, isLoading: isLoadingSchools } = useSchoolQuery(schoolSearchParams);
 
+    // URL 管理
+    const { updateUrlParams, searchParams } = useUrlManager();
+
     // 表單聯動邏輯
     const { handleCountyChange, handleAreaChange, handleSchoolTypeChange } = useFormInteractions({ setValue });
 
     // URL 參數初始化
     useUrlFormInitialization({ setValue, getValues, searchParams });
 
-    // 提交表單
+    // 表單提交處理
     const onSubmit = useCallback(
         (data: HomeFormData) => {
             // 在提交表單時更新 URL 參數
@@ -96,6 +95,23 @@ const Home = () => {
             console.log(data);
         },
         [updateUrlParams]
+    );
+
+    // 餐廳點擊處理
+    const handleRestaurantClick = useCallback((restaurant: unknown) => {
+        console.log('Selected restaurant:', restaurant);
+        // 這裡可以添加點擊餐廳後的邏輯，比如顯示菜單
+    }, []);
+
+    // 渲染標籤內容
+    const renderTabContent = useCallback(
+        (serviceType: string) => {
+            if (parseInt(serviceType) === ServiceType.Restaurant) {
+                return <RestaurantCarousel className="px-3" onRestaurantClick={handleRestaurantClick} />;
+            }
+            return null;
+        },
+        [handleRestaurantClick]
     );
 
     return (
@@ -162,12 +178,12 @@ const Home = () => {
             </section>
 
             {offeringServiceOptions?.length > 0 && (
-                <Tabs className="w-full" defaultValue={offeringServiceOptions?.[0]?.value}>
+                <Tabs className="w-full" defaultValue={offeringServiceOptions[0]?.value}>
                     <div className="flex items-center justify-between">
                         <TabsList>
-                            {offeringServiceOptions?.map((option) => (
-                                <TabsTrigger key={option?.value} value={option?.value}>
-                                    {option?.label}
+                            {offeringServiceOptions.map((option) => (
+                                <TabsTrigger key={option.value} value={option.value}>
+                                    {option.label}
                                 </TabsTrigger>
                             ))}
                         </TabsList>
@@ -184,26 +200,11 @@ const Home = () => {
                             </Accordion>
                         </div>
                     </div>
-                    {offeringServiceOptions?.map((option) => {
-                        const Content = () => {
-                            if (parseInt(option?.value) === ServiceType.Restaurant) {
-                                return (
-                                    <RestaurantCarousel
-                                        className="px-3"
-                                        onRestaurantClick={(restaurant) => {
-                                            console.log('Selected restaurant:', restaurant);
-                                            // 這裡可以添加點擊餐廳後的邏輯，比如顯示菜單
-                                        }}
-                                    />
-                                );
-                            }
-                        };
-                        return (
-                            <TabsContent value={option?.value}>
-                                <Content />
-                            </TabsContent>
-                        );
-                    })}
+                    {offeringServiceOptions.map((option) => (
+                        <TabsContent key={option.value} value={option.value}>
+                            {renderTabContent(option.value)}
+                        </TabsContent>
+                    ))}
                 </Tabs>
             )}
 

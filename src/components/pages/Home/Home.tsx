@@ -180,7 +180,7 @@ const Home = () => {
             {offeringServiceOptions?.length > 0 && (
                 <Tabs className="w-full" defaultValue={offeringServiceOptions[0]?.value}>
                     <div className="flex items-center justify-between">
-                        <TabsList>
+                        <TabsList className="bg-primary/10">
                             {offeringServiceOptions.map((option) => (
                                 <TabsTrigger key={option.value} value={option.value}>
                                     {option.label}

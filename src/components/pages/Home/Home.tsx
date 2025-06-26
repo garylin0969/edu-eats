@@ -1,13 +1,10 @@
-import { useQuery } from '@tanstack/react-query';
 import { Utensils } from 'lucide-react';
 import { useForm } from 'react-hook-form';
-import { useCallback, useMemo } from 'react';
-import { GetCateringService } from '@/api/catering-service';
+import { lazy, useCallback, useMemo } from 'react';
 import Combobox from '@/components/molecules/Combobox';
 import DatePicker from '@/components/molecules/DatePicker';
 import FormLayout from '@/components/molecules/FormLayout';
 import Placeholder from '@/components/molecules/Placeholder';
-import RestaurantCarousel from '@/components/organisms/RestaurantCarousel';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
@@ -24,7 +21,9 @@ import {
 } from '@/hooks';
 import { HomeFormData } from '@/types';
 import { formatDate } from '@/utils/date';
-import { objectToTanstackQueryKeys } from '@/utils/object';
+
+const RestaurantCarousel = lazy(() => import('@/components/organisms/RestaurantCarousel')); // 美食街輪播元件
+const ChainStoresCarousel = lazy(() => import('@/components/organisms/ChainStoresCarousel')); // 連鎖商店輪播元件
 
 // 日期格式化
 const DATE_FORMAT = 'YYYY-MM-DD';
@@ -42,19 +41,7 @@ const defaultValues: HomeFormData = {
     period: TODAY_FORMATTED, //預設值為今天
 };
 
-// 查詢參數
-const CATERING_SERVICE_QUERY_PARAMS = {
-    method: 'QueryChainStore',
-    schoolId: '64741889',
-    key: 'storeList',
-} as const;
-
 const Home = () => {
-    const query = useQuery({
-        queryKey: ['query_catering_service', ...objectToTanstackQueryKeys(CATERING_SERVICE_QUERY_PARAMS)],
-        queryFn: () => GetCateringService(CATERING_SERVICE_QUERY_PARAMS),
-    });
-
     const { offeringServiceOptions } = useOfferingServiceQuery();
 
     // 表單管理
@@ -112,7 +99,7 @@ const Home = () => {
             }
             // 連鎖商店
             if (parseInt(serviceType) === ServiceType.ChainStores) {
-                return <RestaurantCarousel className="px-3" onRestaurantClick={handleRestaurantClick} />;
+                return <ChainStoresCarousel className="px-3" onRestaurantClick={handleRestaurantClick} />;
             }
             return null;
         },

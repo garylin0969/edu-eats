@@ -140,3 +140,18 @@ export interface OfferingService {
     label: string;
     ServiceId: number;
 }
+
+export interface Store {
+    storeId: string | null;
+    storeName: string | null;
+    schoolId: string | null;
+    schoolName: string | null;
+    storeTypeCode: string | null;
+    storeTypeName: string | null;
+    storeParentCode: string | null;
+    storeParentName: string | null;
+    storeCode: string | null;
+    sfStreetId: string | null;
+    enable: string | null;
+    logo: string | null;
+}

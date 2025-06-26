@@ -12,7 +12,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { SCHOOL_TYPE_OPTIONS } from '@/constants';
+import { SCHOOL_TYPE_OPTIONS, ServiceType } from '@/constants';
 import {
     useCountyQuery,
     useAreaQuery,
@@ -186,7 +186,7 @@ const Home = () => {
                     </div>
                     {offeringServiceOptions?.map((option) => {
                         const Content = () => {
-                            if (option?.value === '4') {
+                            if (parseInt(option?.value) === ServiceType.Restaurant) {
                                 return (
                                     <RestaurantCarousel
                                         className="px-3"

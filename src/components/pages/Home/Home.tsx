@@ -89,8 +89,6 @@ const Home = () => {
     // 校舍區域查詢
     const { data: canteenStreetData } = useCanteenStreetQuery();
 
-    console.log(canteenStreetData);
-
     // 美食街點擊處理
     const handleRestaurantClick = useCallback((restaurant: unknown) => {
         console.log('Selected restaurant:', restaurant);
@@ -198,7 +196,11 @@ const Home = () => {
                                         <span className="flex-1 text-right">校舍區域選擇</span>
                                     </AccordionTrigger>
                                     <AccordionContent className="top-[100%] right-0 z-50 w-60 rounded-md bg-white p-2 shadow-lg">
-                                        Yes. It adheres to the WAI-ARIA design pattern.
+                                        <ul>
+                                            {canteenStreetData?.map((street) => (
+                                                <li key={street?.SFStreetId}>{street?.SFStreetName}</li>
+                                            ))}
+                                        </ul>
                                     </AccordionContent>
                                 </AccordionItem>
                             </Accordion>

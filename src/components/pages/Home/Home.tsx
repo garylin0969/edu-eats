@@ -1,6 +1,8 @@
+import { useQuery } from '@tanstack/react-query';
 import { Utensils } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { useCallback, useMemo } from 'react';
+import { GetCateringService } from '@/api/catering-service';
 import Combobox from '@/components/molecules/Combobox';
 import DatePicker from '@/components/molecules/DatePicker';
 import FormLayout from '@/components/molecules/FormLayout';
@@ -18,6 +20,7 @@ import {
     useFormInteractions,
     useUrlManager,
     useUrlFormInitialization,
+    useQueryChainStore,
 } from '@/hooks';
 import { HomeFormData } from '@/types';
 import { formatDate } from '@/utils/date';
@@ -39,6 +42,28 @@ const defaultValues: HomeFormData = {
 const formatDateValue = (date: Date): string => formatDate(date, DATE_FORMAT);
 
 const Home = () => {
+    // 使用 Tauri API 呼叫
+    const {
+        data: tauriData,
+        isLoading: isLoadingTauri,
+        isError: isErrorTauri,
+        error: errorTauri,
+    } = useQueryChainStore({
+        schoolId: 64741889,
+        schoolCode: '',
+        schoolName: '',
+    });
+
+    // 原有的測試 API 呼叫
+    const {
+        data: testData,
+        isLoading: isLoadingTest,
+        isError: isErrorTest,
+        error: errorTest,
+    } = useQuery({
+        queryKey: ['test'],
+        queryFn: () => GetCateringService({ method: 'QueryChainStore', schoolId: '64741889' }),
+    });
     // 表單
     const form = useForm<HomeFormData>({ defaultValues });
     const { handleSubmit, setValue, getValues, watch } = form;
@@ -177,6 +202,55 @@ const Home = () => {
                     // 這裡可以添加點擊餐廳後的邏輯，比如顯示菜單
                 }}
             />
+            {/* Tauri API 測試結果 */}
+            <div className="my-4">
+                <h3 className="mb-2 text-lg font-semibold">Tauri API 結果：</h3>
+                {isLoadingTauri ? (
+                    <Placeholder type="loading" />
+                ) : isErrorTauri ? (
+                    <Placeholder type="error" description={errorTauri?.message} />
+                ) : tauriData ? (
+                    <div>
+                        <div className="mb-4">
+                            <p>
+                                <strong>狀態：</strong> {tauriData.result_content?.msg}
+                            </p>
+                            <p>
+                                <strong>商店數量：</strong> {tauriData.result_content?.storeList?.length || 0}
+                            </p>
+                        </div>
+                        {tauriData.result_content?.storeList?.map((store) => (
+                            <div key={store.storeId} className="mb-2 rounded border p-4">
+                                <h4 className="font-bold">{store.storeName}</h4>
+                                <p>類型：{store.storeTypeName}</p>
+                                <p>母公司：{store.storeParentName}</p>
+                                <p>學校：{store.schoolName}</p>
+                                {store.logo && (
+                                    <img src={store.logo} alt={store.storeName} className="mt-2 h-12 w-12" />
+                                )}
+                            </div>
+                        ))}
+                        <details className="mt-4">
+                            <summary className="cursor-pointer font-semibold">查看完整 JSON 資料</summary>
+                            <pre className="mt-2 rounded bg-gray-100 p-4">{JSON.stringify(tauriData, null, 2)}</pre>
+                        </details>
+                    </div>
+                ) : (
+                    <p>無資料</p>
+                )}
+            </div>
+
+            {/* 原有的測試 tanstack query */}
+            <div className="my-4">
+                <h3 className="mb-2 text-lg font-semibold">原有 API 結果：</h3>
+                {isLoadingTest ? (
+                    <Placeholder type="loading" />
+                ) : isErrorTest ? (
+                    <Placeholder type="error" description={errorTest?.message} />
+                ) : (
+                    <pre className="rounded bg-gray-100 p-4">{JSON.stringify(testData, null, 2)}</pre>
+                )}
+            </div>
 
             {/* 其他 Placeholder 示例 */}
             <Placeholder type="loading" />

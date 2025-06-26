@@ -43,6 +43,11 @@ export const objectDeepClone = <T>(obj: T): T => {
     return obj;
 };
 
+/**
+ * 將物件轉換為 Tanstack Query 的查詢鍵
+ * @param obj - 要轉換的物件
+ * @returns 轉換後的查詢鍵
+ */
 export const objectToTanstackQueryKeys = (obj: Record<string, unknown>): string[] => {
     return Object.entries(obj).map(([key, value]) => `${key}=${value}`);
 };

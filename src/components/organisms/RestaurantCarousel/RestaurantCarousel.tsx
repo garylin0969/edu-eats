@@ -6,6 +6,7 @@ import Placeholder from '@/components/molecules/Placeholder';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { useCanteenQuery, useSchoolByIdQuery } from '@/hooks';
 import { Restaurant } from '@/types';
+import { cn } from '@/utils/shadcn';
 
 /**
  * 餐廳圖片預設路徑
@@ -59,6 +60,22 @@ const RestaurantCarousel = ({ className, onRestaurantClick }: RestaurantCarousel
         return `學校: ${schoolDetail?.SchoolName ?? ''}, 日期: ${period ?? ''}`;
     }, [schoolDetail?.SchoolName, period]);
 
+    // 記憶化響應式布局類別
+    const carouselContentClassName = useMemo(() => {
+        if (!data || !Array.isArray(data)) return '';
+
+        const dataLength = data.length;
+        const isLessThanThreeOrEqualToThree = dataLength <= 3;
+        const isLessThanFourOrEqualToFour = dataLength <= 4;
+        const isLessThanSixOrEqualToSix = dataLength <= 6;
+
+        return cn(
+            isLessThanThreeOrEqualToThree && 'flex items-center justify-center',
+            isLessThanFourOrEqualToFour && 'md:flex md:items-center md:justify-center',
+            isLessThanSixOrEqualToSix && 'lg:flex lg:items-center lg:justify-center'
+        );
+    }, [data]);
+
     // 渲染餐廳輪播項目
     const renderRestaurantItem = useCallback(
         (restaurant: Restaurant) => (
@@ -86,13 +103,15 @@ const RestaurantCarousel = ({ className, onRestaurantClick }: RestaurantCarousel
         () => (
             <section className={className}>
                 <Carousel opts={CAROUSEL_OPTIONS}>
-                    <CarouselContent>{data?.map(renderRestaurantItem)}</CarouselContent>
+                    <CarouselContent className={carouselContentClassName}>
+                        {data?.map(renderRestaurantItem)}
+                    </CarouselContent>
                     <CarouselPrevious className="-left-3" />
                     <CarouselNext className="-right-3" />
                 </Carousel>
             </section>
         ),
-        [className, data, renderRestaurantItem]
+        [className, data, renderRestaurantItem, carouselContentClassName]
     );
 
     // 渲染無數據佔位符

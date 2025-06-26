@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { Utensils } from 'lucide-react';
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { GetCateringService } from '@/api/catering-service';
 import ComposableCard from '@/components/molecules/ComposableCard';
 import ImageCard from '@/components/molecules/ImageCard';
@@ -25,10 +25,30 @@ const CAROUSEL_OPTIONS = {
  */
 const CAROUSEL_ITEM_BASIS_CLASSES = 'basis-1/3 md:basis-1/4 lg:basis-1/6';
 
+/**
+ * 響應式布局斷點
+ */
+const RESPONSIVE_BREAKPOINTS = {
+    MOBILE: 3,
+    TABLET: 4,
+    DESKTOP: 6,
+} as const;
+
 interface ChainStoresCarouselProps {
     className?: string;
     onChainStoresClick?: (chainStores: Store) => void;
 }
+
+/**
+ * 計算響應式輪播內容類別
+ */
+const getCarouselContentClassName = (dataLength: number): string => {
+    return cn(
+        dataLength <= RESPONSIVE_BREAKPOINTS.MOBILE && 'flex items-center justify-center',
+        dataLength <= RESPONSIVE_BREAKPOINTS.TABLET && 'md:flex md:items-center md:justify-center',
+        dataLength <= RESPONSIVE_BREAKPOINTS.DESKTOP && 'lg:flex lg:items-center lg:justify-center'
+    );
+};
 
 /**
  * 美食街輪播元件
@@ -53,7 +73,7 @@ const ChainStoresCarousel = ({ className, onChainStoresClick }: ChainStoresCarou
     const { data, isLoading, isFetching, isError, refetch } = useQuery({
         queryKey: ['query_catering_service', ...objectToTanstackQueryKeys(queryParams)],
         queryFn: () => GetCateringService(queryParams),
-        enabled: !!schoolId && !!period, // 恢復條件檢查
+        enabled: !!schoolId && !!period,
         select: (result) => result?.data,
     });
 
@@ -68,6 +88,17 @@ const ChainStoresCarousel = ({ className, onChainStoresClick }: ChainStoresCarou
         [onChainStoresClick]
     );
 
+    // 記憶化連鎖商店數據檢查和響應式類別計算
+    const { hasChainStoresData, carouselContentClassName } = useMemo(() => {
+        const hasData = Array.isArray(data) && data.length > 0;
+        const className = hasData ? getCarouselContentClassName(data.length) : '';
+
+        return {
+            hasChainStoresData: hasData,
+            carouselContentClassName: className,
+        };
+    }, [data]);
+
     // 渲染連鎖商店輪播項目
     const renderChainStoresItem = useCallback(
         (chainStores: Store) => (
@@ -79,8 +110,8 @@ const ChainStoresCarousel = ({ className, onChainStoresClick }: ChainStoresCarou
                     content={
                         <ImageCard
                             imageSrc={chainStores?.logo ?? ''}
-                            imageAlt={chainStores?.storeName ?? ''}
-                            title={chainStores?.storeName ?? ''}
+                            imageAlt={chainStores?.storeName ?? '連鎖商店圖片'}
+                            title={chainStores?.storeName ?? '連鎖商店'}
                             onClick={handleChainStoresClick(chainStores)}
                         />
                     }
@@ -90,13 +121,26 @@ const ChainStoresCarousel = ({ className, onChainStoresClick }: ChainStoresCarou
         [handleChainStoresClick]
     );
 
+    // 渲染連鎖商店輪播內容
+    const renderCarouselContent = useCallback(
+        () => (
+            <section className={className}>
+                <Carousel opts={CAROUSEL_OPTIONS}>
+                    <CarouselContent className={carouselContentClassName}>
+                        {data?.map(renderChainStoresItem)}
+                    </CarouselContent>
+                    <CarouselPrevious className="-left-3" />
+                    <CarouselNext className="-right-3" />
+                </Carousel>
+            </section>
+        ),
+        [className, data, renderChainStoresItem, carouselContentClassName]
+    );
+
     // 早期返回：如果必要參數不存在則不渲染
     if (!schoolId || !period) {
         return null;
     }
-
-    // 檢查是否有連鎖商店數據
-    const hasChainStoresData = Array.isArray(data) && data.length > 0;
 
     // 處理加載狀態
     if (isLoading) {
@@ -108,38 +152,17 @@ const ChainStoresCarousel = ({ className, onChainStoresClick }: ChainStoresCarou
         return isFetching ? <Placeholder type="loading" /> : <Placeholder type="error" refetch={refetch} />;
     }
 
-    // 渲染無數據狀態
-    if (!hasChainStoresData) {
-        return (
-            <Placeholder
-                icon={<Utensils className="h-12 w-12 text-gray-400" />}
-                title="目前無連鎖商店相關資料"
-                description={`學校: ${schoolDetail?.SchoolName ?? ''}, 日期: ${period ?? ''}`}
-            />
-        );
+    // 根據是否有連鎖商店數據渲染相應內容
+    if (hasChainStoresData) {
+        return renderCarouselContent();
     }
 
-    const isLessThanThreeOrEqualToThree = data?.length <= 3;
-    const isLessThanFourOrEqualToFour = data?.length <= 4;
-    const isLessThanSixOrEqualToSix = data?.length <= 6;
-
-    const carouselContentClassName = cn(
-        isLessThanThreeOrEqualToThree && 'flex items-center justify-center',
-        isLessThanFourOrEqualToFour && 'md:flex md:items-center md:justify-center',
-        isLessThanSixOrEqualToSix && 'lg:flex lg:items-center lg:justify-center'
-    );
-
-    // 渲染連鎖商店輪播
     return (
-        <section className={className}>
-            <Carousel opts={CAROUSEL_OPTIONS}>
-                <CarouselContent className={carouselContentClassName}>
-                    {data?.map(renderChainStoresItem)}
-                </CarouselContent>
-                <CarouselPrevious className="-left-3" />
-                <CarouselNext className="-right-3" />
-            </Carousel>
-        </section>
+        <Placeholder
+            icon={<Utensils className="h-12 w-12 text-gray-400" />}
+            title="目前無連鎖商店相關資料"
+            description={`學校: ${schoolDetail?.SchoolName ?? ''}, 日期: ${period ?? ''}`}
+        />
     );
 };
 

@@ -20,17 +20,37 @@ const CAROUSEL_OPTIONS = {
     dragFree: true,
     align: 'start' as const,
     loop: true,
-};
+} as const;
 
 /**
  * 響應式基礎類別設定
  */
 const CAROUSEL_ITEM_BASIS_CLASSES = 'basis-1/3 md:basis-1/4 lg:basis-1/6';
 
+/**
+ * 響應式布局斷點
+ */
+const RESPONSIVE_BREAKPOINTS = {
+    MOBILE: 3,
+    TABLET: 4,
+    DESKTOP: 6,
+} as const;
+
 interface RestaurantCarouselProps {
     className?: string;
     onRestaurantClick?: (restaurant: Restaurant) => void;
 }
+
+/**
+ * 計算響應式輪播內容類別
+ */
+const getCarouselContentClassName = (dataLength: number): string => {
+    return cn(
+        dataLength <= RESPONSIVE_BREAKPOINTS.MOBILE && 'flex items-center justify-center',
+        dataLength <= RESPONSIVE_BREAKPOINTS.TABLET && 'md:flex md:items-center md:justify-center',
+        dataLength <= RESPONSIVE_BREAKPOINTS.DESKTOP && 'lg:flex lg:items-center lg:justify-center'
+    );
+};
 
 /**
  * 美食街輪播元件
@@ -50,30 +70,15 @@ const RestaurantCarousel = ({ className, onRestaurantClick }: RestaurantCarousel
         [onRestaurantClick]
     );
 
-    // 記憶化餐廳數據檢查
-    const hasRestaurantData = useMemo(() => {
-        return Array.isArray(data) && data.length > 0;
-    }, [data]);
+    // 記憶化餐廳數據檢查和響應式類別計算
+    const { hasRestaurantData, carouselContentClassName } = useMemo(() => {
+        const hasData = Array.isArray(data) && data.length > 0;
+        const className = hasData ? getCarouselContentClassName(data.length) : '';
 
-    // 記憶化無數據時的提示信息
-    const noDataDescription = useMemo(() => {
-        return `學校: ${schoolDetail?.SchoolName ?? ''}, 日期: ${period ?? ''}`;
-    }, [schoolDetail?.SchoolName, period]);
-
-    // 記憶化響應式布局類別
-    const carouselContentClassName = useMemo(() => {
-        if (!data || !Array.isArray(data)) return '';
-
-        const dataLength = data.length;
-        const isLessThanThreeOrEqualToThree = dataLength <= 3;
-        const isLessThanFourOrEqualToFour = dataLength <= 4;
-        const isLessThanSixOrEqualToSix = dataLength <= 6;
-
-        return cn(
-            isLessThanThreeOrEqualToThree && 'flex items-center justify-center',
-            isLessThanFourOrEqualToFour && 'md:flex md:items-center md:justify-center',
-            isLessThanSixOrEqualToSix && 'lg:flex lg:items-center lg:justify-center'
-        );
+        return {
+            hasRestaurantData: hasData,
+            carouselContentClassName: className,
+        };
     }, [data]);
 
     // 渲染餐廳輪播項目
@@ -114,18 +119,6 @@ const RestaurantCarousel = ({ className, onRestaurantClick }: RestaurantCarousel
         [className, data, renderRestaurantItem, carouselContentClassName]
     );
 
-    // 渲染無數據佔位符
-    const renderNoDataPlaceholder = useCallback(
-        () => (
-            <Placeholder
-                icon={<Utensils className="h-12 w-12 text-gray-400" />}
-                title="目前無餐廳相關資料"
-                description={noDataDescription}
-            />
-        ),
-        [noDataDescription]
-    );
-
     // 如果 URL 中不存在 SchoolId 或 period，則不顯示輪播
     if (!schoolId || !period) {
         return null;
@@ -142,7 +135,17 @@ const RestaurantCarousel = ({ className, onRestaurantClick }: RestaurantCarousel
     }
 
     // 根據是否有餐廳數據渲染相應內容
-    return hasRestaurantData ? renderCarouselContent() : renderNoDataPlaceholder();
+    if (hasRestaurantData) {
+        return renderCarouselContent();
+    }
+
+    return (
+        <Placeholder
+            icon={<Utensils className="h-12 w-12 text-gray-400" />}
+            title="目前無餐廳相關資料"
+            description={`學校: ${schoolDetail?.SchoolName ?? ''}, 日期: ${period ?? ''}`}
+        />
+    );
 };
 
 export default RestaurantCarousel;

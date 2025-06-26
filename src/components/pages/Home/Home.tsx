@@ -199,7 +199,6 @@ const Home = () => {
                                         <ul className="max-h-48 space-y-1 overflow-y-auto">
                                             <li
                                                 className="cursor-pointer rounded-md px-3 py-2 text-sm transition-colors duration-200 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none dark:text-[#581c87]"
-                                                tabIndex={0}
                                                 role="option"
                                             >
                                                 所有區域
@@ -208,7 +207,6 @@ const Home = () => {
                                                 <li
                                                     key={street?.SFStreetId}
                                                     className="cursor-pointer rounded-md px-3 py-2 text-sm transition-colors duration-200 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none dark:text-[#581c87]"
-                                                    tabIndex={0}
                                                     role="option"
                                                 >
                                                     {street?.SFStreetName}

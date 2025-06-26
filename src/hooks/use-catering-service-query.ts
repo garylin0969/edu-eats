@@ -24,7 +24,7 @@ const useCateringServiceQuery = (params: CateringServiceParams) => {
                 // 在 App 環境中使用 Tauri Rust API
                 const response = await invoke<ApiResponse<any>>('query_catering_service', {
                     method: params.method,
-                    schoolId: params.schoolId,
+                    schoolId: params.schoolId ? Number(params.schoolId) : undefined,
                     schoolCode: params.schoolCode,
                     schoolName: params.schoolName,
                     func: params.func,
@@ -37,6 +37,7 @@ const useCateringServiceQuery = (params: CateringServiceParams) => {
                 });
                 return response;
             } else {
+                params.schoolId = params.schoolId ? params.schoolId.toString() : undefined;
                 // 在瀏覽器環境中使用 Web API
                 const response = await GetCateringService(params);
                 return response;

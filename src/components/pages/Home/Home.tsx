@@ -50,9 +50,7 @@ const Home = () => {
         error: errorTauri,
     } = useCateringServiceQuery({
         method: 'QueryChainStore',
-        schoolId: 64741889,
-        schoolCode: '',
-        schoolName: '',
+        schoolId: '64741889',
         key: 'storeList',
     });
 

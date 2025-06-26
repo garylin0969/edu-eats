@@ -128,3 +128,15 @@ export interface CateringServiceParams {
     token?: string;
     username?: string;
 }
+
+// 服務提供參數類型
+export interface OfferingServiceParams {
+    SchoolId: string | number;
+    period: string;
+}
+
+// 服務類型數據類型
+export interface OfferingService {
+    label: string;
+    ServiceId: number;
+}

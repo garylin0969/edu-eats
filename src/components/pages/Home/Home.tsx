@@ -20,6 +20,7 @@ import {
     useFormInteractions,
     useUrlManager,
     useUrlFormInitialization,
+    useOfferingServiceQuery,
 } from '@/hooks';
 import { HomeFormData } from '@/types';
 import { formatDate } from '@/utils/date';
@@ -52,6 +53,8 @@ const Home = () => {
         queryKey: ['query_catering_service', ...objectToTanstackQueryKeys(queryParams)],
         queryFn: () => GetCateringService(queryParams),
     });
+
+    const { offeringServiceOptions } = useOfferingServiceQuery();
 
     // 表單
     const form = useForm<HomeFormData>({ defaultValues });
@@ -158,39 +161,51 @@ const Home = () => {
                 </Form>
             </section>
 
-            <div className="flex items-center justify-between">
-                <div>
-                    <Tabs defaultValue="account" className="w-[400px]">
+            {offeringServiceOptions?.length > 0 && (
+                <Tabs className="w-full" defaultValue={offeringServiceOptions?.[0]?.value}>
+                    <div className="flex items-center justify-between">
                         <TabsList>
-                            <TabsTrigger value="account">Account</TabsTrigger>
-                            <TabsTrigger value="password">Password</TabsTrigger>
+                            {offeringServiceOptions?.map((option) => (
+                                <TabsTrigger key={option?.value} value={option?.value}>
+                                    {option?.label}
+                                </TabsTrigger>
+                            ))}
                         </TabsList>
-                        <TabsContent value="account">Make changes to your account here.</TabsContent>
-                        <TabsContent value="password">Change your password here.</TabsContent>
-                    </Tabs>
-                </div>
-                <div className="relative h-13 w-60">
-                    <Accordion className="absolute top-0 right-0 z-2 h-full w-full" type="single" collapsible>
-                        <AccordionItem value="street">
-                            <AccordionTrigger>
-                                <span className="flex-1 text-right">校舍區域選擇</span>
-                            </AccordionTrigger>
-                            <AccordionContent className="top-[100%] right-0 z-50 w-60 rounded-md bg-white p-2 shadow-lg">
-                                Yes. It adheres to the WAI-ARIA design pattern.
-                            </AccordionContent>
-                        </AccordionItem>
-                    </Accordion>
-                </div>
-            </div>
-
-            {/* 餐廳輪播 - 現在內部處理查詢和狀態管理 */}
-            <RestaurantCarousel
-                className="px-3"
-                onRestaurantClick={(restaurant) => {
-                    console.log('Selected restaurant:', restaurant);
-                    // 這裡可以添加點擊餐廳後的邏輯，比如顯示菜單
-                }}
-            />
+                        <div className="relative h-13 w-60">
+                            <Accordion className="absolute top-0 right-0 z-2 h-full w-full" type="single" collapsible>
+                                <AccordionItem value="street">
+                                    <AccordionTrigger>
+                                        <span className="flex-1 text-right">校舍區域選擇</span>
+                                    </AccordionTrigger>
+                                    <AccordionContent className="top-[100%] right-0 z-50 w-60 rounded-md bg-white p-2 shadow-lg">
+                                        Yes. It adheres to the WAI-ARIA design pattern.
+                                    </AccordionContent>
+                                </AccordionItem>
+                            </Accordion>
+                        </div>
+                    </div>
+                    {offeringServiceOptions?.map((option) => {
+                        const Content = () => {
+                            if (option?.value === '4') {
+                                return (
+                                    <RestaurantCarousel
+                                        className="px-3"
+                                        onRestaurantClick={(restaurant) => {
+                                            console.log('Selected restaurant:', restaurant);
+                                            // 這裡可以添加點擊餐廳後的邏輯，比如顯示菜單
+                                        }}
+                                    />
+                                );
+                            }
+                        };
+                        return (
+                            <TabsContent value={option?.value}>
+                                <Content />
+                            </TabsContent>
+                        );
+                    })}
+                </Tabs>
+            )}
 
             {/* 其他 Placeholder 示例 */}
             <Placeholder type="loading" />

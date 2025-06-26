@@ -3,9 +3,11 @@ import {
     Restaurant,
     CanteenMeal,
     CanteenParams,
-    MealParams,
+    CanteenMealParams,
     OfferingService,
     OfferingServiceParams,
+    CanteenStreet,
+    CanteenStreetParams,
 } from '@/types';
 import { createHttpClient } from './axios';
 
@@ -26,7 +28,7 @@ export const GetCanteen = (params: CanteenParams): Promise<ApiResponse<Restauran
  * @param params 查詢參數 (SchoolId, RestaurantId, period 皆必填)
  * @returns Promise<ApiResponse<CanteenMeal[]>>
  */
-export const GetCanteenMeal = (params: MealParams): Promise<ApiResponse<CanteenMeal[]>> => {
+export const GetCanteenMeal = (params: CanteenMealParams): Promise<ApiResponse<CanteenMeal[]>> => {
     return fatraceschoolApi.get<ApiResponse<CanteenMeal[]>>('/canteen/meal', { params });
 };
 
@@ -37,4 +39,13 @@ export const GetCanteenMeal = (params: MealParams): Promise<ApiResponse<CanteenM
  */
 export const GetOfferingService = (params: OfferingServiceParams): Promise<ApiResponse<OfferingService[]>> => {
     return fatraceschoolApi.get<ApiResponse<OfferingService[]>>('/offering/service', { params });
+};
+
+/**
+ * 查詢學校校舍區域
+ * @param params 查詢參數 (SchoolId 必填, period 可選)
+ * @returns Promise<ApiResponse<CanteenStreet[]>>
+ */
+export const GetCanteenStreet = (params: CanteenStreetParams): Promise<ApiResponse<CanteenStreet[]>> => {
+    return fatraceschoolApi.get<ApiResponse<CanteenStreet[]>>('/canteen/street', { params });
 };

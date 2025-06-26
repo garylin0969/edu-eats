@@ -8,3 +8,4 @@ export { default as useCanteenQuery } from './use-canteen-query';
 export { default as useSchoolByIdQuery } from './use-school-by-id-query';
 export { default as useCateringServiceQuery } from './use-catering-service-query';
 export { default as useOfferingServiceQuery } from './use-offering-service-query';
+export { default as useCanteenStreetQuery } from './use-canteen-street-query';

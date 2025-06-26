@@ -81,7 +81,7 @@ export interface Restaurant {
 }
 
 // 餐廳菜單搜尋參數類型
-export interface MealParams {
+export interface CanteenMealParams {
     SchoolId: number;
     RestaurantId: number;
     period: string;
@@ -154,4 +154,18 @@ export interface Store {
     sfStreetId: string | null;
     enable: string | null;
     logo: string | null;
+}
+
+// 校舍區域搜尋參數類型
+export interface CanteenStreetParams {
+    SchoolId: number;
+    period?: string;
+}
+
+// 校舍區域數據類型
+export interface CanteenStreet {
+    SchoolId: number;
+    SchoolName: string;
+    SFStreetId: number;
+    SFStreetName: string;
 }

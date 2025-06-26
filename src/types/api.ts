@@ -105,7 +105,7 @@ export interface MealItem {
 }
 
 // 餐廳菜單數據類型
-export interface RestaurantMeal {
+export interface CanteenMeal {
     SchoolId: number;
     SchoolName: string;
     SFStreetId: number;
@@ -113,4 +113,11 @@ export interface RestaurantMeal {
     RestaurantId: number;
     RestaurantName: string;
     Meal: MealItem[];
+}
+
+export interface GetCateringServiceParams {
+    method?: string;
+    schoolId?: string;
+    schoolCode?: string;
+    schoolName?: string;
 }

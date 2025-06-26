@@ -200,6 +200,13 @@ const Home = () => {
                                             <li
                                                 className="cursor-pointer rounded-md px-3 py-2 text-sm transition-colors duration-200 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none dark:text-[#581c87]"
                                                 role="option"
+                                                onClick={() =>
+                                                    updateUrlParams(
+                                                        getValues('SchoolId'),
+                                                        getValues('period'),
+                                                        undefined
+                                                    )
+                                                }
                                             >
                                                 所有區域
                                             </li>
@@ -208,6 +215,13 @@ const Home = () => {
                                                     key={street?.SFStreetId}
                                                     className="cursor-pointer rounded-md px-3 py-2 text-sm transition-colors duration-200 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none dark:text-[#581c87]"
                                                     role="option"
+                                                    onClick={() =>
+                                                        updateUrlParams(
+                                                            getValues('SchoolId'),
+                                                            getValues('period'),
+                                                            street?.SFStreetId.toString()
+                                                        )
+                                                    }
                                                 >
                                                     {street?.SFStreetName}
                                                 </li>

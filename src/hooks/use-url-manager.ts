@@ -2,7 +2,7 @@ import { useSearchParams, useNavigate } from 'react-router-dom';
 import { useCallback } from 'react';
 
 interface UseUrlManagerReturn {
-    updateUrlParams: (schoolId: string, period: string) => void;
+    updateUrlParams: (schoolId?: string, period?: string, SFStreetId?: string) => void;
     searchParams: URLSearchParams;
 }
 
@@ -15,7 +15,7 @@ const useUrlManager = (): UseUrlManagerReturn => {
     const [searchParams] = useSearchParams();
 
     const updateUrlParams = useCallback(
-        (schoolId: string, period: string) => {
+        (schoolId?: string, period?: string, SFStreetId?: string) => {
             const newSearchParams = new URLSearchParams(searchParams);
 
             if (schoolId) {
@@ -28,6 +28,12 @@ const useUrlManager = (): UseUrlManagerReturn => {
                 newSearchParams.set('period', period);
             } else {
                 newSearchParams.delete('period');
+            }
+
+            if (SFStreetId) {
+                newSearchParams.set('SFStreetId', SFStreetId);
+            } else {
+                newSearchParams.delete('SFStreetId');
             }
 
             navigate(`?${newSearchParams.toString()}`, { replace: true });

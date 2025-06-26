@@ -184,9 +184,9 @@ const Home = () => {
                         </div>
                     </div>
                     {offeringServiceOptions?.map((option) => {
-                        if (option?.value === '4') {
-                            return (
-                                <TabsContent value={option?.value}>
+                        const Content = () => {
+                            if (option?.value === '4') {
+                                return (
                                     <RestaurantCarousel
                                         className="px-3"
                                         onRestaurantClick={(restaurant) => {
@@ -194,9 +194,14 @@ const Home = () => {
                                             // 這裡可以添加點擊餐廳後的邏輯，比如顯示菜單
                                         }}
                                     />
-                                </TabsContent>
-                            );
-                        }
+                                );
+                            }
+                        };
+                        return (
+                            <TabsContent value={option?.value}>
+                                <Content />
+                            </TabsContent>
+                        );
                     })}
                 </Tabs>
             )}

@@ -106,7 +106,12 @@ const Home = () => {
     // 渲染標籤內容
     const renderTabContent = useCallback(
         (serviceType: string) => {
+            // 美食街
             if (parseInt(serviceType) === ServiceType.Restaurant) {
+                return <RestaurantCarousel className="px-3" onRestaurantClick={handleRestaurantClick} />;
+            }
+            // 連鎖商店
+            if (parseInt(serviceType) === ServiceType.ChainStores) {
                 return <RestaurantCarousel className="px-3" onRestaurantClick={handleRestaurantClick} />;
             }
             return null;

@@ -1,6 +1,8 @@
+import { useQuery } from '@tanstack/react-query';
 import { Utensils } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { useCallback, useMemo } from 'react';
+import { GetCateringService } from '@/api/catering-service';
 import Combobox from '@/components/molecules/Combobox';
 import DatePicker from '@/components/molecules/DatePicker';
 import FormLayout from '@/components/molecules/FormLayout';
@@ -18,10 +20,10 @@ import {
     useFormInteractions,
     useUrlManager,
     useUrlFormInitialization,
-    useCateringServiceQuery,
 } from '@/hooks';
 import { HomeFormData } from '@/types';
 import { formatDate } from '@/utils/date';
+import { objectToTanstackQueryKeys } from '@/utils/object';
 
 // 日期格式化
 const DATE_FORMAT = 'YYYY-MM-DD';
@@ -39,17 +41,16 @@ const defaultValues: HomeFormData = {
 // 日期格式化 for DatePicker
 const formatDateValue = (date: Date): string => formatDate(date, DATE_FORMAT);
 
+const queryParams = {
+    method: 'QueryChainStore',
+    schoolId: '64741889',
+    key: 'storeList',
+};
+
 const Home = () => {
-    // 使用 Tauri API 呼叫
-    const {
-        data: tauriData,
-        isLoading: isLoadingTauri,
-        isError: isErrorTauri,
-        error: errorTauri,
-    } = useCateringServiceQuery({
-        method: 'QueryChainStore',
-        schoolId: '64741889',
-        key: 'storeList',
+    const _query = useQuery({
+        queryKey: ['query_catering_service', ...objectToTanstackQueryKeys(queryParams)],
+        queryFn: () => GetCateringService(queryParams),
     });
 
     // 表單

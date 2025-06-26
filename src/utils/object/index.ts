@@ -42,3 +42,7 @@ export const objectDeepClone = <T>(obj: T): T => {
     }
     return obj;
 };
+
+export const objectToTanstackQueryKeys = (obj: Record<string, unknown>): string[] => {
+    return Object.entries(obj).map(([key, value]) => `${key}=${value}`);
+};

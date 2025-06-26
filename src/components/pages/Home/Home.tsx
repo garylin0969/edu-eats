@@ -20,7 +20,7 @@ import {
     useFormInteractions,
     useUrlManager,
     useUrlFormInitialization,
-    useQueryChainStore,
+    useCateringServiceQuery,
 } from '@/hooks';
 import { HomeFormData } from '@/types';
 import { formatDate } from '@/utils/date';
@@ -48,10 +48,12 @@ const Home = () => {
         isLoading: isLoadingTauri,
         isError: isErrorTauri,
         error: errorTauri,
-    } = useQueryChainStore({
+    } = useCateringServiceQuery({
+        method: 'QueryChainStore',
         schoolId: 64741889,
         schoolCode: '',
         schoolName: '',
+        key: 'storeList',
     });
 
     // 原有的測試 API 呼叫
@@ -64,7 +66,7 @@ const Home = () => {
         refetch: refetchTest,
     } = useQuery({
         queryKey: ['test'],
-        queryFn: () => GetCateringService({ method: 'QueryChainStore', schoolId: '64741889' }),
+        queryFn: () => GetCateringService({ method: 'QueryChainStore', schoolId: '64741889', key: 'storeList' }),
     });
     // 表單
     const form = useForm<HomeFormData>({ defaultValues });
@@ -217,23 +219,24 @@ const Home = () => {
                     <div>
                         <div className="mb-4">
                             <p>
-                                <strong>狀態：</strong> {tauriData.result_content?.msg}
+                                <strong>狀態：</strong> {tauriData.message}
                             </p>
                             <p>
-                                <strong>商店數量：</strong> {tauriData.result_content?.storeList?.length || 0}
+                                <strong>商店數量：</strong> {Array.isArray(tauriData.data) ? tauriData.data.length : 0}
                             </p>
                         </div>
-                        {tauriData.result_content?.storeList?.map((store) => (
-                            <div key={store.storeId} className="mb-2 rounded border p-4">
-                                <h4 className="font-bold">{store.storeName}</h4>
-                                <p>類型：{store.storeTypeName}</p>
-                                <p>母公司：{store.storeParentName}</p>
-                                <p>學校：{store.schoolName}</p>
-                                {store.logo && (
-                                    <img src={store.logo} alt={store.storeName} className="mt-2 h-12 w-12" />
-                                )}
-                            </div>
-                        ))}
+                        {Array.isArray(tauriData.data) &&
+                            tauriData.data.map((store) => (
+                                <div key={store.storeId} className="mb-2 rounded border p-4">
+                                    <h4 className="font-bold">{store.storeName}</h4>
+                                    <p>類型：{store.storeTypeName}</p>
+                                    <p>母公司：{store.storeParentName}</p>
+                                    <p>學校：{store.schoolName}</p>
+                                    {store.logo && (
+                                        <img src={store.logo} alt={store.storeName} className="mt-2 h-12 w-12" />
+                                    )}
+                                </div>
+                            ))}
                         <details className="mt-4">
                             <summary className="cursor-pointer font-semibold">查看完整 JSON 資料</summary>
                             <pre className="mt-2 rounded bg-gray-100 p-4">{JSON.stringify(tauriData, null, 2)}</pre>

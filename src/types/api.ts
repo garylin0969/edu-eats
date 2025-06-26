@@ -116,6 +116,7 @@ export interface CanteenMeal {
 }
 
 export interface GetCateringServiceParams {
+    key?: string;
     method?: string;
     schoolId?: string;
     schoolCode?: string;

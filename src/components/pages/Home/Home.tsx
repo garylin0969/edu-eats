@@ -58,8 +58,10 @@ const Home = () => {
     const {
         data: testData,
         isLoading: isLoadingTest,
+        isFetching: isFetchingTest,
         isError: isErrorTest,
         error: errorTest,
+        refetch: refetchTest,
     } = useQuery({
         queryKey: ['test'],
         queryFn: () => GetCateringService({ method: 'QueryChainStore', schoolId: '64741889' }),
@@ -202,6 +204,8 @@ const Home = () => {
                     // 這裡可以添加點擊餐廳後的邏輯，比如顯示菜單
                 }}
             />
+            {/* location */}
+            <pre>{JSON.stringify(window.location, null, 2)}</pre>
             {/* Tauri API 測試結果 */}
             <div className="my-4">
                 <h3 className="mb-2 text-lg font-semibold">Tauri API 結果：</h3>
@@ -246,7 +250,17 @@ const Home = () => {
                 {isLoadingTest ? (
                     <Placeholder type="loading" />
                 ) : isErrorTest ? (
-                    <Placeholder type="error" description={errorTest?.message} />
+                    <>
+                        {isFetchingTest ? (
+                            <Placeholder type="loading" />
+                        ) : (
+                            <>
+                                <Placeholder type="error" description={errorTest?.message} />
+                                <Button onClick={() => refetchTest()}>重新查詢</Button>
+                                <pre>{JSON.stringify(errorTest, null, 2)}</pre>
+                            </>
+                        )}
+                    </>
                 ) : (
                     <pre className="rounded bg-gray-100 p-4">{JSON.stringify(testData, null, 2)}</pre>
                 )}

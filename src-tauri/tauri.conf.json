@@ -39,7 +39,9 @@
   },
   "plugins": {
     "http": {
-      "scope": ["https://**"]
+      "scope": [
+        "https://**"
+      ]
     }
   }
 }

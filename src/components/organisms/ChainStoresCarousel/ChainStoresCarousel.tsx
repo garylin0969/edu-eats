@@ -9,6 +9,7 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import { useSchoolByIdQuery, useUrlManager } from '@/hooks';
 import { Store } from '@/types';
 import { objectToTanstackQueryKeys } from '@/utils/object';
+import { cn } from '@/utils/shadcn';
 
 /**
  * 輪播設定選項
@@ -118,11 +119,23 @@ const ChainStoresCarousel = ({ className, onChainStoresClick }: ChainStoresCarou
         );
     }
 
+    const isLessThanThreeOrEqualToThree = data?.length <= 3;
+    const isLessThanFourOrEqualToFour = data?.length <= 4;
+    const isLessThanSixOrEqualToSix = data?.length <= 6;
+
+    const carouselContentClassName = cn(
+        isLessThanThreeOrEqualToThree && 'flex items-center justify-center',
+        isLessThanFourOrEqualToFour && 'md:flex md:items-center md:justify-center',
+        isLessThanSixOrEqualToSix && 'lg:flex lg:items-center lg:justify-center'
+    );
+
     // 渲染連鎖商店輪播
     return (
         <section className={className}>
             <Carousel opts={CAROUSEL_OPTIONS}>
-                <CarouselContent>{data?.map(renderChainStoresItem)}</CarouselContent>
+                <CarouselContent className={carouselContentClassName}>
+                    {data?.map(renderChainStoresItem)}
+                </CarouselContent>
                 <CarouselPrevious className="-left-3" />
                 <CarouselNext className="-right-3" />
             </Carousel>

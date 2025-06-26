@@ -6,7 +6,7 @@ import useUrlManager from './use-url-manager';
 /**
  * 查詢學校校舍區域的 Hook
  */
-export const useCanteenStreetQuery = () => {
+const useCanteenStreetQuery = () => {
     const { searchParams } = useUrlManager();
 
     // 從 URL 參數中獲取 SchoolId 和 period

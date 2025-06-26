@@ -28,21 +28,15 @@
             "description": "餐廳資料相關操作"
         }
     ],
-    "schemes": [
-        "https"
-    ],
+    "schemes": ["https"],
     "paths": {
         "/county": {
             "get": {
-                "tags": [
-                    "county"
-                ],
+                "tags": ["county"],
                 "summary": "取得縣市列表",
                 "description": "取得所有縣市的資料列表",
                 "operationId": "getCounties",
-                "produces": [
-                    "application/json"
-                ],
+                "produces": ["application/json"],
                 "parameters": [],
                 "responses": {
                     "200": {
@@ -62,15 +56,11 @@
         },
         "/area": {
             "get": {
-                "tags": [
-                    "area"
-                ],
+                "tags": ["area"],
                 "summary": "查詢區域資料",
                 "description": "根據縣市ID查詢該縣市下的所有區域資料",
                 "operationId": "getAreas",
-                "produces": [
-                    "application/json"
-                ],
+                "produces": ["application/json"],
                 "parameters": [
                     {
                         "name": "CountyId",
@@ -99,15 +89,11 @@
         },
         "/school": {
             "get": {
-                "tags": [
-                    "school"
-                ],
+                "tags": ["school"],
                 "summary": "搜尋學校資料",
                 "description": "https://fatraceschool.k12ea.gov.tw/school?CountyId=19&AreaId=131398&SchoolType=5",
                 "operationId": "searchSchools",
-                "produces": [
-                    "application/json"
-                ],
+                "produces": ["application/json"],
                 "parameters": [
                     {
                         "name": "CountyId",
@@ -160,15 +146,11 @@
         },
         "/school/{schoolId}": {
             "get": {
-                "tags": [
-                    "school"
-                ],
+                "tags": ["school"],
                 "summary": "根據學校ID取得學校詳細資料",
                 "description": "根據學校ID取得單一學校的詳細資料",
                 "operationId": "getSchoolById",
-                "produces": [
-                    "application/json"
-                ],
+                "produces": ["application/json"],
                 "parameters": [
                     {
                         "name": "schoolId",
@@ -201,15 +183,11 @@
         },
         "/canteen": {
             "get": {
-                "tags": [
-                    "canteen"
-                ],
+                "tags": ["canteen"],
                 "summary": "搜尋學校餐廳資料",
                 "description": "根據學校ID搜尋該學校的餐廳資料，可選擇性指定校區和時間期間",
                 "operationId": "searchCanteens",
-                "produces": [
-                    "application/json"
-                ],
+                "produces": ["application/json"],
                 "parameters": [
                     {
                         "name": "SchoolId",
@@ -254,18 +232,11 @@
         },
         "/kitchen/logo/{kitchenId}": {
             "get": {
-                "tags": [
-                    "canteen"
-                ],
+                "tags": ["canteen"],
                 "summary": "取得廚房/餐廳 Logo 圖片",
                 "description": "根據廚房ID取得對應的 Logo 圖片",
                 "operationId": "getKitchenLogo",
-                "produces": [
-                    "image/jpeg",
-                    "image/png",
-                    "image/gif",
-                    "image/webp"
-                ],
+                "produces": ["image/jpeg", "image/png", "image/gif", "image/webp"],
                 "parameters": [
                     {
                         "name": "kitchenId",
@@ -294,15 +265,11 @@
         },
         "/canteen/meal": {
             "get": {
-                "tags": [
-                    "canteen"
-                ],
+                "tags": ["canteen"],
                 "summary": "查詢餐廳菜單",
                 "description": "根據學校ID和餐廳ID查詢指定時間期間的菜單資料",
                 "operationId": "getCanteenMeal",
-                "produces": [
-                    "application/json"
-                ],
+                "produces": ["application/json"],
                 "parameters": [
                     {
                         "name": "SchoolId",
@@ -347,18 +314,11 @@
         },
         "/dish/pic/{restaurantId}-{dishId}": {
             "get": {
-                "tags": [
-                    "canteen"
-                ],
+                "tags": ["canteen"],
                 "summary": "取得餐點圖片",
                 "description": "根據餐廳ID和菜品ID取得對應的餐點圖片",
                 "operationId": "getDishPicture",
-                "produces": [
-                    "image/jpeg",
-                    "image/png",
-                    "image/gif",
-                    "image/webp"
-                ],
+                "produces": ["image/jpeg", "image/png", "image/gif", "image/webp"],
                 "parameters": [
                     {
                         "name": "restaurantId",
@@ -395,15 +355,11 @@
         },
         "/canteen/street": {
             "get": {
-                "tags": [
-                    "canteen"
-                ],
+                "tags": ["canteen"],
                 "summary": "查詢學校校舍區域",
                 "description": "根據學校ID查詢該學校的所有校舍區域資料",
                 "operationId": "getCanteenStreets",
-                "produces": [
-                    "application/json"
-                ],
+                "produces": ["application/json"],
                 "parameters": [
                     {
                         "name": "SchoolId",
@@ -437,6 +393,47 @@
                     }
                 }
             }
+        },
+        "/offering/service": {
+            "get": {
+                "tags": ["canteen"],
+                "summary": "查詢學校提供的服務類型",
+                "description": "根據學校ID和時間期間查詢該學校提供的服務類型資料",
+                "operationId": "getOfferingService",
+                "produces": ["application/json"],
+                "parameters": [
+                    {
+                        "name": "SchoolId",
+                        "in": "query",
+                        "description": "學校ID",
+                        "required": true,
+                        "type": "integer",
+                        "example": 64741889
+                    },
+                    {
+                        "name": "period",
+                        "in": "query",
+                        "description": "查詢時間期間 (格式: YYYY-MM-DD)",
+                        "required": true,
+                        "type": "string",
+                        "example": "2025-05-15"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功取得服務類型資料",
+                        "schema": {
+                            "$ref": "#/definitions/OfferingServiceResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "請求參數錯誤"
+                    },
+                    "500": {
+                        "description": "伺服器內部錯誤"
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -459,11 +456,7 @@
                     }
                 }
             },
-            "required": [
-                "result",
-                "message",
-                "data"
-            ]
+            "required": ["result", "message", "data"]
         },
         "County": {
             "type": "object",
@@ -485,11 +478,7 @@
                     "example": "C"
                 }
             },
-            "required": [
-                "CountyId",
-                "County",
-                "Code"
-            ]
+            "required": ["CountyId", "County", "Code"]
         },
         "AreaResponse": {
             "type": "object",
@@ -512,11 +501,7 @@
                     }
                 }
             },
-            "required": [
-                "result",
-                "message",
-                "data"
-            ]
+            "required": ["result", "message", "data"]
         },
         "Area": {
             "type": "object",
@@ -547,13 +532,7 @@
                     "example": 131374
                 }
             },
-            "required": [
-                "CountyId",
-                "County",
-                "Code",
-                "Area",
-                "AreaId"
-            ]
+            "required": ["CountyId", "County", "Code", "Area", "AreaId"]
         },
         "SchoolResponse": {
             "type": "object",
@@ -576,11 +555,7 @@
                     }
                 }
             },
-            "required": [
-                "result",
-                "message",
-                "data"
-            ]
+            "required": ["result", "message", "data"]
         },
         "School": {
             "type": "object",
@@ -616,14 +591,7 @@
                     "example": 4
                 }
             },
-            "required": [
-                "SchoolId",
-                "SchoolCode",
-                "SchoolName",
-                "CountyId",
-                "AreaId",
-                "SchoolType"
-            ]
+            "required": ["SchoolId", "SchoolCode", "SchoolName", "CountyId", "AreaId", "SchoolType"]
         },
         "SchoolDetailResponse": {
             "type": "object",
@@ -642,11 +610,7 @@
                     "$ref": "#/definitions/SchoolDetail"
                 }
             },
-            "required": [
-                "result",
-                "message",
-                "data"
-            ]
+            "required": ["result", "message", "data"]
         },
         "SchoolDetail": {
             "type": "object",
@@ -677,13 +641,7 @@
                     "example": 5
                 }
             },
-            "required": [
-                "SchoolId",
-                "SchoolName",
-                "CountyId",
-                "AreaId",
-                "SchoolType"
-            ]
+            "required": ["SchoolId", "SchoolName", "CountyId", "AreaId", "SchoolType"]
         },
         "CanteenResponse": {
             "type": "object",
@@ -706,11 +664,7 @@
                     }
                 }
             },
-            "required": [
-                "result",
-                "message",
-                "data"
-            ]
+            "required": ["result", "message", "data"]
         },
         "Restaurant": {
             "type": "object",
@@ -869,11 +823,7 @@
                     }
                 }
             },
-            "required": [
-                "result",
-                "message",
-                "data"
-            ]
+            "required": ["result", "message", "data"]
         },
         "RestaurantMeal": {
             "type": "object",
@@ -1032,11 +982,7 @@
                     }
                 }
             },
-            "required": [
-                "result",
-                "message",
-                "data"
-            ]
+            "required": ["result", "message", "data"]
         },
         "Street": {
             "type": "object",
@@ -1062,12 +1008,46 @@
                     "example": "公館校區"
                 }
             },
-            "required": [
-                "SchoolId",
-                "SchoolName",
-                "SFStreetId",
-                "SFStreetName"
-            ]
+            "required": ["SchoolId", "SchoolName", "SFStreetId", "SFStreetName"]
+        },
+        "OfferingServiceResponse": {
+            "type": "object",
+            "properties": {
+                "result": {
+                    "type": "integer",
+                    "description": "回應結果狀態",
+                    "example": 1
+                },
+                "message": {
+                    "type": "string",
+                    "description": "回應訊息",
+                    "example": "Get Offering Service successful"
+                },
+                "data": {
+                    "type": "array",
+                    "description": "服務類型資料陣列",
+                    "items": {
+                        "$ref": "#/definitions/OfferingService"
+                    }
+                }
+            },
+            "required": ["result", "message", "data"]
+        },
+        "OfferingService": {
+            "type": "object",
+            "properties": {
+                "label": {
+                    "type": "string",
+                    "description": "服務類型名稱",
+                    "example": "美食街"
+                },
+                "ServiceId": {
+                    "type": "integer",
+                    "description": "服務類型ID",
+                    "example": 4
+                }
+            },
+            "required": ["label", "ServiceId"]
         }
     }
 }

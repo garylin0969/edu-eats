@@ -987,16 +987,6 @@
         "Street": {
             "type": "object",
             "properties": {
-                "SchoolId": {
-                    "type": "integer",
-                    "description": "學校ID",
-                    "example": 64741748
-                },
-                "SchoolName": {
-                    "type": "string",
-                    "description": "學校名稱",
-                    "example": "臺北市大安區國立臺灣師範大學"
-                },
                 "SFStreetId": {
                     "type": "integer",
                     "description": "校舍區域ID",

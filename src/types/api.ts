@@ -164,8 +164,6 @@ export interface CanteenStreetParams {
 
 // 校舍區域數據類型
 export interface CanteenStreet {
-    SchoolId: number;
-    SchoolName: string;
     SFStreetId: number;
     SFStreetName: string;
 }

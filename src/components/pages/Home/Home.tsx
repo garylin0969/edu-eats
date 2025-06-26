@@ -18,6 +18,7 @@ import {
     useUrlManager,
     useUrlFormInitialization,
     useOfferingServiceQuery,
+    useCanteenStreetQuery,
 } from '@/hooks';
 import { HomeFormData } from '@/types';
 import { formatDate } from '@/utils/date';
@@ -42,8 +43,6 @@ const defaultValues: HomeFormData = {
 };
 
 const Home = () => {
-    const { offeringServiceOptions } = useOfferingServiceQuery();
-
     // 表單管理
     const form = useForm<HomeFormData>({ defaultValues });
     const { handleSubmit, setValue, getValues, watch } = form;
@@ -83,6 +82,14 @@ const Home = () => {
         },
         [updateUrlParams]
     );
+
+    // 服務類型查詢
+    const { offeringServiceOptions } = useOfferingServiceQuery();
+
+    // 校舍區域查詢
+    const { data: canteenStreetData } = useCanteenStreetQuery();
+
+    console.log(canteenStreetData);
 
     // 美食街點擊處理
     const handleRestaurantClick = useCallback((restaurant: unknown) => {

@@ -115,10 +115,16 @@ export interface CanteenMeal {
     Meal: MealItem[];
 }
 
-export interface GetCateringServiceParams {
+export interface CateringServiceParams {
     key?: string;
     method?: string;
-    schoolId?: string;
+    schoolId?: string | number;
     schoolCode?: string;
     schoolName?: string;
+    func?: string;
+    storeId?: string;
+    type?: string;
+    valueName?: string;
+    token?: string;
+    username?: string;
 }

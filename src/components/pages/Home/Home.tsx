@@ -196,9 +196,23 @@ const Home = () => {
                                         <span className="flex-1 text-right">校舍區域選擇</span>
                                     </AccordionTrigger>
                                     <AccordionContent className="top-[100%] right-0 z-50 w-60 rounded-md bg-white p-2 shadow-lg">
-                                        <ul>
+                                        <ul className="max-h-48 space-y-1 overflow-y-auto">
+                                            <li
+                                                className="cursor-pointer rounded-md px-3 py-2 text-sm transition-colors duration-200 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none dark:text-[#581c87]"
+                                                tabIndex={0}
+                                                role="option"
+                                            >
+                                                所有區域
+                                            </li>
                                             {canteenStreetData?.map((street) => (
-                                                <li key={street?.SFStreetId}>{street?.SFStreetName}</li>
+                                                <li
+                                                    key={street?.SFStreetId}
+                                                    className="cursor-pointer rounded-md px-3 py-2 text-sm transition-colors duration-200 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none dark:text-[#581c87]"
+                                                    tabIndex={0}
+                                                    role="option"
+                                                >
+                                                    {street?.SFStreetName}
+                                                </li>
                                             ))}
                                         </ul>
                                     </AccordionContent>

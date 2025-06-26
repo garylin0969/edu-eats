@@ -84,9 +84,14 @@ const Home = () => {
         [updateUrlParams]
     );
 
-    // 餐廳點擊處理
+    // 美食街點擊處理
     const handleRestaurantClick = useCallback((restaurant: unknown) => {
         console.log('Selected restaurant:', restaurant);
+        // 這裡可以添加點擊餐廳後的邏輯，比如顯示菜單
+    }, []);
+    // 連鎖商店點擊處理
+    const handleChainStoresClick = useCallback((chainStores: unknown) => {
+        console.log('Selected chainStores:', chainStores);
         // 這裡可以添加點擊餐廳後的邏輯，比如顯示菜單
     }, []);
 
@@ -99,11 +104,11 @@ const Home = () => {
             }
             // 連鎖商店
             if (parseInt(serviceType) === ServiceType.ChainStores) {
-                return <ChainStoresCarousel className="px-3" onRestaurantClick={handleRestaurantClick} />;
+                return <ChainStoresCarousel className="px-3" onChainStoresClick={handleChainStoresClick} />;
             }
             return null;
         },
-        [handleRestaurantClick]
+        [handleRestaurantClick, handleChainStoresClick]
     );
 
     return (
